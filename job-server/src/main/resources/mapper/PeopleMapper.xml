@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.jobserver.dao.PeopleMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.jobserver.model.People">
+        <id property="idcardNo" column="IDCARD_NO" jdbcType="VARCHAR"></id>
+        <result property="name" column="NAME" jdbcType="VARCHAR"></result>
+        <result property="gender" column="GENDER" jdbcType="VARCHAR"></result>
+        <result property="age" column="AGE" jdbcType="NUMERIC"></result>
+        <result property="nativePlaceCode" column="NATIVE_PLACE_CODE" jdbcType="NUMERIC"></result>
+        <result property="homeAddress" column="HOME_ADDRESS" jdbcType="NUMERIC"></result>
+        <result property="workAddress" column="WORK_ADDRESS" jdbcType="NUMERIC"></result>
+        <result property="professionCode" column="PROFESSION_CODE" jdbcType="NUMERIC"></result>
+        <result property="granduteSchoolCode" column="GRANDUATE_SCHOOL_CODE" jdbcType="NUMERIC"></result>
+        <result property="createdDate" column="UPATE_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
+        <result property="updateDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        IDCARD_NO, NAME, GENDER, AGE, NATIVE_PLACE_CODE, HOME_ADDRESS, WORK_ADDRESS, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
+        CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY
+    </sql>
+
+    <select id="getAllPeoples" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns" />
+          FROM PEOPLE
+    </select>
+</mapper>
+
