@@ -10,4 +10,6 @@ public interface PeopleMapper {
 
     List<People> getAllPeoples();
 
+    Integer insertSelective(People people);
+
 }

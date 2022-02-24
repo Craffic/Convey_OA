@@ -185,4 +185,25 @@ public class People implements Serializable {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
+
+    public People() {
+    }
+
+    public People(String idcardNo, String name, String gender, Long nativePlaceCode,
+                  String homeAddress, String workAddress, Integer age, Long professionCode,
+                  Long granduteSchoolCode, Date createdDate, String createdBy, Date updateDate, String updateBy) {
+        this.idcardNo = idcardNo;
+        this.name = name;
+        this.gender = gender;
+        this.nativePlaceCode = nativePlaceCode;
+        this.homeAddress = homeAddress;
+        this.workAddress = workAddress;
+        this.age = age;
+        this.professionCode = professionCode;
+        this.granduteSchoolCode = granduteSchoolCode;
+        this.createdDate = createdDate;
+        this.createdBy = createdBy;
+        this.updateDate = updateDate;
+        this.updateBy = updateBy;
+    }
 }

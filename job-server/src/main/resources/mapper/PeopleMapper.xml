@@ -8,8 +8,8 @@
         <result property="gender" column="GENDER" jdbcType="VARCHAR"></result>
         <result property="age" column="AGE" jdbcType="NUMERIC"></result>
         <result property="nativePlaceCode" column="NATIVE_PLACE_CODE" jdbcType="NUMERIC"></result>
-        <result property="homeAddress" column="HOME_ADDRESS" jdbcType="NUMERIC"></result>
-        <result property="workAddress" column="WORK_ADDRESS" jdbcType="NUMERIC"></result>
+        <result property="homeAddress" column="HOME_ADDRESS" jdbcType="VARCHAR"></result>
+        <result property="workAddress" column="WORK_ADDRESS" jdbcType="VARCHAR"></result>
         <result property="professionCode" column="PROFESSION_CODE" jdbcType="NUMERIC"></result>
         <result property="granduteSchoolCode" column="GRANDUATE_SCHOOL_CODE" jdbcType="NUMERIC"></result>
         <result property="createdDate" column="UPATE_DATE" jdbcType="TIMESTAMP"></result>
@@ -28,5 +28,23 @@
         <include refid="BaseColumns" />
           FROM PEOPLE
     </select>
+
+    <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.People">
+        INSERT INTO PEOPLE (<include refid="BaseColumns" />) VALUES (
+            #{idcardNo,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{gender,jdbcType=VARCHAR},
+            #{age,jdbcType=NUMERIC},
+            #{nativePlaceCode,jdbcType=NUMERIC},
+            #{homeAddress,jdbcType=VARCHAR},
+            #{workAddress,jdbcType=VARCHAR},
+            #{professionCode,jdbcType=NUMERIC},
+            #{granduteSchoolCode,jdbcType=NUMERIC},
+            #{createdDate,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{updateBy,jdbcType=VARCHAR}
+        )
+    </insert>
 </mapper>
 
