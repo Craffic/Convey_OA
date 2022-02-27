@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.jobserver.dao.OaDictMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.jobserver.model.OaDict">
+        <id property="id" column="ID" jdbcType="VARCHAR"></id>
+        <result property="itemName" column="ITEM_NAME" jdbcType="VARCHAR"></result>
+        <result property="pKey" column="P_KEY" jdbcType="NUMERIC"></result>
+        <result property="key" column="KEY" jdbcType="NUMERIC"></result>
+        <result property="value" column="VALUE" jdbcType="VARCHAR"></result>
+        <result property="comments" column="COMMENTS" jdbcType="VARCHAR"></result>
+        <result property="createdDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        O.ID, O.ITEM_NAME, O.P_KEY, O.KEY, O.VALUE, O.COMMENTS, O.CREATED_DATE, O.CREATED_BY, O.UPDATE_DATE, O.UPDATE_BY
+    </sql>
+
+    <select id="getAllDict" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns" />
+          FROM OA_DICT O
+    </select>
+
+    <select id="getAllDictByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns" />
+        FROM OA_DICT O
+        WHERE O.ITEM_NAME = #{itemName,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.OaDict">
+        INSERT INTO PEOPLE (<include refid="BaseColumns" />) VALUES (
+            #{id,jdbcType=VARCHAR},
+            #{itemName,jdbcType=VARCHAR},
+            #{pKey,jdbcType=NUMERIC},
+            #{key,jdbcType=NUMERIC},
+            #{value,jdbcType=VARCHAR},
+            #{comments,jdbcType=VARCHAR},
+            #{createdDate,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{updateBy,jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>
+

@@ -12,9 +12,9 @@
         <result property="workAddress" column="WORK_ADDRESS" jdbcType="VARCHAR"></result>
         <result property="professionCode" column="PROFESSION_CODE" jdbcType="NUMERIC"></result>
         <result property="granduteSchoolCode" column="GRANDUATE_SCHOOL_CODE" jdbcType="NUMERIC"></result>
-        <result property="createdDate" column="UPATE_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="createdDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
         <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
-        <result property="updateDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
         <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
     </resultMap>
 
