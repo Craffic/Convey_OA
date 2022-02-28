@@ -23,8 +23,6 @@ public class RandomGenerator {
         long endTime = new Date().getTime();
         long diff = endTime - startTime + 1;
         Date randomDate = new Date(startTime + (long)(Math.random() * diff));
-        DateFormat df1 = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.CHINA);
-        System.out.println("随即日期： " + df1.format(randomDate));
         return randomDate;
     }
 
