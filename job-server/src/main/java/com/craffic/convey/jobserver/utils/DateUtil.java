@@ -87,4 +87,27 @@ public class DateUtil {
             throw new Exception("转换LocalDate发生异常！");
         }
     }
+
+    /**
+     * 计算两个日期间相隔年数
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int calYearDiff(Date date1, Date date2){
+        LocalDate localDate1 = dateToLocalDate(date1);
+        LocalDate localDate2 = dateToLocalDate(date2);
+        int totalYear = 0;
+        int yearDiff = localDate1.getYear() - localDate2.getYear();
+        int month1 = localDate1.getMonth().getValue();
+        int month2 = localDate2.getMonth().getValue();
+        if (yearDiff == 0 && month1 > month2) {
+            totalYear = 1;
+        } else if (yearDiff > 0 && month1 <= month2) {
+            totalYear = yearDiff -1;
+        } else {
+            totalYear = 0;
+        }
+        return totalYear;
+    }
 }

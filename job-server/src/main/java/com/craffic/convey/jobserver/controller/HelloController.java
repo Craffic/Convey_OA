@@ -1,6 +1,6 @@
 package com.craffic.convey.jobserver.controller;
 
-import com.craffic.convey.jobserver.service.RandomGenerator;
+import com.craffic.convey.jobserver.utils.RandomGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
