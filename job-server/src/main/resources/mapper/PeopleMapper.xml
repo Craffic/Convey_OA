@@ -6,6 +6,7 @@
         <id property="idcardNo" column="IDCARD_NO" jdbcType="VARCHAR"></id>
         <result property="name" column="NAME" jdbcType="VARCHAR"></result>
         <result property="gender" column="GENDER" jdbcType="VARCHAR"></result>
+        <result property="birthDate" column="BIRTH_DATE" jdbcType="TIMESTAMP"></result>
         <result property="age" column="AGE" jdbcType="NUMERIC"></result>
         <result property="nativePlaceCode" column="NATIVE_PLACE_CODE" jdbcType="NUMERIC"></result>
         <result property="homeAddress" column="HOME_ADDRESS" jdbcType="VARCHAR"></result>
@@ -19,7 +20,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-        IDCARD_NO, NAME, GENDER, AGE, NATIVE_PLACE_CODE, HOME_ADDRESS, WORK_ADDRESS, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
+        IDCARD_NO, NAME, GENDER, BIRTH_DATE, AGE, NATIVE_PLACE_CODE, HOME_ADDRESS, WORK_ADDRESS, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
         CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY
     </sql>
 
@@ -34,6 +35,7 @@
             #{idcardNo,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
             #{gender,jdbcType=VARCHAR},
+            #{birthDate, jdbcType=TIMESTAMP},
             #{age,jdbcType=NUMERIC},
             #{nativePlaceCode,jdbcType=NUMERIC},
             #{homeAddress,jdbcType=VARCHAR},

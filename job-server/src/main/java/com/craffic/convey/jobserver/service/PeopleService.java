@@ -47,7 +47,7 @@ public class PeopleService {
         String createdBy = "system";
         Date updateDate = new Date();
         String updateBy = "system";
-        return new People(idcardNo, name, gender, nativePlaceCode, homeAddress, workAddress, age,
+        return new People(idcardNo, name, gender, nativePlaceCode, RandomGenerator.randomDate(), homeAddress, workAddress, age,
                           professionCode, granduteSchoolCode, createdDate, createdBy, updateDate, updateBy);
 
     }

@@ -25,6 +25,11 @@ public class People implements Serializable {
     private String gender;
 
     /**
+     * 出生日期
+     */
+    private Date birthDate;
+
+    /**
      * 籍贯
      */
     private Long nativePlaceCode;
@@ -130,6 +135,14 @@ public class People implements Serializable {
         this.age = age;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public Long getNativePlaceCode() {
         return nativePlaceCode;
     }
@@ -189,12 +202,13 @@ public class People implements Serializable {
     public People() {
     }
 
-    public People(String idcardNo, String name, String gender, Long nativePlaceCode,
+    public People(String idcardNo, String name, String gender, Long nativePlaceCode, Date birthDate,
                   String homeAddress, String workAddress, Integer age, Long professionCode,
                   Long granduteSchoolCode, Date createdDate, String createdBy, Date updateDate, String updateBy) {
         this.idcardNo = idcardNo;
         this.name = name;
         this.gender = gender;
+        this.birthDate = birthDate;
         this.nativePlaceCode = nativePlaceCode;
         this.homeAddress = homeAddress;
         this.workAddress = workAddress;
