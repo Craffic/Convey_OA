@@ -120,7 +120,10 @@ public class RandomGenerator {
         return name.toString();
     }
 
-
+    /**
+     * 生成姓
+     * @return
+     */
     public static String genFirstName(){
         int length = OAConstant.FIRST_NAME.length();
         Random random = new Random();

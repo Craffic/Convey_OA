@@ -22,6 +22,7 @@ public class PeopleService {
     private OaDictService dictService;
 
     public static final String AREA = "AREA";
+    public static final String PROFESSIONAL = "PROFESSIONAL";
 
     /**
      * 查询所有人员列表
@@ -51,7 +52,10 @@ public class PeopleService {
         String homeAddress = "增城市石滩镇";
         String workAddress = "天河区";
         int age = DateUtil.calYearDiff(new Date(), birthDate);
-        Long professionCode = 200001L;
+        // 职业
+        List<OaDict> professionalList = dictService.queryDictByName(PROFESSIONAL);
+        int num1 = RandomGenerator.randomNumFromList(professionalList);
+        Long professionCode = professionalList.get(num1).getKey();
         Long granduteSchoolCode = 300001L;
         Date createdDate = new Date();
         String createdBy = "system";
