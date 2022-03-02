@@ -1,5 +1,6 @@
 package com.craffic.convey.jobserver.utils;
 
+import com.craffic.convey.jobserver.constant.OAConstant;
 import jdk.internal.dynalink.beans.StaticClass;
 import org.apache.ibatis.javassist.Loader;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,9 @@ public class RandomGenerator {
 
         System.out.println("生成身份证号----------------------------");
         System.out.println(idCardNoGenerator(new Date(), 341502L, "M"));
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(nameGenerator("F"));
+        }
     }
 
     public final static String MIN_DATE = "1920-01-01 00:00:00";
@@ -90,6 +94,42 @@ public class RandomGenerator {
         int i = randomNumFromList(genderList);
         return genderList.get(i);
     }
+
+    /**
+     * 生成姓
+     * @return
+     */
+    public static String nameGenerator(String gender){
+        StringBuffer name = new StringBuffer();
+        name.append(genFirstName());
+        Random random = new Random();
+        if ("M".equals(gender)) {
+            int length = OAConstant.BOY_NAME.length();
+            for (int i = 0; i < 2; i++) {
+                name.append(OAConstant.BOY_NAME.charAt(random.nextInt(length)));
+            }
+        } else if ("F".equals(gender)) {
+            int length = OAConstant.GIRL_NAME.length();
+            for (int i = 0; i < 2; i++) {
+                name.append(OAConstant.GIRL_NAME.charAt(random.nextInt(length)));
+            }
+        } else {
+            return "";
+        }
+
+        return name.toString();
+    }
+
+
+    public static String genFirstName(){
+        int length = OAConstant.FIRST_NAME.length();
+        Random random = new Random();
+        int index = random.nextInt(length);
+        return OAConstant.FIRST_NAME.charAt(index) + "";
+    }
+
+
+
 
 
 }

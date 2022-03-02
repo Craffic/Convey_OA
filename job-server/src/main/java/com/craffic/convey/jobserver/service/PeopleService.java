@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class PeopleService {
@@ -48,7 +47,7 @@ public class PeopleService {
         Long nativePlaceCode = areaList.get(num).getKey();
         // 生成身份证号
         String idcardNo = RandomGenerator.idCardNoGenerator(birthDate, nativePlaceCode, gender);
-        String name = UUID.randomUUID().toString().substring(0, 6);
+        String name = RandomGenerator.nameGenerator(gender);
         String homeAddress = "增城市石滩镇";
         String workAddress = "天河区";
         int age = DateUtil.calYearDiff(new Date(), birthDate);
