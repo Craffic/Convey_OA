@@ -23,6 +23,7 @@ public class PeopleService {
 
     public static final String AREA = "AREA";
     public static final String PROFESSIONAL = "PROFESSIONAL";
+    public static final String UNIVERSITY = "UNIVERSITY";
 
     /**
      * 查询所有人员列表
@@ -56,7 +57,10 @@ public class PeopleService {
         List<OaDict> professionalList = dictService.queryDictByName(PROFESSIONAL);
         int num1 = RandomGenerator.randomNumFromList(professionalList);
         Long professionCode = professionalList.get(num1).getKey();
-        Long granduteSchoolCode = 300001L;
+
+        List<OaDict> universityList = dictService.queryDictByName(UNIVERSITY);
+        int num2 = RandomGenerator.randomNumFromList(universityList);
+        Long granduteSchoolCode = universityList.get(num2).getKey();
         Date createdDate = new Date();
         String createdBy = "system";
         Date updateDate = new Date();

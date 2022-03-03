@@ -97,17 +97,9 @@ public class DateUtil {
     public static int calYearDiff(Date date1, Date date2){
         LocalDate localDate1 = dateToLocalDate(date1);
         LocalDate localDate2 = dateToLocalDate(date2);
-        int totalYear = 0;
-        int yearDiff = localDate1.getYear() - localDate2.getYear();
         int month1 = localDate1.getMonth().getValue();
         int month2 = localDate2.getMonth().getValue();
-        if (yearDiff == 0 && month1 > month2) {
-            totalYear = 1;
-        } else if (yearDiff > 0 && month1 <= month2) {
-            totalYear = yearDiff -1;
-        } else {
-            totalYear = 0;
-        }
-        return totalYear;
+        int month = (localDate1.getYear() - localDate2.getYear()) * 12 + (month1) - month2;
+        return month / 12;
     }
 }
