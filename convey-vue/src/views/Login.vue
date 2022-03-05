@@ -45,19 +45,23 @@ export default {
   },
   methods: {
     submitLogin(){
-      console.log(this.$refs.userName.value);
-      console.log(this.$refs.password.value);
       // 验证登录规则
       this.$refs.loginForm.validate((valid) => {
-        console.log(valid);
         if (valid) {
           this.$notify({
             title: '登录成功',
             message: '欢迎登录科汇OA办公系统',
             type: 'success'
           });
+          // todo 调用登录接口
+          if (true) {
+            // 登录成功，把用户信息存入到sessionStorage中
+            window.sessionStorage.setItem("user", "user_info");
+            // 跳转到home页
+            this.$router.replace("/home");
+          }
         } else {
-          aler("");
+          alert("用户名或密码不能为空！");
         }
       })
 
