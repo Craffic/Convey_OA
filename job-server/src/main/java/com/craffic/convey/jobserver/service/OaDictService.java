@@ -34,6 +34,15 @@ public class OaDictService {
     }
 
     /**
+     * 根据p_key查找记录
+     */
+    @Cacheable(cacheNames = "p_key", key="#pkey")
+    public List<OaDict> queryDictByPkey(Long pkey){
+        logger.info("查询字典：{}", pkey);
+        return oaDictMapper.getDictsPkey(pkey);
+    }
+
+    /**
      * 插入people
      */
     public int insertPeople(OaDict dict){

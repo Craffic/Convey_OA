@@ -16,6 +16,9 @@ import java.util.List;
 @Service
 public class PeopleService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public static final String PROVINCE = "PROVINCE";
+
     @Autowired
     private PeopleMapper peopleMapper;
     @Autowired
@@ -50,8 +53,6 @@ public class PeopleService {
         // 生成身份证号
         String idcardNo = RandomGenerator.idCardNoGenerator(birthDate, nativePlaceCode, gender);
         String name = RandomGenerator.nameGenerator(gender);
-        String homeAddress = "增城市石滩镇";
-        String workAddress = "天河区";
         int age = DateUtil.calYearDiff(new Date(), birthDate);
         // 职业
         List<OaDict> professionalList = dictService.queryDictByName(PROFESSIONAL);
@@ -65,8 +66,30 @@ public class PeopleService {
         String createdBy = "system";
         Date updateDate = new Date();
         String updateBy = "system";
-        return new People(idcardNo, name, gender, nativePlaceCode, birthDate, homeAddress, workAddress, age,
+        return new People(idcardNo, name, gender, nativePlaceCode, birthDate, genAddress(), genAddress(), age,
                           professionCode, granduteSchoolCode, createdDate, createdBy, updateDate, updateBy);
 
+    }
+
+    /**
+     * 生成地址
+     * @return
+     */
+    public String genAddress(){
+        List<OaDict> provinceList = dictService.queryDictByName(PROVINCE);
+        int provinceNum = RandomGenerator.randomNumFromList(provinceList);
+        OaDict provinceDict = provinceList.get(provinceNum);
+
+        List<OaDict> cityList = dictService.queryDictByPkey(provinceDict.getKey());
+        int cityNum = RandomGenerator.randomNumFromList(cityList);
+        OaDict cityDict = cityList.get(cityNum);
+
+        List<OaDict> areaList = dictService.queryDictByPkey(cityDict.getKey());
+        int areaNum = RandomGenerator.randomNumFromList(areaList);
+        OaDict areaDict = null;
+        areaDict = areaList.get(areaNum);
+
+        StringBuffer address = new StringBuffer();
+        return address.append(provinceDict.getValue()).append(cityDict.getValue()).append(areaDict.getValue()).toString();
     }
 }

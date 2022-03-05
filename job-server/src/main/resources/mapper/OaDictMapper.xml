@@ -32,6 +32,13 @@
         WHERE O.ITEM_NAME = #{itemName,jdbcType=VARCHAR}
     </select>
 
+    <select id="getDictsPkey" parameterType="java.lang.Long" resultType="com.craffic.convey.jobserver.model.OaDict">
+        SELECT
+        <include refid="BaseColumns" />
+        FROM OA_DICT O
+        WHERE O.P_KEY = #{pkey,jdbcType=NUMERIC}
+    </select>
+
     <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.OaDict">
         INSERT INTO PEOPLE (<include refid="BaseColumns" />) VALUES (
             #{id,jdbcType=VARCHAR},
