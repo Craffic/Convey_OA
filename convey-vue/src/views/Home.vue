@@ -20,8 +20,30 @@
         </el-dropdown>
       </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
-        <el-main>Main</el-main>
+        <!--左侧菜单栏-->
+        <el-aside width="200px">
+          <el-menu :default-openeds="['1']">
+            <el-submenu index="1">
+              <template slot="title"><i class="el-icon-message"></i>导航一</template>
+              <el-menu-item index="1-1">选项1</el-menu-item>
+              <el-menu-item index="1-2">选项2</el-menu-item>
+            </el-submenu>
+            <el-submenu index="2">
+              <template slot="title"><i class="el-icon-menu"></i>导航二</template>
+              <el-menu-item index="1-1">选项3</el-menu-item>
+              <el-menu-item index="1-2">选项4</el-menu-item>
+            </el-submenu><el-submenu index="3">
+            <template slot="title"><i class="el-icon-setting"></i>导航三</template>
+            <el-menu-item index="1-1">选项5</el-menu-item>
+            <el-menu-item index="1-2">选项6</el-menu-item>
+          </el-submenu>
+          </el-menu>
+        </el-aside>
+        <el-main>
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            首页
+          </el-breadcrumb>
+        </el-main>
       </el-container>
     </el-container>
   </div>
