@@ -4,7 +4,7 @@
       <el-header class="header">
         <div class="title">科汇自动化办公系统</div>
         <!--用户信息下拉框-->
-        <el-dropdown class="userInfo">
+        <el-dropdown class="userInfo" @command="commandHandler">
           <span class="el-dropdown-link">
             {{userName}}
             <i>
@@ -13,9 +13,9 @@
           </span>
           <!--点用户姓名后展示下拉框-->
           <el-dropdown-menu>
-            <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>设置</el-dropdown-item>
-            <el-dropdown-item>注销</el-dropdown-item>
+            <el-dropdown-item command="profile">个人中心</el-dropdown-item>
+            <el-dropdown-item command="setting">设置</el-dropdown-item>
+            <el-dropdown-item command="logout">注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -34,6 +34,29 @@ export default {
     return {
       userName: "刘成炎",
       url: "https://tse1-mm.cn.bing.net/th/id/R-C.a5196bbf244c1f32eb1e2fa4c3be39c0?rik=FV57G%2bMxQOOxMg&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2fdongwu%2flang%2flang12.jpg&ehk=O6spZJ2txOQLpL9s755LCvmT34ae5vzUWJ9chVibHac%3d&risl=&pid=ImgRaw&r=0"
+    }
+  },
+  methods: {
+    /*在el-dropdown标签里使用@command=commandHandler，然后就会调用methods里的commandHandler方法
+    * commandHandler里有个参数cmd就是用来接收菜单项el-dropdown-item里的command的值*/
+    commandHandler(cmd){
+      if ('logout' == cmd) {
+        this.$confirm('此操作将注销登录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          /*todo 调用注销接口*/
+          /*清除sessionStorage里的用户信息*/
+          window.sessionStorage.removeItem(null);
+          /*todo 跳转回登录页*/
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      }
     }
   }
 }
