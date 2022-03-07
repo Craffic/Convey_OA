@@ -12,7 +12,7 @@
             </i>
           </span>
           <!--点用户姓名后展示下拉框-->
-          <el-dropdown-menu>
+          <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="profile">个人中心</el-dropdown-item>
             <el-dropdown-item command="setting">设置</el-dropdown-item>
             <el-dropdown-item command="logout">注销</el-dropdown-item>
