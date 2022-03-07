@@ -41,7 +41,9 @@
         </el-aside>
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right">
-            首页
+            <div class="homeWelcome">
+              科汇自动办公系统
+            </div>
           </el-breadcrumb>
         </el-main>
       </el-container>
@@ -111,5 +113,11 @@ export default {
 }
 .userInfo {
   cursor: pointer;
+}
+.homeWelcome{
+  font-family: 幼圆;
+  text-align: center;
+  font-size: 50px;
+  margin-top: 100px;
 }
 </style>
