@@ -17,7 +17,9 @@
         </el-input>
       </el-form-item>
       <!--记住密码-->
-      <el-checkbox class="rememberMe">记住密码</el-checkbox>
+      <div class="rememberMe">
+        <el-checkbox>记住密码</el-checkbox>
+      </div>
       <!--登录按钮-->
       <el-button type="primary" style="width: 100%" @click="submitLogin">登录</el-button>
     </el-form>
