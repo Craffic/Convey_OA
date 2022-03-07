@@ -4,13 +4,19 @@
       <el-header class="header">
         <div class="title">科汇自动化办公系统</div>
         <!--用户信息下拉框-->
-        <el-dropdown>
+        <el-dropdown class="userInfo">
           <span class="el-dropdown-link">
             {{userName}}
             <i>
               <img :src="url" alt="">
             </i>
           </span>
+          <!--点用户姓名后展示下拉框-->
+          <el-dropdown-menu>
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item>设置</el-dropdown-item>
+            <el-dropdown-item>注销</el-dropdown-item>
+          </el-dropdown-menu>
         </el-dropdown>
       </el-header>
       <el-container>
@@ -57,5 +63,8 @@ export default {
 .el-dropdown-link {
   display: flex;
   align-items: center;
+}
+.userInfo {
+  cursor: pointer;
 }
 </style>
