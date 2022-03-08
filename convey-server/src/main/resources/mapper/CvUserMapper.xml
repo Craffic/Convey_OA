@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.server.dao.CvUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.CvUser">
+        <id property="id" column="ID" jdbcType="NUMERIC"></id>
+        <result property="workId" column="WORK_ID" jdbcType="NUMERIC"></result>
+        <result property="acct" column="ACCT" jdbcType="VARCHAR"></result>
+        <result property="nameZh" column="NAME_ZH" jdbcType="VARCHAR"></result>
+        <result property="password" column="PASSWORD" jdbcType="NUMERIC"></result>
+        <result property="workId" column="PHONE" jdbcType="NUMERIC"></result>
+        <result property="email" column="EMAIL" jdbcType="NUMERIC"></result>
+        <result property="iconUrl" column="ICON_URL" jdbcType="NUMERIC"></result>
+        <result property="posId" column="POS_ID" jdbcType="NUMERIC"></result>
+        <result property="dptId" column="DPT_ID" jdbcType="NUMERIC"></result>
+        <result property="remark" column="REMARK" jdbcType="NUMERIC"></result>
+        <result property="beginDate" column="BEGIN_DATE" jdbcType="NUMERIC"></result>
+        <result property="convertDate" column="CONVERT_DATE" jdbcType="NUMERIC"></result>
+        <result property="workStat" column="WORK_STAT" jdbcType="NUMERIC"></result>
+        <result property="leaveDate" column="LEAVE_DATE" jdbcType="NUMERIC"></result>
+        <result property="createdDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        U.ID, U.WORK_ID, U.ACCT, U.NAME_ZH, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
+        U.BEGIN_DATE, U.CONVERT_DATE, U.WORK_STAT, U.LEAVE_DATE, U.CREATED_DATE, U.CREATED_BY, U.UPATE_DATE, U.UPDATE_BY
+    </sql>
+
+    <select id="getAllUsers" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+          FROM CV_USER U
+    </select>
+</mapper>
+
