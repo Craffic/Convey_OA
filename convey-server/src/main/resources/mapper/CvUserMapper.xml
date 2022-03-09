@@ -33,5 +33,9 @@
         SELECT <include refid="BaseColumns" />
           FROM CV_USER U
     </select>
+
+    <select id="loadUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" /> FROM CV_USER U WHERE U.ACCT = #{acct}
+    </select>
 </mapper>
 

@@ -1,14 +1,16 @@
 package com.craffic.convey.server.vo;
 
+import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class CvUserVO extends CvUser {
+public class CvUserVO {
 
     /**
      * 主键id
@@ -110,5 +112,10 @@ public class CvUserVO extends CvUser {
      * 更新人
      */
     private String updateBy;
+
+    /**
+     * 拥有的角色
+     */
+    private List<CvRole> roles;
 
 }

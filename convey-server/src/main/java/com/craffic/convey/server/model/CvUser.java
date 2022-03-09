@@ -1,11 +1,17 @@
 package com.craffic.convey.server.model;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class CvUser {
+public class CvUser implements UserDetails {
 
     /**
      * 主键id
@@ -101,4 +107,47 @@ public class CvUser {
      * 更新人
      */
     private String updateBy;
+
+    /**
+     * 用户拥有的角色
+     */
+    private List<CvRole> roles;
+
+    /**
+     * 返回用户对应的权限
+     * @return
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(roles.size());
+        for (CvRole role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.acct;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

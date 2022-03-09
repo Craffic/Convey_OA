@@ -22,7 +22,7 @@ public class CvUserController {
 
     @GetMapping("/all")
     public List<CvUserVO> queryAllUsers(){
-        List<CvUser> userList = userService.queryAllusers();
+        List<CvUser> userList = userService.queryAllUsers();
         List<CvUserVO> resultList = new ArrayList<>();
         userList.stream().forEach(user -> {
             CvUserVO userVO = new CvUserVO();

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.server.dao.CvRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.CvRole">
+        <id property="id" column="ID" jdbcType="NUMERIC"></id>
+        <result property="role" column="ROLE" jdbcType="VARCHAR"></result>
+        <result property="roleName" column="ROLE_NAME" jdbcType="VARCHAR"></result>
+        <result property="createdDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        R.ID, R.ROLE, R.ROLE_NAME, R.CREATED_DATE, R.CREATED_BY, R.UPATE_DATE, R.UPDATE_BY
+    </sql>
+
+    <select id="getAllRoles" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+          FROM CV_ROLE R
+    </select>
+
+    <select id="getRolesByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+          FROM CV_USER U
+     LEFT JOIN CV_USER_ROLE UR ON U.ID = UR.USER_ID
+     LEFT JOIN CV_ROLE R ON UR.ROLE_ID = R.ID
+         WHERE U.ID = #{userId,jdbcType=NUMERIC}
+    </select>
+</mapper>
