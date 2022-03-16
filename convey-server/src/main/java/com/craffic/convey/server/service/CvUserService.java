@@ -5,6 +5,7 @@ import com.craffic.convey.server.dao.CvUserMapper;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,5 +48,13 @@ public class CvUserService implements UserDetailsService {
         List<CvRole> roleList = roleMapper.getRolesByUserId(cvUser.getId());
         cvUser.setRoles(roleList);
         return cvUser;
+    }
+
+    /**
+     * 查询登录人信息
+     * @return
+     */
+    public CvUser queryLoginUser(){
+        return (CvUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

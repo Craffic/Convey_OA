@@ -5,6 +5,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 import 'font-awesome/css/font-awesome.min.css'
+import {initMenu} from "@/utils/menu";
 
 Vue.use(ElementUI);
 
@@ -21,6 +22,7 @@ router.beforeEach((to, from, next) => {
   if (to.path == '/') {
     next();
   } else {
+    initMenu(router, store);
     next();
   }
 })

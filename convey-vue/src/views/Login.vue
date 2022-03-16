@@ -35,8 +35,8 @@ export default {
       },
       // 定义登录数据
       loginForm: {
-        username: 'admin',
-        password: '123'
+        username: 'Liu Chengyan',
+        password: 'Craffic'
       },
       // 记住密码
       checked: true

@@ -27,7 +27,7 @@ public class FilterInvocationSecurityMetaDataSource implements FilterInvocationS
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         List<CvMenu> allMenus = menuMapper.getAllMenusWithRole();
         for (CvMenu menu : allMenus) {
-            if (antPathMatcher.match(menu.getPattern(), requestUrl)) {
+            if (antPathMatcher.match(menu.getUrl(), requestUrl)) {
                 // 获取全部角色
                 List<CvRole> roles = menu.getRoles();
                 String[] str = new String[roles.size()];

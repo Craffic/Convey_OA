@@ -4,7 +4,30 @@
 
     <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.CvMenu">
         <id property="id" column="ID" jdbcType="NUMERIC"></id>
-        <result property="pattern" column="PATTERN" jdbcType="VARCHAR"></result>
+        <result property="url" column="URL" jdbcType="VARCHAR"></result>
+        <result property="path" column="PATH" jdbcType="VARCHAR"></result>
+        <result property="component" column="COMPONENT" jdbcType="VARCHAR"></result>
+        <result property="name" column="NAME" jdbcType="VARCHAR"></result>
+        <result property="iconCls" column="ICON_CLS" jdbcType="VARCHAR"></result>
+        <result property="keepAlive" column="KEEP_ALIVE" jdbcType="NUMERIC"></result>
+        <result property="requireAuth" column="REQUIRE_AUTH" jdbcType="NUMERIC"></result>
+        <result property="parentId" column="PARENT_ID" jdbcType="NUMERIC"></result>
+        <result property="enabled" column="ENABLED" jdbcType="NUMERIC"></result>
+    </resultMap>
+
+    <resultMap id="Menu2" type="com.craffic.convey.server.model.CvMenu" extends="BaseResultMap">
+        <collection property="children" ofType="com.craffic.convey.server.model.CvMenu">
+            <id property="id" column="ID2" jdbcType="NUMERIC"></id>
+            <result property="url" column="URL2" jdbcType="VARCHAR"></result>
+            <result property="path" column="PATH2" jdbcType="VARCHAR"></result>
+            <result property="component" column="COMPONENT2" jdbcType="VARCHAR"></result>
+            <result property="name" column="NAME2" jdbcType="VARCHAR"></result>
+            <result property="iconCls" column="ICON_CLS2" jdbcType="VARCHAR"></result>
+            <result property="keepAlive" column="KEEP_ALIVE2" jdbcType="NUMERIC"></result>
+            <result property="requireAuth" column="REQUIRE_AUTH2" jdbcType="NUMERIC"></result>
+            <result property="parentId" column="PARENT_ID2" jdbcType="NUMERIC"></result>
+            <result property="enabled" column="ENABLED2" jdbcType="NUMERIC"></result>
+        </collection>
     </resultMap>
 
     <resultMap id="MenuWithRole" type="com.craffic.convey.server.model.CvMenu" extends="BaseResultMap">
@@ -20,7 +43,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-        M.ID, M.PATTERN
+        M.ID, M.URL, M.PATH, M.COMPONENT, M.NAME, M.ICON_CLS, M.KEEP_ALIVE, M.REQUIRE_AUTH, M.PARENT_ID, M.ENABLED
     </sql>
 
     <select id="getAllMenus" resultMap="BaseResultMap">
@@ -29,8 +52,29 @@
     </select>
 
     <select id="getAllMenusWithRole" resultMap="MenuWithRole">
-        SELECT M.ID, M.PATTERN, R.ID, R.ROLE, R.ROLE_NAME, R.CREATED_DATE, R.CREATED_BY, R.UPATE_DATE, R.UPDATE_BY
+        SELECT M.ID, M.URL, R.ID, R.ROLE, R.ROLE_NAME, R.CREATED_DATE, R.CREATED_BY, R.UPATE_DATE, R.UPDATE_BY
           FROM CV_MENU M, CV_ROLE_MENU RM, CV_ROLE R
          WHERE M.ID = RM.MENU_ID AND RM.ROLE_ID = R.ID
+    </select>
+
+    <select id="getMenusByUserId" resultMap="Menu2">
+        SELECT DISTINCT M1.*,
+                        M2.ID           AS ID2,
+                        M2.URL          AS URL2,
+                        M2.COMPONENT    AS COMPONENT2,
+                        M2.ENABLED      AS ENABLED2,
+                        M2.ICON_CLS     AS ICON_CLS2,
+                        M2.KEEP_ALIVE   AS KEEP_ALIVE2,
+                        M2.NAME         AS NAME2,
+                        M2.PARENT_ID    AS PARENT_ID2,
+                        M2.REQUIRE_AUTH AS REQUIRE_AUTH2,
+                        M2.PATH         AS PATH2
+          FROM CV_MENU M1, CV_MENU M2, CV_USER_ROLE UR, CV_ROLE_MENU RM
+         WHERE M1.ID = M2.PARENT_ID
+           AND UR.USER_ID = #{userId}
+           AND UR.ROLE_ID = RM.ROLE_ID
+           AND RM.MENU_ID = M2.ID
+           AND M2.ENABLED = 1
+         ORDER BY M1.ID, M2.ID
     </select>
 </mapper>

@@ -13,7 +13,11 @@ public class CvMenuService {
     @Autowired
     private CvMenuMapper menuMapper;
 
-    List<CvMenu> getAllMenusWithRole(){
+    public List<CvMenu> getMenusByUserId(Long userId){
+        return menuMapper.getMenusByUserId(userId);
+    }
+
+    public List<CvMenu> getAllMenusWithRole(){
         return menuMapper.getAllMenusWithRole();
     }
 }

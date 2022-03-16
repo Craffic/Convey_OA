@@ -3,7 +3,7 @@
   <!--container-->
   <el-container>
     <el-header class="header">
-      <div class="title">微人事管理系统</div>
+      <div class="title">科汇自动办公系统</div>
       <!--用户信息下拉框-->
       <el-dropdown class="userInfo" @command="commandHandler">
         <span class="el-dropdown-link">
@@ -34,7 +34,7 @@
           <el-breadcrumb-item>{{this.$router.currentRoute.name}}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="homeWelcome" v-if="this.$router.currentRoute.path == '/home'">
-          微人事管理系统
+          科汇办公管理系统
         </div>
         <router-view class="homeRouterView"/>
       </el-main>
