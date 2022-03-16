@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 .formLogin().usernameParameter("username").passwordParameter("password")
-//                .loginProcessingUrl("/login").permitAll()
+                .loginProcessingUrl("/doLogin").loginPage("/login").permitAll()
                 // 登录成功回调
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
