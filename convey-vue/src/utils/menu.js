@@ -4,7 +4,7 @@ export const initMenu = (router, store) => {
     if (store.state.routes.length > 0) {
         return;
     }
-    getRequest("/menu").then(data => {
+    getRequest("/menu/currUser").then(data => {
         if (data) {
             let fmtRoutes = formatRoutes(data);
             router.addRoutes(fmtRoutes);

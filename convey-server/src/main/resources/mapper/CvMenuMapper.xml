@@ -71,7 +71,7 @@
                         M2.PATH         AS PATH2
           FROM CV_MENU M1, CV_MENU M2, CV_USER_ROLE UR, CV_ROLE_MENU RM
          WHERE M1.ID = M2.PARENT_ID
-           AND UR.USER_ID = #{userId}
+           AND UR.USER_ID = #{userId,jdbcType=NUMERIC}
            AND UR.ROLE_ID = RM.ROLE_ID
            AND RM.MENU_ID = M2.ID
            AND M2.ENABLED = 1
