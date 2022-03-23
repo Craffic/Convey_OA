@@ -7,7 +7,7 @@
       <!--用户信息下拉框-->
       <el-dropdown class="userInfo" @command="commandHandler">
         <span class="el-dropdown-link">
-          {{user.name}}<i><img :src="user.userface" alt=""></i>
+          {{user.nameZh}}<i><img :src="user.iconUrl" alt=""></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">个人中心</el-dropdown-item>
