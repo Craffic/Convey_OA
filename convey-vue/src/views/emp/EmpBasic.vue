@@ -5,9 +5,9 @@
         <!--输入框、搜索、高级搜索-->
         <div>
           <el-input placeholder="请输入员工姓名进行搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
-                    v-model="keyword" @keydown.enter.native="initEmps" :disabled="advancedisabledView"
-                    clearable @clear="initEmps"></el-input>
-          <el-button type="primary" icon="el-icon-search" @click="initEmps" :disabled="advancedisabledView">搜索</el-button>
+                    v-model="keyword" @keydown.enter.native="initUsers" :disabled="advancedisabledView"
+                    clearable @clear="initUsers"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="initUsers" :disabled="advancedisabledView">搜索</el-button>
           <el-button type="primary" @click="advancedisabledView = !advancedisabledView">
             <i :class="advancedisabledView?'fa fa-angle-double-up':'fa fa-angle-double-down'" aria-hidden="true"></i>
             高级搜索
@@ -87,31 +87,31 @@
             </el-col>
             <el-col :span="5" :offset="4">
               <el-button size="mini" @click="resetCondition">重置条件</el-button>
-              <el-button size="mini" icon="el-icon-search" type="primary" @click="initEmps('advanced')">搜索</el-button>
+              <el-button size="mini" icon="el-icon-search" type="primary" @click="initUsers('advanced')">搜索</el-button>
             </el-col>
           </el-row>
         </div>
       </transition>
     </div>
     <div style="margin-top: 20px">
-      <el-table :data="emps" border style="width: 100%"
+      <el-table :data="users" border style="width: 100%"
                 v-loading="loading"
                 element-loading-text="正在加载..."
                 element-loading-spinner="el-icon-loading"
                 element-loading-background="Transparent"
                 @cell-dblclick="tableDbEdit">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="工号" width="150" fixed align="left"></el-table-column>
+        <el-table-column prop="workId" label="工号" width="150" fixed align="left"></el-table-column>
         <el-table-column prop="name" label="身份证号" width="150" fixed align="left"></el-table-column>
-        <el-table-column prop="name" label="账号" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="acct" label="账号" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="nameZh" label="姓名" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
-        <el-table-column prop="department.name" label="所属部门" width="120"></el-table-column>
-        <el-table-column prop="position.name" label="职位" width="150"></el-table-column>
+        <el-table-column prop="dptId" label="所属部门" width="120"></el-table-column>
+        <el-table-column prop="posId" label="职位" width="150"></el-table-column>
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
-        <el-table-column prop="conversionTime" label="转正日期" width="150"></el-table-column>
-        <el-table-column prop="workState" label="在职状态" width="150"></el-table-column>
+        <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
+        <el-table-column prop="workStat" label="在职状态" width="150"></el-table-column>
         <el-table-column prop="idCard" label="操作" fixed="right" width="320">
           <template slot-scope="scope">
             <el-button size="mini" @click="showEmpEditDialog(scope.row)">编辑</el-button>
@@ -328,7 +328,7 @@
         importDataDisabled: false,
         /*添加或修改弹窗标题*/
         title: '',
-        emps: [],
+        users: [],
         /*部门树结构体*/
         departmentTree:[],
         /*选中后的部门名称*/
@@ -494,7 +494,7 @@
           message: '员工信息表导入成功！',
           type: 'success'
         });
-        this.initEmps();
+        this.initUsers();
       },
       onError(err, file, fileList) {
         this.importDataBtnText = '导入';
@@ -513,7 +513,7 @@
 
       /*清空emp*/
       /*因为先进入编辑后，emp有数据，然后再进入添加emp需要清除掉信息*/
-      setEmpEmpty(){
+      setUserEmpty(){
         this.emp = {
           name: '',
           gender: '',
@@ -554,7 +554,7 @@
               putRequest('/employee/basic/', this.emp).then(resp => {
                 if (resp) {
                   this.empDialogVisible = false;
-                  this.initEmps();
+                  this.initUsers();
                 }
               })
             }
@@ -566,7 +566,7 @@
               postRequest('/employee/basic/', this.emp).then(resp => {
                 if (resp) {
                   this.empDialogVisible = false;
-                  this.initEmps();
+                  this.initUsers();
                 }
               })
             }
@@ -625,15 +625,15 @@
       /*当前页*/
       currentChange(currentPage) {
         this.page = currentPage;
-        this.initEmps();
+        this.initUsers();
       },
       /*改变每页大小*/
       sizeChange(currentSize){
         this.size = currentSize;
-        this.initEmps();
+        this.initUsers();
       },
       /*普通搜索或者高级搜索：通过type来区分*/
-      initEmps(type) {
+      initUsers(type) {
         this.loading = true;
         let url = '/user/query/?page=' + this.page + '&size=' + this.size;
         if (type && type == 'advanced') {
@@ -661,14 +661,15 @@
           }
         } else {
           // 普通搜索
-          url += '&name=' + this.keyword;
+          url += '&acct=' + this.keyword;
         }
         console.log(url);
         getRequest(url).then(resp => {
           this.loading = false;
-          if (resp) {
-            this.emps = resp.data;
-            this.total = resp.total;
+          if (resp && resp.code == 200000) {
+            console.log();
+            this.users = resp.obj.list;
+            this.total = resp.obj.totalNum;
           }
         })
       },
@@ -709,7 +710,7 @@
           type: 'warning'
         }).then(() => {
           deleteRequest('/employee/basic/' + data.id).then(resp => {
-            this.initEmps();
+            this.initUsers();
           })
         }).catch(() => {
           this.$message({
@@ -720,7 +721,7 @@
       }
     },
     mounted() {
-      this.initEmps();
+      this.initUsers();
       /*加载添加员工页面下拉框数据*/
       this.initSelectionData();
       /*打开弹框就显示工号*/
