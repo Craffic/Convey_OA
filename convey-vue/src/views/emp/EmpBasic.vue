@@ -1,30 +1,759 @@
 <template>
-<div>
   <div>
-    <div style="display: flex;justify-content: space-between"></div>
-    <!--输入框、搜索、高级搜索-->
     <div>
-      <el-input placeholder="请输入员工姓名进行搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
-                v-model="keyword" @keydown.enter.native="initEmps" :disabled="advancedisabledView"
-                clearable @clear="initEmps"></el-input>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary">
-        <i :class="advanceDisabledView?'fa fa-angle-double-up':'fa fa-angle-double-down'" aria-hidden="true"></i>
-        高级搜索
-      </el-button>
+      <div style="display: flex;justify-content: space-between">
+        <!--输入框、搜索、高级搜索-->
+        <div>
+          <el-input placeholder="请输入员工姓名进行搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
+                    v-model="keyword" @keydown.enter.native="initEmps" :disabled="advancedisabledView"
+                    clearable @clear="initEmps"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="initEmps" :disabled="advancedisabledView">搜索</el-button>
+          <el-button type="primary" @click="advancedisabledView = !advancedisabledView">
+            <i :class="advancedisabledView?'fa fa-angle-double-up':'fa fa-angle-double-down'" aria-hidden="true"></i>
+            高级搜索
+          </el-button>
+        </div>
+        <!--导出、导入、添加用户-->
+        <div>
+          <el-button type="success" @click="exportData"><i class="fa fa-arrow-down" style="margin-right: 5px" aria-hidden="true"></i>导出</el-button>
+          <el-upload action="/employee/basic/import/emp_info" style="display: inline-flex;margin-left: 8px;margin-right: 8px"
+                     :before-upload="beforeUpload"
+                     :on-success="onSuccess"
+                     :on-error="onError"
+                     :show-file-list="false"
+                     :disabled="importDataDisabled">
+            <el-button type="success" :disabled="importDataDisabled" :icon="importDataBtnIcon">{{importDataBtnText}}</el-button>
+          </el-upload>
+          <el-button type="primary" prefix-icon="el-icon-plus" @click="showEmpAddDialog">添加用户</el-button>
+        </div>
+      </div>
+      <!--高级搜索条件框-->
+      <transition name="slide-fade">
+        <div class="advanceCondition" v-show="advancedisabledView">
+          <el-row style="margin-top: 10px">
+            <el-col :span="5">政治面貌:
+              <el-select v-model="searchValue.politicId" placeholder="政治面貌" size="mini" style="width: 130px;">
+                <el-option v-for="item in politicsstatus" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="4">民族:
+              <el-select v-model="searchValue.nationId" placeholder="民族" size="mini" style="width: 130px;">
+                <el-option v-for="item in nations" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="4">职位:
+              <el-select v-model="searchValue.posId" placeholder="职位" size="mini" style="width: 130px;">
+                <el-option v-for="item in positions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="4">职称:
+              <el-select v-model="searchValue.jobLevelId" placeholder="职称" size="mini" style="width: 130px;">
+                <el-option v-for="item in joblevels" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="7">聘用形式:
+              <el-radio-group v-model="searchValue.engageForm">
+                <el-radio label="劳动合同">劳动合同</el-radio>
+                <el-radio label="劳务合同">劳务合同</el-radio>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-row style="margin-top: 10px">
+            <el-col :span="6">所属部门:
+              <el-popover
+                placement="right"
+                title="请选择部门"
+                width="200"
+                trigger="manual"
+                v-model="advDeptPopVisable">
+                <el-tree :data="departmentTree" :props="defaultProps" @node-click="advHandleNodeClick" default-expand-all></el-tree>
+                <div slot="reference" style="width: 150px;height: 26px;display: inline-flex;font-size: 13px;border: 1px solid #dedede;border-radius: 5px;
+                                            cursor: pointer;align-items: center;padding-left: 8px;box-sizing: border-box" @click="advshowDepTree">{{inputDepName}}
+                </div>
+              </el-popover>
+              <el-button type="text" style="color: red; margin-left: 5px" icon="el-icon-delete" @click="clearSelectDept"></el-button>
+            </el-col>
+            <el-col :span="9">入职日期:
+              <el-date-picker
+                v-model="searchValue.beginDateScope"
+                type="daterange"
+                size="mini"
+                unlink-panels
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
+            </el-col>
+            <el-col :span="5" :offset="4">
+              <el-button size="mini" @click="resetCondition">重置条件</el-button>
+              <el-button size="mini" icon="el-icon-search" type="primary" @click="initEmps('advanced')">搜索</el-button>
+            </el-col>
+          </el-row>
+        </div>
+      </transition>
     </div>
+    <div style="margin-top: 20px">
+      <el-table :data="emps" border style="width: 100%"
+                v-loading="loading"
+                element-loading-text="正在加载..."
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="Transparent"
+                @cell-dblclick="tableDbEdit">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column prop="name" label="工号" width="150" fixed align="left"></el-table-column>
+        <el-table-column prop="name" label="身份证号" width="150" fixed align="left"></el-table-column>
+        <el-table-column prop="name" label="账号" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
+        <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
+        <el-table-column prop="department.name" label="所属部门" width="120"></el-table-column>
+        <el-table-column prop="position.name" label="职位" width="150"></el-table-column>
+        <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
+        <el-table-column prop="conversionTime" label="转正日期" width="150"></el-table-column>
+        <el-table-column prop="workState" label="在职状态" width="150"></el-table-column>
+        <el-table-column prop="idCard" label="操作" fixed="right" width="320">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="showEmpEditDialog(scope.row)">编辑</el-button>
+            <el-button size="mini" type="primary">查看高级资料</el-button>
+            <el-button size="mini" type="danger" @click="deleteEmp(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="display: flex;justify-content: flex-end">
+        <el-pagination
+          background
+          @current-change="currentChange"
+          @size-change="sizeChange"
+          layout="sizes, prev, pager, next, jumper, ->, total, slot"
+          :total="total">
+        </el-pagination>
+      </div>
+    </div>
+    <!--添加用户对话框-->
+    <el-dialog :title="title" :visible.sync="empDialogVisible" width="60%">
+      <div>
+        <el-form :rules="rules" :model="emp" ref="empForm">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="姓名：" prop="name">
+                <el-input placeholder="请输入员工姓名" v-model="emp.name" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="性别：" prop="gender">
+                <el-radio-group v-model="emp.gender">
+                  <el-radio label="男">男</el-radio>
+                  <el-radio label="女" style="margin-left: 0px">女</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="出生日期：" prop="birthday">
+                <el-date-picker v-model="emp.birthday" type="date" placeholder="出生日期" size="mini" value-format="yyyy-MM-dd" style="width: 150px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="政治面貌：" prop="politicId">
+                <el-select v-model="emp.politicId" placeholder="政治面貌" style="width: 200px" size="mini">
+                  <el-option v-for="item in politicsstatus" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="民族：" prop="nationId">
+                <el-select v-model="emp.nationId" placeholder="民族" style="width: 150px" size="mini">
+                  <el-option v-for="nation in nations" :key="nation.id" :label="nation.name" :value="nation.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="籍贯：" prop="nativePlace">
+                <el-input placeholder="请输入籍贯" v-model="emp.nativePlace" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="电子邮箱：" prop="email">
+                <el-input placeholder="请输入电子邮箱" v-model="emp.email" prefix-icon="el-icon-message" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="联系地址：" prop="address">
+                <el-input placeholder="请输入联系地址" v-model="emp.address" prefix-icon="el-icon-message" style="width: 200px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="职位：" prop="posId">
+                <el-select v-model="emp.posId" placeholder="职位" style="width: 150px" size="mini">
+                  <el-option v-for="position in positions" :key="position.id" :label="position.name" :value="position.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="职称：" prop="jobLevelId">
+                <el-select v-model="emp.jobLevelId" placeholder="职称" style="width: 150px" size="mini">
+                  <el-option v-for="jl in joblevels" :key="jl.id" :label="jl.name" :value="jl.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="所属部门：" prop="departmentId">
+                <el-popover
+                  placement="right"
+                  title="请选择部门"
+                  width="200"
+                  trigger="manual"
+                  v-model="departmentVisable">
+                  <div slot="reference"
+                       style="width: 150px;height: 26px;display: inline-flex;font-size: 13px;border: 1px solid #dedede;border-radius: 5px;
+                                            cursor: pointer;align-items: center;padding-left: 8px;box-sizing: border-box"
+                       @click="showDepView">{{inputDepName}}</div>
+                  <el-tree :data="departmentTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+                </el-popover>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="电话号码：" prop="phone">
+                <el-input placeholder="请输入电话号码" v-model="emp.phone" prefix-icon="el-icon-phone" style="width: 200px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="工号：" prop="departmentId">
+                <el-input placeholder="工号" v-model="emp.workID" prefix-icon="el-icon-edit" style="width: 150px" size="mini" disabled></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="学历：" prop="tiptopDegree">
+                <el-select v-model="emp.tiptopDegree" placeholder="请选择学历" style="width: 150px" size="mini">
+                  <el-option v-for="item in tiptopDegree" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="毕业院校：" prop="school">
+                <el-input placeholder="请输入毕业院校" v-model="emp.school" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="专业名称：" prop="specialty">
+                <el-input placeholder="请输入专业名称" v-model="emp.specialty" prefix-icon="el-icon-edit" style="width: 200px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="入职日期：" prop="beginDate">
+                <el-date-picker v-model="emp.beginDate" type="date" placeholder="入职日期" size="mini" value-format="yyyy-MM-dd" style="width: 130px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="转正日期：" prop="conversionTime">
+                <el-date-picker v-model="emp.conversionTime" type="date" placeholder="转正日期" size="mini" value-format="yyyy-MM-dd" style="width: 130px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="合同起始日期：" prop="beginContract">
+                <el-date-picker v-model="emp.beginContract" type="date" placeholder="合同起始日期" size="mini" value-format="yyyy-MM-dd" style="width: 130px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="合同终止日期：" prop="endContract">
+                <el-date-picker v-model="emp.endContract" type="date" placeholder="合同终止日期" size="mini" value-format="yyyy-MM-dd" style="width: 130px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="身份证号：" prop="idCard">
+                <el-input placeholder="请输入身份证号" v-model="emp.idCard" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="招聘形式：" prop="engageForm">
+                <el-radio-group v-model="emp.engageForm">
+                  <el-radio label="劳动合同">劳动合同</el-radio>
+                  <el-radio label="劳务合同" style="margin-left: 0px">劳务合同</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="婚姻状况：" prop="engageForm">
+                <el-radio-group v-model="emp.wedlock">
+                  <el-radio label="已婚">已婚</el-radio>
+                  <el-radio label="未婚">未婚</el-radio>
+                  <el-radio label="离异">离异</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="empDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addOrUpdateEmp">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
-</div>
 </template>
 
 <script>
+  import {deleteRequest, getRequest, postRequest, putRequest} from "../../utils/api";
+
   export default {
     name: "EmpBasic",
-    /*是否展示高级搜索框*/
-    advanceDisabledView: false
+    data() {
+      return {
+        /*定义一个高级搜索条件对象*/
+        searchValue: {
+          politicId: null,
+          nationId: null,
+          jobLevelId: null,
+          posId: null,
+          engageForm: null,
+          departmentId: null,
+          beginDateScope: null
+        },
+        /*是否展示高级搜索框*/
+        advancedisabledView: false,
+
+        /*导入数据*/
+        importDataBtnIcon: 'el-icon-upload2',
+        importDataBtnText: '导入',
+        importDataDisabled: false,
+        /*添加或修改弹窗标题*/
+        title: '',
+        emps: [],
+        /*部门树结构体*/
+        departmentTree:[],
+        /*选中后的部门名称*/
+        inputDepName: '所属部门',
+        loading: false,
+        total: 0,
+        page:1,
+        size: 10,
+        keyword: '',
+        empDialogVisible: false,
+        /*下拉框集合*/
+        nations: [],
+        politicsstatus: [],
+        joblevels: [],
+        positions: [],
+        tiptopDegree: ['博士后', '博士', '研究生', '本科', '大专', '高中', '中专', '初中', '小学', '其他'],
+        emp:{name: "姚森",
+          gender: "男",
+          birthday: "1991-02-05",
+          idCard: "610122199102058952",
+          wedlock: "已婚",
+          nationId: 1,
+          nativePlace: "河南",
+          politicId: 3,
+          email: "yaosen@qq.com",
+          phone: "14785559936",
+          address: "河南洛阳人民大道58号",
+          departmentId: 92,
+          jobLevelId: 15,
+          posId: 34,
+          engageForm: "劳动合同",
+          tiptopDegree: "硕士",
+          specialty: "室内装修设计",
+          school: "西北大学",
+          beginDate: "2017-01-02",
+          workState: "在职",
+          workID: '',
+          contractTerm: 7,
+          conversionTime: "2017-04-02",
+          notWorkDate: null,
+          beginContract: "2017-01-02",
+          endContract: "2024-01-17",
+          workAge: null,
+          salary: null
+        },
+        //   emp:{name: '',
+        //   gender: '',
+        //   birthday: '',
+        //   idCard: '',
+        //   wedlock: '',
+        //   nationId: '',
+        //   nativePlace: '',
+        //   politicId: '',
+        //   email: '',
+        //   phone: '',
+        //   address: '',
+        //   departmentId: '',
+        //   jobLevelId: '',
+        //   posId: '',
+        //   engageForm: '',
+        //   tiptopDegree: '',
+        //   specialty: '',
+        //   school: '',
+        //   beginDate: '',
+        //   workState: '在职',
+        //   workID: '',
+        //   contractTerm: '',
+        //   conversionTime: '',
+        //   notWorkDate: null,
+        //   beginContract: '',
+        //   endContract: '',
+        //   workAge: '',
+        //   salary: null
+        // },
+        /*添加页面 - 部门树弹框*/
+        departmentVisable: false,
+        /*高级搜索 - 部门树弹框开关*/
+        advDeptPopVisable: false,
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        },
+        /*校验规则*/
+        rules: {
+          name: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+          gender: [{required: true, message: '请输入性别', trigger: 'blur'}],
+          birthday: [{required: true, message: '请输入出生日期', trigger: 'blur'}],
+          idCard: [{required: true, message: '请输入身份证号码', trigger: 'blur'}, {
+            pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
+            message: '身份证号码格式不正确',
+            trigger: 'blur'
+          }],
+          wedlock: [{required: true, message: '请输入婚姻状况', trigger: 'blur'}],
+          nationId: [{required: true, message: '请输入您组', trigger: 'blur'}],
+          nativePlace: [{required: true, message: '请输入籍贯', trigger: 'blur'}],
+          politicId: [{required: true, message: '请输入政治面貌', trigger: 'blur'}],
+          email: [{required: true, message: '请输入邮箱地址', trigger: 'blur'}, {
+            type: 'email',
+            message: '邮箱格式不正确',
+            trigger: 'blur'
+          }],
+          phone: [{required: true, message: '请输入电话号码', trigger: 'blur'}],
+          address: [{required: true, message: '请输入员工地址', trigger: 'blur'}],
+          departmentId: [{required: true, message: '请输入部门名称', trigger: 'blur'}],
+          jobLevelId: [{required: true, message: '请输入职称', trigger: 'blur'}],
+          posId: [{required: true, message: '请输入职位', trigger: 'blur'}],
+          engageForm: [{required: true, message: '请输入聘用形式', trigger: 'blur'}],
+          tiptopDegree: [{required: true, message: '请输入学历', trigger: 'blur'}],
+          specialty: [{required: true, message: '请输入专业', trigger: 'blur'}],
+          school: [{required: true, message: '请输入毕业院校', trigger: 'blur'}],
+          beginDate: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
+          workState: [{required: true, message: '请输入工作状态', trigger: 'blur'}],
+          workID: [{required: true, message: '请输入工号', trigger: 'blur'}],
+          contractTerm: [{required: true, message: '请输入合同期限', trigger: 'blur'}],
+          conversionTime: [{required: true, message: '请输入转正日期', trigger: 'blur'}],
+          notworkDate: [{required: true, message: '请输入离职日期', trigger: 'blur'}],
+          beginContract: [{required: true, message: '请输入合同起始日期', trigger: 'blur'}],
+          endContract: [{required: true, message: '请输入合同结束日期', trigger: 'blur'}],
+          workAge: [{required: true, message: '请输入工龄', trigger: 'blur'}],
+        }
+      }
+    },
+    methods: {
+      /*重置高级查询条件*/
+      resetCondition(){
+        this.searchValue = {
+          politicId: null,
+          nationId: null,
+          jobLevelId: null,
+          posId: null,
+          engageForm: null,
+          departmentId: null,
+          beginDateScope: null
+        };
+        this.inputDepName = null;
+      },
+      /*清除高级搜索选中的部门*/
+      clearSelectDept(){
+        this.inputDepName = null;
+      },
+      /*高级搜索 - 弹出部门树pop弹框*/
+      advshowDepTree(){
+        this.advDeptPopVisable = !this.advDeptPopVisable;
+      },
+      /*高级搜索 - 点击部门树方法*/
+      advHandleNodeClick(data){
+        // 给所属部门赋值
+        this.inputDepName = data.name;
+        this.searchValue.departmentId = data.id;
+        this.advDeptPopVisable = !this.advDeptPopVisable;
+      },
+      /*上传文件前的钩子函数*/
+      beforeUpload() {
+        this.importDataBtnText = '正在导入';
+        this.importDataBtnIcon = 'el-icon-loading';
+        this.importDataDisabled = true;
+      },
+      onSuccess(response, file, fileList) {
+        this.importDataBtnText = '导入';
+        this.importDataBtnIcon = 'el-icon-upload2';
+        this.importDataDisabled = false;
+        this.$message({
+          message: '员工信息表导入成功！',
+          type: 'success'
+        });
+        this.initEmps();
+      },
+      onError(err, file, fileList) {
+        this.importDataBtnText = '导入';
+        this.importDataBtnIcon = 'el-icon-upload2';
+        this.importDataDisabled = false;
+        this.$message.error('员工信息表导入失败！');
+      },
+      /*导出员工数据*/
+      exportData() {
+        window.open('/employee/basic/export/emp_info', '_parent');
+      },
+      /*双击行记录，打开编辑弹框*/
+      tableDbEdit(row, column, cell, event) {
+        this.showEmpEditDialog(row);
+      },
+
+      /*清空emp*/
+      /*因为先进入编辑后，emp有数据，然后再进入添加emp需要清除掉信息*/
+      setEmpEmpty(){
+        this.emp = {
+          name: '',
+          gender: '',
+          birthday: '',
+          idCard: '',
+          wedlock: '',
+          nationId: '',
+          nativePlace: '',
+          politicId: '',
+          email: '',
+          phone: '',
+          address: '',
+          departmentId: '',
+          jobLevelId: '',
+          posId: '',
+          engageForm: '',
+          tiptopDegree: '',
+          specialty: '',
+          school: '',
+          beginDate: '',
+          workState: '在职',
+          workID: '',
+          contractTerm: '',
+          conversionTime: '',
+          notWorkDate: null,
+          beginContract: '',
+          endContract: '',
+          workAge: '',
+          salary: null
+        }
+      },
+      /*添加或者修改员工方法*/
+      addOrUpdateEmp(){
+        if (this.emp.id) {
+          // 有id就是修改
+          this.$refs.empForm.validate((valid) => {
+            if (valid) {
+              putRequest('/employee/basic/', this.emp).then(resp => {
+                if (resp) {
+                  this.empDialogVisible = false;
+                  this.initEmps();
+                }
+              })
+            }
+          })
+        } else {
+          // 无id就是新增
+          this.$refs.empForm.validate((valid) => {
+            if (valid) {
+              postRequest('/employee/basic/', this.emp).then(resp => {
+                if (resp) {
+                  this.empDialogVisible = false;
+                  this.initEmps();
+                }
+              })
+            }
+          })
+        }
+      },
+      /*添加员工 - 加载下拉框数据*/
+      initSelectionData(){
+        // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
+        if (!window.sessionStorage.getItem("nations")) {
+          getRequest('/employee/basic/nations').then(resp => {
+            if (resp) {
+              this.nations = resp;
+            }
+          })
+        } else {
+          // 从sessionStorage里有数据的，就从从sessionStorage里赋值给表单变量
+          this.nations = JSON.parse(window.sessionStorage.getItem("nations"));
+        }
+        if (!window.sessionStorage.getItem("politicsstatus")) {
+          getRequest('/employee/basic/politicsstatus').then(resp => {
+            if (resp) {
+              this.politicsstatus = resp;
+            }
+          })
+        } else {
+          this.politicsstatus = JSON.parse(window.sessionStorage.getItem("politicsstatus"));
+        }
+        if (!window.sessionStorage.getItem("joblevels")) {
+          getRequest('/employee/basic/joblevels').then(resp => {
+            if (resp) {
+              this.joblevels = resp;
+            }
+          })
+        } else {
+          this.joblevels = JSON.parse(window.sessionStorage.getItem("joblevels"));
+        }
+        if (!window.sessionStorage.getItem("deps")) {
+          getRequest('/employee/basic/deps').then(resp => {
+            if (resp) {
+              this.departmentTree = resp;
+            }
+          })
+        } else {
+          this.departmentTree = JSON.parse(window.sessionStorage.getItem("deps"));
+        }
+      },
+      /*初始化职位下拉框数据，在弹出添加对话框时调用*/
+      initPositions(){
+        getRequest('/employee/basic/positions').then(resp => {
+          if (resp) {
+            this.positions = resp;
+          }
+        })
+      },
+      /*当前页*/
+      currentChange(currentPage) {
+        this.page = currentPage;
+        this.initEmps();
+      },
+      /*改变每页大小*/
+      sizeChange(currentSize){
+        this.size = currentSize;
+        this.initEmps();
+      },
+      /*普通搜索或者高级搜索：通过type来区分*/
+      initEmps(type) {
+        this.loading = true;
+        let url = '/user/query/?page=' + this.page + '&size=' + this.size;
+        if (type && type == 'advanced') {
+          // 高级搜索
+          if (this.searchValue.politicId) {
+            url += '&politicId=' + this.searchValue.politicId;
+          }
+          if (this.searchValue.nationId) {
+            url += '&nationId=' + this.searchValue.nationId;
+          }
+          if (this.searchValue.jobLevelId) {
+            url += '&jobLevelId=' + this.searchValue.jobLevelId;
+          }
+          if (this.searchValue.posId) {
+            url += '&posId=' + this.searchValue.posId;
+          }
+          if (this.searchValue.engageForm) {
+            url += '&engageForm=' + this.searchValue.engageForm;
+          }
+          if (this.searchValue.departmentId) {
+            url += '&departmentId=' + this.searchValue.departmentId;
+          }
+          if (this.searchValue.beginDateScope) {
+            url += '&beginDateScope=' + this.searchValue.beginDateScope;
+          }
+        } else {
+          // 普通搜索
+          url += '&name=' + this.keyword;
+        }
+        console.log(url);
+        getRequest(url).then(resp => {
+          this.loading = false;
+          if (resp) {
+            this.emps = resp.data;
+            this.total = resp.total;
+          }
+        })
+      },
+      /*弹出添加用户对话框*/
+      showEmpAddDialog() {
+        /*添加之前要清空emp对象*/
+        this.setEmpEmpty();
+        /*打开弹框就显示工号*/
+        this.initPositions();
+        this.title = '添加员工';
+        this.empDialogVisible = true;
+        this.initPositions();
+        this.inputDepName = '';
+      },
+      /*弹出修改员工对话框*/
+      showEmpEditDialog(data) {
+        this.title = '修改员工信息';
+        this.initPositions();
+        this.empDialogVisible = true;
+        this.emp = data;
+        this.inputDepName = data.department.name;
+      },
+      /*弹出部门树弹框*/
+      showDepView(){
+        this.departmentVisable = !this.departmentVisable
+      },
+      /*点击部门书*/
+      handleNodeClick(data) {
+        this.inputDepName = data.name;
+        this.emp.departmentId = data.id;
+        this.departmentVisable = !this.departmentVisable;
+      },
+      /*删除员工*/
+      deleteEmp(data){
+        this.$confirm('此操作将永久删除【' +data.name+ '】员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteRequest('/employee/basic/' + data.id).then(resp => {
+            this.initEmps();
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }
+    },
+    mounted() {
+      this.initEmps();
+      /*加载添加员工页面下拉框数据*/
+      this.initSelectionData();
+      /*打开弹框就显示工号*/
+      // this.generateWorkID();
+      /*初始化职位*/
+      this.initPositions();
+    }
   }
 </script>
 
-<style scoped>
+<style>
+  /*高级搜索条件框*/
+  .advanceCondition {
+    border: 1px solid #39a0f5;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    margin-top: 8px;
+  }
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .8s ease;
+  }
 
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */
+  {
+    transform: translateX(10px);
+    opacity: 0;
+  }
 </style>
