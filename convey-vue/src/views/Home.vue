@@ -124,4 +124,8 @@ export default {
   font-size: 50px;
   margin-top: 100px;
 }
+/*面包屑和routerView有15px像素间隔*/
+.homeRouterView {
+  margin-top: 15px;
+}
 </style>
