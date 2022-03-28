@@ -49,7 +49,7 @@ public class CvUserController {
      */
     @GetMapping("/query")
     public ResponseBody<ListVo<CvUserVO>> queryUsersByCondition(CvUserReq user){
-        ListVo<CvUser> cvUserListVo = userService.queryUsersByCondition(user.getPage(), user.getSize(), user);
+        ListVo<CvUser> cvUserListVo = userService.queryUsersByCondition(user);
         List<CvUser> list = cvUserListVo.getList();
         List<CvUserVO> userVoList = new ArrayList<>();
         list.stream().forEach(cvUser -> {

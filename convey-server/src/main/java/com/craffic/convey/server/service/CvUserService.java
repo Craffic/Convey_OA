@@ -64,7 +64,7 @@ public class CvUserService implements UserDetailsService {
     /**
      * 根据条件查询用户列表
      */
-    public ListVo<CvUser> queryUsersByCondition(Integer page, Integer size, CvUserReq userReq){
+    public ListVo<CvUser> queryUsersByCondition(CvUserReq userReq){
         userReq.setPage(userReq.pageStartIndex());
         Long total = userMapper.queryTotalNum(userReq);
         if (total <= 0) {
