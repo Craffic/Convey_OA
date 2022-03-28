@@ -37,5 +37,21 @@
     <select id="loadUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumns" /> FROM CV_USER U WHERE U.ACCT = #{acct}
     </select>
+
+    <select id="queryUsersByCondition" resultMap="BaseResultMap">
+        SELECT * FROM (
+        　　SELECT A.*, rownum r FROM (
+        　　　　SELECT <include refid="BaseColumns" /> FROM CV_USER U WHERE 1=1 AND U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+        　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
+        ) B WHERE r > #{user.page,jdbcType=NUMERIC}
+    </select>
+
+    <select id="queryTotalNum" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM (SELECT B.CNT FROM (
+        　　SELECT A.*, rownum r FROM (
+        　　　　SELECT count(*) cnt FROM CV_USER U WHERE 1=1 AND U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+        　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
+        ) B WHERE r > #{user.page,jdbcType=NUMERIC})
+    </select>
 </mapper>
 

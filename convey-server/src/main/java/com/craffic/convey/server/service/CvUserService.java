@@ -1,9 +1,12 @@
 package com.craffic.convey.server.service;
 
+import com.craffic.convey.server.common.ListVo;
 import com.craffic.convey.server.dao.CvRoleMapper;
 import com.craffic.convey.server.dao.CvUserMapper;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
+import com.craffic.convey.server.req.CvUserReq;
+import com.craffic.convey.server.vo.CvUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,5 +59,18 @@ public class CvUserService implements UserDetailsService {
      */
     public CvUser queryLoginUser(){
         return (CvUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    /**
+     * 根据条件查询用户列表
+     */
+    public ListVo<CvUser> queryUsersByCondition(Integer page, Integer size, CvUserReq userReq){
+        userReq.setPage(userReq.pageStartIndex());
+        Long total = userMapper.queryTotalNum(userReq);
+        if (total <= 0) {
+            return new ListVo<>(null, 0);
+        }
+        List<CvUser> userList = userMapper.queryUsersByCondition(userReq);
+        return new ListVo<>(userList, userList.size());
     }
 }
