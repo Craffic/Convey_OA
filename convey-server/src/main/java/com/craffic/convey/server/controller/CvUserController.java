@@ -1,10 +1,13 @@
 package com.craffic.convey.server.controller;
 
+import com.craffic.convey.server.common.ListVo;
+import com.craffic.convey.server.common.ResponseBody;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.service.CvUserService;
 import com.craffic.convey.server.vo.CvUserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,17 +22,22 @@ public class CvUserController {
     @Autowired
     private CvUserService userService;
 
-
-    @GetMapping("/all")
-    public List<CvUserVO> queryAllUsers(){
+    @GetMapping("/query_all")
+    public ResponseBody<ListVo<CvUserVO>> queryAllUsers1(){
         List<CvUser> userList = userService.queryAllUsers();
-        List<CvUserVO> resultList = new ArrayList<>();
+        ListVo<CvUserVO> listVO = new ListVo<>(null, 0);
+        if (CollectionUtils.isEmpty(userList)) {
+            return ResponseBody.success(listVO);
+        }
+
+        List<CvUserVO> userVoList = new ArrayList<>();
         userList.stream().forEach(user -> {
-            CvUserVO userVO = new CvUserVO();
-            BeanUtils.copyProperties(user, userVO);
-            resultList.add(userVO);
+            CvUserVO userVo = new CvUserVO();
+            BeanUtils.copyProperties(user, userVo);
+            userVoList.add(userVo);
         });
-        return resultList;
+        ListVo<CvUserVO> listVo = new ListVo<>(userVoList, userVoList.size());
+        return ResponseBody.success(listVo);
     }
 
 }

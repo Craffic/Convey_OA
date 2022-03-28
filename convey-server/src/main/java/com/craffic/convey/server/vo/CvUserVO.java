@@ -1,5 +1,6 @@
 package com.craffic.convey.server.vo;
 
+import com.craffic.convey.server.common.BaseVO;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class CvUserVO {
+public class CvUserVO extends BaseVO {
 
     /**
      * 主键id
