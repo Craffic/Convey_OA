@@ -20,6 +20,11 @@ public class CvUserReq extends BaseQuery {
     private Long workId;
 
     /**
+     * 身份证号
+     */
+    private String idCardNo;
+
+    /**
      * 系统账号
      */
     private String acct;
@@ -28,6 +33,11 @@ public class CvUserReq extends BaseQuery {
      * 中文姓名
      */
     private String nameZh;
+
+    /**
+     * 性别
+     */
+    private String gender;
 
     /**
      * 密码

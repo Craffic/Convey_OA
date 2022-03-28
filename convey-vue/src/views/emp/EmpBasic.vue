@@ -102,9 +102,10 @@
                 @cell-dblclick="tableDbEdit">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="workId" label="工号" width="150" fixed align="left"></el-table-column>
-        <el-table-column prop="name" label="身份证号" width="150" fixed align="left"></el-table-column>
+        <el-table-column prop="idCardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="acct" label="账号" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="nameZh" label="姓名" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="gender" label="性别" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
         <el-table-column prop="dptId" label="所属部门" width="120"></el-table-column>
@@ -374,35 +375,6 @@
           workAge: null,
           salary: null
         },
-        //   emp:{name: '',
-        //   gender: '',
-        //   birthday: '',
-        //   idCard: '',
-        //   wedlock: '',
-        //   nationId: '',
-        //   nativePlace: '',
-        //   politicId: '',
-        //   email: '',
-        //   phone: '',
-        //   address: '',
-        //   departmentId: '',
-        //   jobLevelId: '',
-        //   posId: '',
-        //   engageForm: '',
-        //   tiptopDegree: '',
-        //   specialty: '',
-        //   school: '',
-        //   beginDate: '',
-        //   workState: '在职',
-        //   workID: '',
-        //   contractTerm: '',
-        //   conversionTime: '',
-        //   notWorkDate: null,
-        //   beginContract: '',
-        //   endContract: '',
-        //   workAge: '',
-        //   salary: null
-        // },
         /*添加页面 - 部门树弹框*/
         departmentVisable: false,
         /*高级搜索 - 部门树弹框开关*/

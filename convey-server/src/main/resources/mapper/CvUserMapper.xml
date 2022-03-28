@@ -5,10 +5,12 @@
     <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.CvUser">
         <id property="id" column="ID" jdbcType="NUMERIC"></id>
         <result property="workId" column="WORK_ID" jdbcType="NUMERIC"></result>
+        <result property="idCardNo" column="IDCARD_NO" jdbcType="NUMERIC"></result>
         <result property="acct" column="ACCT" jdbcType="VARCHAR"></result>
         <result property="nameZh" column="NAME_ZH" jdbcType="VARCHAR"></result>
+        <result property="gender" column="GENDER" jdbcType="VARCHAR"></result>
         <result property="password" column="PASSWORD" jdbcType="NUMERIC"></result>
-        <result property="workId" column="PHONE" jdbcType="NUMERIC"></result>
+        <result property="phone" column="PHONE" jdbcType="NUMERIC"></result>
         <result property="email" column="EMAIL" jdbcType="NUMERIC"></result>
         <result property="iconUrl" column="ICON_URL" jdbcType="NUMERIC"></result>
         <result property="posId" column="POS_ID" jdbcType="NUMERIC"></result>
@@ -25,7 +27,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-        U.ID, U.WORK_ID, U.ACCT, U.NAME_ZH, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
+        U.ID, U.WORK_ID, U.IDCARD_NO, U.ACCT, U.NAME_ZH, U.GENDER, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
         U.BEGIN_DATE, U.CONVERT_DATE, U.WORK_STAT, U.LEAVE_DATE, U.CREATED_DATE, U.CREATED_BY, U.UPATE_DATE, U.UPDATE_BY
     </sql>
 
@@ -41,7 +43,11 @@
     <select id="queryUsersByCondition" resultMap="BaseResultMap">
         SELECT * FROM (
         　　SELECT A.*, rownum r FROM (
-        　　　　SELECT <include refid="BaseColumns" /> FROM CV_USER U WHERE 1=1 AND U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+        　　　　SELECT <include refid="BaseColumns" />
+                 FROM CV_USER U
+                WHERE 1=1
+                  AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+        OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
         　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
         ) B WHERE r > #{user.page,jdbcType=NUMERIC}
     </select>
@@ -49,7 +55,11 @@
     <select id="queryTotalNum" resultType="java.lang.Long">
         SELECT COUNT(1) FROM (SELECT B.CNT FROM (
         　　SELECT A.*, rownum r FROM (
-        　　　　SELECT count(*) cnt FROM CV_USER U WHERE 1=1 AND U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+        　　　　SELECT count(*) cnt
+               FROM CV_USER U
+              WHERE 1=1
+                AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+                OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
         　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
         ) B WHERE r > #{user.page,jdbcType=NUMERIC})
     </select>
