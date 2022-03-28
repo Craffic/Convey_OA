@@ -4,7 +4,7 @@
       <div style="display: flex;justify-content: space-between">
         <!--输入框、搜索、高级搜索-->
         <div>
-          <el-input placeholder="请输入员工姓名进行搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
+          <el-input placeholder="请输入员工姓名或账号模糊搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
                     v-model="keyword" @keydown.enter.native="initUsers" :disabled="advancedisabledView"
                     clearable @clear="initUsers"></el-input>
           <el-button type="primary" icon="el-icon-search" @click="initUsers" :disabled="advancedisabledView">搜索</el-button>
@@ -105,14 +105,14 @@
         <el-table-column prop="idCardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="acct" label="账号" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="nameZh" label="姓名" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="gender" label="性别" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="genderDesc" label="性别" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
         <el-table-column prop="dptId" label="所属部门" width="120"></el-table-column>
         <el-table-column prop="posId" label="职位" width="150"></el-table-column>
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
         <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
-        <el-table-column prop="workStat" label="在职状态" width="150"></el-table-column>
+        <el-table-column prop="workStatDesc" label="在职状态" width="150"></el-table-column>
         <el-table-column prop="idCard" label="操作" fixed="right" width="320">
           <template slot-scope="scope">
             <el-button size="mini" @click="showUserEditDialog(scope.row)">编辑</el-button>
@@ -147,7 +147,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="性别：" prop="gender">
+              <el-form-item label="性别：" prop="genderDesc">
                 <el-radio-group v-model="user.gender">
                   <el-radio label="M">男</el-radio>
                   <el-radio label="F" style="margin-left: 0px">女</el-radio>
@@ -194,8 +194,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="在职状态：" prop="acct">
-                <el-input placeholder="请选择在职状态" v-model="user.workStat" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              <el-form-item label="在职状态：" prop="workStatDesc">
+                <el-input placeholder="请选择在职状态" v-model="user.workStatDesc" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -260,14 +260,14 @@
         user:{
           acct: "yaoSen",
           nameZh: "姚森",
-          gender: "M",
+          genderDesc: "M",
           idCardNo: "610122199102058952",
           posId: 3,
           email: "yaosen@qq.com",
           phone: "14785559936",
           dptmentId: 92,
           beginDate: "2017-01-02",
-          workStat: "1",
+          workStatDesc: "1",
           workId: '',
           convertDate: "2017-04-02"
         },
@@ -283,7 +283,7 @@
         rules: {
           nameZh: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           acct: [{required: true, message: '请输入账号', trigger: 'blur'}],
-          gender: [{required: true, message: '请输入性别', trigger: 'blur'}],
+          genderDesc: [{required: true, message: '请输入性别', trigger: 'blur'}],
           birthday: [{required: true, message: '请输入出生日期', trigger: 'blur'}],
           idCard: [{required: true, message: '请输入身份证号码', trigger: 'blur'}, {
             pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
@@ -299,7 +299,7 @@
           dptmentId: [{required: true, message: '请输入部门名称', trigger: 'blur'}],
           posId: [{required: true, message: '请输入职位', trigger: 'blur'}],
           beginDate: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
-          workStat: [{required: true, message: '请输入工作状态', trigger: 'blur'}],
+          workStatDesc: [{required: true, message: '请输入工作状态', trigger: 'blur'}],
           workId: [{required: true, message: '请输入工号', trigger: 'blur'}],
           convertDate: [{required: true, message: '请输入转正日期', trigger: 'blur'}]
         }
@@ -370,7 +370,7 @@
       setUserEmpty(){
         this.user = {
           nameZh: '',
-          gender: '',
+          genderDesc: '',
           birthday: '',
           idCardNo: '',
           wedlock: '',
@@ -388,7 +388,7 @@
           specialty: '',
           school: '',
           beginDate: '',
-          workState: '在职',
+          workStatDesc: '在职',
           workID: '',
           contractTerm: '',
           conversionTime: '',

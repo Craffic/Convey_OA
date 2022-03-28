@@ -44,6 +44,11 @@ public class CvUserVO extends BaseVO {
     private String gender;
 
     /**
+     * 性别（描述）
+     */
+    private String genderDesc;
+
+    /**
      * 密码
      */
     @JsonIgnore
@@ -95,6 +100,11 @@ public class CvUserVO extends BaseVO {
      * 在职状态
      */
     private Integer workStat;
+
+    /**
+     * 在职状态(描述)
+     */
+    private String workStatDesc;
 
     /**
      * 离职日期

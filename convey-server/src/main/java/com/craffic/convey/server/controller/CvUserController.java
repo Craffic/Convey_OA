@@ -2,6 +2,8 @@ package com.craffic.convey.server.controller;
 
 import com.craffic.convey.server.common.ListVo;
 import com.craffic.convey.server.common.ResponseBody;
+import com.craffic.convey.server.enums.GenderEnum;
+import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.req.CvUserReq;
 import com.craffic.convey.server.service.CvUserService;
@@ -53,6 +55,10 @@ public class CvUserController {
         list.stream().forEach(cvUser -> {
             CvUserVO userVo = new CvUserVO();
             BeanUtils.copyProperties(cvUser, userVo);
+            WorkStatEnum workStatEnum = WorkStatEnum.parseByValue(cvUser.getWorkStat());
+            userVo.setWorkStatDesc(workStatEnum.desc());
+            GenderEnum genderEnum = GenderEnum.parseByValue(cvUser.getGender());
+            userVo.setGenderDesc(genderEnum.desc());
             userVoList.add(userVo);
         });
         ListVo<CvUserVO> listVo = new ListVo<>(userVoList, userVoList.size());
