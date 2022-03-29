@@ -4,7 +4,7 @@
       <div style="display: flex;justify-content: space-between">
         <!--输入框、搜索、高级搜索-->
         <div>
-          <el-input placeholder="请输入员工姓名或账号模糊搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
+          <el-input placeholder="请输入用户姓名或账号模糊搜索..." prefix-icon="el-icon-search" style="width: 300px;margin-right: 10px"
                     v-model="keyword" @keydown.enter.native="initUsers" :disabled="advancedisabledView"
                     clearable @clear="initUsers"></el-input>
           <el-button type="primary" icon="el-icon-search" @click="initUsers" :disabled="advancedisabledView">搜索</el-button>
@@ -137,16 +137,28 @@
         <el-form :rules="rules" :model="user" ref="userForm">
           <el-row>
             <el-col :span="6">
-              <el-form-item label="姓名：" prop="nameZh">
-                <el-input placeholder="请输入员工姓名" v-model="user.nameZh" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="账号：" prop="acct">
-                <el-input placeholder="请输入员工账号" v-model="user.acct" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              <el-form-item label="工号：" prop="acct">
+                <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 180px" size="mini" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
+              <el-form-item label="姓名：" prop="nameZh">
+                <el-input placeholder="请输入用户姓名" v-model="user.nameZh" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="账号：" prop="acct">
+                <el-input placeholder="请输入用户账号" v-model="user.acct" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="身份证号：" prop="acct">
+                <el-input placeholder="请输入身份证号" v-model="user.idCardNo" prefix-icon="el-icon-edit" style="width:180px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
               <el-form-item label="性别：" prop="genderDesc">
                 <el-radio-group v-model="user.gender">
                   <el-radio label="M">男</el-radio>
@@ -154,53 +166,42 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="身份证号：" prop="acct">
-                <el-input placeholder="请输入身份证号" v-model="user.idCardNo" prefix-icon="el-icon-edit" style="width: 200px" size="mini"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="电子邮箱：" prop="nameZh">
-                <el-input placeholder="请输入电子邮箱" v-model="user.email" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="电话号码：" prop="acct">
-                <el-input placeholder="请输入电话号码" v-model="user.phone" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+                <el-input placeholder="请输入电话号码" v-model="user.phone" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
-                <el-form-item label="所属部门：" prop="acct">
-                  <el-input placeholder="请输入所属部门" v-model="user.dptId" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
-                </el-form-item>
+              <el-form-item label="职位：" prop="posId">
+                <el-input placeholder="请输入职位" v-model="user.posId" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+
             </el-col>
             <el-col :span="6">
-              <el-form-item label="职位：" prop="acct">
-                <el-input placeholder="请输入职位" v-model="user.posId" prefix-icon="el-icon-edit" style="width: 200px" size="mini"></el-input>
+              <el-form-item label="所属部门：" prop="dptId">
+                <el-input placeholder="请输入所属部门" v-model="user.dptId" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="6">
-              <el-form-item label="入职日期：" prop="birthday">
+              <el-form-item label="入职日期：" prop="beginDate">
                 <el-date-picker v-model="user.beginDate" type="date" placeholder="出生日期" size="mini" value-format="yyyy-MM-dd" style="width: 150px"></el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="转正日期：" prop="acct">
-                <el-input placeholder="请选择转正日期" v-model="user.convertDate" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+            <el-col :span="5">
+              <el-form-item label="转正日期：" prop="convertDate">
+                <el-input placeholder="请选择转正日期" v-model="user.convertDate" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
               <el-form-item label="在职状态：" prop="workStatDesc">
-                <el-input placeholder="请选择在职状态" v-model="user.workStatDesc" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+                <el-input placeholder="请选择在职状态" v-model="user.workStatDesc" prefix-icon="el-icon-edit" style="width: 125px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="工号：" prop="acct">
-                <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 200px" size="mini"></el-input>
+              <el-form-item label="电子邮箱：" prop="nameZh">
+                <el-input placeholder="请输入电子邮箱" v-model="user.email" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -284,7 +285,6 @@
           nameZh: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           acct: [{required: true, message: '请输入账号', trigger: 'blur'}],
           genderDesc: [{required: true, message: '请输入性别', trigger: 'blur'}],
-          birthday: [{required: true, message: '请输入出生日期', trigger: 'blur'}],
           idCard: [{required: true, message: '请输入身份证号码', trigger: 'blur'}, {
             pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
             message: '身份证号码格式不正确',
@@ -296,10 +296,10 @@
             trigger: 'blur'
           }],
           phone: [{required: true, message: '请输入电话号码', trigger: 'blur'}],
-          dptmentId: [{required: true, message: '请输入部门名称', trigger: 'blur'}],
+          dptId: [{required: true, message: '请输入部门名称', trigger: 'blur'}],
           posId: [{required: true, message: '请输入职位', trigger: 'blur'}],
           beginDate: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
-          workStatDesc: [{required: true, message: '请输入工作状态', trigger: 'blur'}],
+          workStatDesc: [{required: true, message: '请输入在职状态', trigger: 'blur'}],
           workId: [{required: true, message: '请输入工号', trigger: 'blur'}],
           convertDate: [{required: true, message: '请输入转正日期', trigger: 'blur'}]
         }
@@ -345,7 +345,7 @@
         this.importDataBtnIcon = 'el-icon-upload2';
         this.importDataDisabled = false;
         this.$message({
-          message: '员工信息表导入成功！',
+          message: '用户信息表导入成功！',
           type: 'success'
         });
         this.initUsers();
@@ -354,9 +354,9 @@
         this.importDataBtnText = '导入';
         this.importDataBtnIcon = 'el-icon-upload2';
         this.importDataDisabled = false;
-        this.$message.error('员工信息表导入失败！');
+        this.$message.error('用户信息表导入失败！');
       },
-      /*导出员工数据*/
+      /*导出用户数据*/
       exportData() {
         window.open('/employee/basic/export/user_info', '_parent');
       },
@@ -399,7 +399,7 @@
           salary: null
         }
       },
-      /*添加或者修改员工方法*/
+      /*添加或者修改用户方法*/
       addOrUpdateUser(){
         if (this.user.id) {
           // 有id就是修改
@@ -427,7 +427,7 @@
           })
         }
       },
-      /*添加员工 - 加载下拉框数据*/
+      /*添加用户 - 加载下拉框数据*/
       initSelectionData(){
         // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
         /*if (!window.sessionStorage.getItem("nations")) {
@@ -533,14 +533,14 @@
         this.setUserEmpty();
         /*打开弹框就显示工号*/
         // this.initPositions();
-        this.title = '添加员工';
+        this.title = '添加用户';
         this.userDialogVisible = true;
         // this.initPositions();
         this.inputDepName = '';
       },
-      /*弹出修改员工对话框*/
+      /*弹出修改用户对话框*/
       showUserEditDialog(data) {
-        this.title = '修改员工信息';
+        this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;
         console.log(data);
@@ -557,9 +557,9 @@
         this.user.departmentId = data.id;
         this.departmentVisable = !this.departmentVisable;
       },
-      /*删除员工*/
+      /*删除用户*/
       deleteUser(data){
-        this.$confirm('此操作将永久删除【' +data.name+ '】员工, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除【' +data.name+ '】用户, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -577,7 +577,7 @@
     },
     mounted() {
       this.initUsers();
-      /*加载添加员工页面下拉框数据*/
+      /*加载添加用户页面下拉框数据*/
       this.initSelectionData();
       /*打开弹框就显示工号*/
       // this.generateWorkID();
