@@ -269,7 +269,7 @@
           dptmentId: 92,
           beginDate: "2017-01-02",
           workStatDesc: "1",
-          workId: '',
+          workId: 1,
           convertDate: "2017-04-02"
         },
         /*添加页面 - 部门树弹框*/
@@ -389,7 +389,7 @@
           school: '',
           beginDate: '',
           workStatDesc: '在职',
-          workID: '',
+          workId: '',
           contractTerm: '',
           conversionTime: '',
           notWorkDate: null,
@@ -532,6 +532,7 @@
         /*添加之前要清空user对象*/
         this.setUserEmpty();
         /*打开弹框就显示工号*/
+        this.generateWorkID();
         // this.initPositions();
         this.title = '添加用户';
         this.userDialogVisible = true;
@@ -543,9 +544,19 @@
         this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;
-        console.log(data);
         this.user = data;
         // this.inputDepName = data.department.name;
+      },
+      /*生成工号*/
+      generateWorkID(){
+        getRequest('/user/maxWorkID').then(resp => {
+          this.loading = false;
+          if (resp && resp.code == 200000) {
+            console.log(resp.obj);
+            this.user.workId = resp.obj;
+            alert(this.user.workId);
+          }
+        })
       },
       /*弹出部门树弹框*/
       showDepView(){
@@ -580,7 +591,7 @@
       /*加载添加用户页面下拉框数据*/
       this.initSelectionData();
       /*打开弹框就显示工号*/
-      // this.generateWorkID();
+      this.generateWorkID();
       /*初始化职位*/
       // this.initPositions();
     }

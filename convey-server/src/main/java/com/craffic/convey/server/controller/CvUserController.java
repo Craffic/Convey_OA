@@ -73,4 +73,10 @@ public class CvUserController {
         }
         return ResponseBody.failure("400101", "添加用户失败！");
     }
+
+    @GetMapping("maxWorkID")
+    public ResponseBody<Long> getMaxWorkId(){
+        Long workId = userService.generateWorkId();
+        return ResponseBody.success(workId);
+    }
 }
