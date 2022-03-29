@@ -137,7 +137,7 @@
         <el-form :rules="rules" :model="user" ref="userForm">
           <el-row>
             <el-col :span="6">
-              <el-form-item label="工号：" prop="acct">
+              <el-form-item label="工号：" prop="workId">
                 <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 180px" size="mini" disabled></el-input>
               </el-form-item>
             </el-col>
@@ -152,14 +152,14 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="身份证号：" prop="acct">
+              <el-form-item label="身份证号：" prop="idCardNo">
                 <el-input placeholder="请输入身份证号" v-model="user.idCardNo" prefix-icon="el-icon-edit" style="width:180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="6">
-              <el-form-item label="性别：" prop="genderDesc">
+              <el-form-item label="性别：" prop="gender">
                 <el-radio-group v-model="user.gender">
                   <el-radio label="M">男</el-radio>
                   <el-radio label="F" style="margin-left: 0px">女</el-radio>
@@ -167,7 +167,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="电话号码：" prop="acct">
+              <el-form-item label="电话号码：" prop="phone">
                 <el-input placeholder="请输入电话号码" v-model="user.phone" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
               </el-form-item>
             </el-col>
@@ -191,12 +191,12 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="转正日期：" prop="convertDate">
-                <el-input placeholder="请选择转正日期" v-model="user.convertDate" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
+                <el-date-picker v-model="user.convertDate" type="date" placeholder="转正日期" size="mini" value-format="yyyy-MM-dd" style="width: 120px"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="在职状态：" prop="workStatDesc">
-                <el-input placeholder="请选择在职状态" v-model="user.workStatDesc" prefix-icon="el-icon-edit" style="width: 125px" size="mini"></el-input>
+              <el-form-item label="在职状态：" prop="workStat">
+                <el-input placeholder="请选择在职状态" v-model="user.workStat" prefix-icon="el-icon-edit" style="width: 125px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -284,7 +284,7 @@
         rules: {
           nameZh: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           acct: [{required: true, message: '请输入账号', trigger: 'blur'}],
-          genderDesc: [{required: true, message: '请输入性别', trigger: 'blur'}],
+          gender: [{required: true, message: '请输入性别', trigger: 'blur'}],
           idCard: [{required: true, message: '请输入身份证号码', trigger: 'blur'}, {
             pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
             message: '身份证号码格式不正确',
@@ -299,7 +299,7 @@
           dptId: [{required: true, message: '请输入部门名称', trigger: 'blur'}],
           posId: [{required: true, message: '请输入职位', trigger: 'blur'}],
           beginDate: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
-          workStatDesc: [{required: true, message: '请输入在职状态', trigger: 'blur'}],
+          workStat: [{required: true, message: '请输入在职状态', trigger: 'blur'}],
           workId: [{required: true, message: '请输入工号', trigger: 'blur'}],
           convertDate: [{required: true, message: '请输入转正日期', trigger: 'blur'}]
         }
@@ -370,7 +370,7 @@
       setUserEmpty(){
         this.user = {
           nameZh: '',
-          genderDesc: '',
+          gender: '',
           birthday: '',
           idCardNo: '',
           wedlock: '',
@@ -405,7 +405,7 @@
           // 有id就是修改
           this.$refs.userForm.validate((valid) => {
             if (valid) {
-              putRequest('/employee/basic/', this.user).then(resp => {
+              putRequest('/user/update', this.user).then(resp => {
                 if (resp) {
                   this.userDialogVisible = false;
                   this.initUsers();
@@ -417,7 +417,7 @@
           // 无id就是新增
           this.$refs.userForm.validate((valid) => {
             if (valid) {
-              postRequest('/employee/basic/', this.user).then(resp => {
+              postRequest('/user/add', this.user).then(resp => {
                 if (resp) {
                   this.userDialogVisible = false;
                   this.initUsers();
@@ -554,7 +554,6 @@
           if (resp && resp.code == 200000) {
             console.log(resp.obj);
             this.user.workId = resp.obj;
-            alert(this.user.workId);
           }
         })
       },
