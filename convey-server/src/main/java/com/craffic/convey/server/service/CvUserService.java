@@ -73,4 +73,18 @@ public class CvUserService implements UserDetailsService {
         List<CvUser> userList = userMapper.queryUsersByCondition(userReq);
         return new ListVo<>(userList, userList.size());
     }
+
+    /**
+     * 生成用户工号
+     */
+    public Long generateWorkId(){
+        return userMapper.generateWorkId();
+    }
+
+    /**
+     * 添加用户
+     */
+    public Integer addUser(CvUser user){
+        return userMapper.addUser(user);
+    }
 }

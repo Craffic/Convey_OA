@@ -11,9 +11,7 @@ import com.craffic.convey.server.vo.CvUserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,5 +61,16 @@ public class CvUserController {
         });
         ListVo<CvUserVO> listVo = new ListVo<>(userVoList, userVoList.size());
         return ResponseBody.success(listVo);
+    }
+
+    @PostMapping("/add")
+    public ResponseBody<String> addUser(@RequestBody CvUser user) {
+        Long workId = userService.generateWorkId();
+        user.setId(workId);
+        user.setWorkId(workId);
+        if (userService.addUser(user) == 1) {
+            return ResponseBody.success("添加用户" + user.getAcct() + "成功！");
+        }
+        return ResponseBody.failure("400101", "添加用户失败！");
     }
 }

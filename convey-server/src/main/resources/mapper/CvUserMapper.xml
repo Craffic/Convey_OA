@@ -31,6 +31,129 @@
         U.BEGIN_DATE, U.CONVERT_DATE, U.WORK_STAT, U.LEAVE_DATE, U.CREATED_DATE, U.CREATED_BY, U.UPATE_DATE, U.UPDATE_BY
     </sql>
 
+    <insert id="addUser" parameterType="com.craffic.convey.server.model.CvUser">
+       insert into cv_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="nameZh != null">
+                WORK_ID,
+            </if>
+            <if test="acct != null">
+                ACCT,
+            </if>
+            <if test="nameZh != null">
+                NAME_ZH,
+            </if>
+            <if test="phone != null">
+                PHONE,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="iconUrl != null">
+                ICON_URL,
+            </if>
+            <if test="posId != null">
+                POS_ID,
+            </if>
+            <if test="dptId != null">
+                DPT_ID,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="beginDate != null">
+                BEGIN_DATE,
+            </if>
+            <if test="convertDate != null">
+                CONVERT_DATE,
+            </if>
+            <if test="workStat != null">
+                WORK_STAT,
+            </if>
+            <if test="leaveDate != null">
+                LEAVE_DATE,
+            </if>
+            <if test="createdDate != null">
+                CREATED_DATE,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="idCardNo != null">
+                IDCARD_NO,
+            </if>
+            <if test="gender != null">
+                GENDER,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="workId != null">
+                #{workId,jdbcType=INTEGER},
+            </if>
+            <if test="acct != null">
+                #{acct,jdbcType=VARCHAR},
+            </if>
+            <if test="nameZh != null">
+                #{nameZh,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="posId != null">
+                #{posId,jdbcType=INTEGER},
+            </if>
+            <if test="dptId != null">
+                #{dptId,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null">
+                #{beginDate,jdbcType=DATE},
+            </if>
+            <if test="convertDate != null">
+                #{convertDate,jdbcType=DATE},
+            </if>
+            <if test="workStat != null">
+                #{workStat,jdbcType=INTEGER},
+            </if>
+            <if test="leaveDate != null">
+                #{leaveDate,jdbcType=DATE},
+            </if>
+            <if test="createdDate != null">
+                #{createdDate,jdbcType=DATE},
+            </if>
+            <if test="idCardNo != null">
+                #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="generateWorkId" resultType="java.lang.Long">
+        SELECT SEQ_CV_USER.NEXTVAL WORK_ID FROM DUAL
+    </select>
+
     <select id="getAllUsers" resultMap="BaseResultMap">
         SELECT <include refid="BaseColumns" />
           FROM CV_USER U

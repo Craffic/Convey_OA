@@ -17,4 +17,8 @@ public interface CvUserMapper {
     List<CvUser> queryUsersByCondition(@Param("user") CvUserReq user);
 
     Long queryTotalNum(@Param("user") CvUserReq user);
+
+    Long generateWorkId();
+
+    int addUser(CvUser user);
 }
