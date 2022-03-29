@@ -21,4 +21,6 @@ public interface CvUserMapper {
     Long generateWorkId();
 
     int addUser(CvUser user);
+
+    int deleteUserById(@Param("id") Long id);
 }

@@ -149,6 +149,9 @@
             </if>
         </trim>
     </insert>
+    <delete id="deleteUserById" parameterType="java.lang.Long">
+        delete from CV_USER where id = #{id,jdbcType=NUMERIC}
+    </delete>
 
     <select id="generateWorkId" resultType="java.lang.Long">
         SELECT SEQ_CV_USER.NEXTVAL WORK_ID FROM DUAL

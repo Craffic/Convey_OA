@@ -74,9 +74,26 @@ public class CvUserController {
         return ResponseBody.failure("400101", "添加用户失败！");
     }
 
+    /**
+     * 获取最大的工号
+     * @return
+     */
     @GetMapping("maxWorkID")
     public ResponseBody<Long> getMaxWorkId(){
         Long workId = userService.generateWorkId();
         return ResponseBody.success(workId);
+    }
+
+    /**
+     * 根据id删除员工
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseBody<String> deleteEmpByEid(@PathVariable Long id) {
+        if (userService.deleteUserById(id) == 1) {
+            return ResponseBody.success("删除成功!");
+        }
+        return ResponseBody.failure("400102", "删除用户失败!");
     }
 }

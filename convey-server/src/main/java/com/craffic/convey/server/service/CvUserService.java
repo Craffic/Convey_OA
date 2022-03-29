@@ -88,4 +88,11 @@ public class CvUserService implements UserDetailsService {
     public Integer addUser(CvUser user){
         return userMapper.addUser(user);
     }
+
+    /**
+     * 根据用户id删除记录
+     */
+    public Integer deleteUserById(Long id){
+        return userMapper.deleteUserById(id);
+    }
 }
