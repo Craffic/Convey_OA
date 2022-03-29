@@ -59,7 +59,7 @@ public class CvUserController {
             userVo.setGenderDesc(genderEnum.desc());
             userVoList.add(userVo);
         });
-        ListVo<CvUserVO> listVo = new ListVo<>(userVoList, userVoList.size());
+        ListVo<CvUserVO> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());
         return ResponseBody.success(listVo);
     }
 

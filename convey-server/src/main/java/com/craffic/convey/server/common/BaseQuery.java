@@ -20,4 +20,8 @@ public class BaseQuery extends BaseVO{
     public Integer pageStartIndex(){
         return size * (page - 1);
     }
+
+    private Integer startRecord;
+
+    private Integer endRecord;
 }

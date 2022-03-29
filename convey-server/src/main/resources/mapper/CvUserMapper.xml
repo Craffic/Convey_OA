@@ -171,20 +171,16 @@
                 WHERE 1=1
                   AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
         OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
-        　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
-        ) B WHERE r > #{user.page,jdbcType=NUMERIC}
+        　　) A WHERE rownum &lt;= #{user.endRecord,jdbcType=NUMERIC}
+        ) B WHERE r > #{user.startRecord,jdbcType=NUMERIC}
     </select>
 
     <select id="queryTotalNum" resultType="java.lang.Long">
-        SELECT COUNT(1) FROM (SELECT B.CNT FROM (
-        　　SELECT A.*, rownum r FROM (
-        　　　　SELECT count(*) cnt
-               FROM CV_USER U
-              WHERE 1=1
-                AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
-                OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
-        　　) A WHERE rownum &lt;= #{user.size,jdbcType=NUMERIC}
-        ) B WHERE r > #{user.page,jdbcType=NUMERIC})
+        SELECT count(*) cnt
+          FROM CV_USER U
+         WHERE 1=1
+           AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+            OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
     </select>
 </mapper>
 
