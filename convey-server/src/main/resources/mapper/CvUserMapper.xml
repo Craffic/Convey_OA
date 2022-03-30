@@ -37,7 +37,7 @@
             <if test="id != null">
                 ID,
             </if>
-            <if test="nameZh != null">
+            <if test="workId != null">
                 WORK_ID,
             </if>
             <if test="acct != null">
@@ -149,6 +149,68 @@
             </if>
         </trim>
     </insert>
+
+    <update id="updateUser" parameterType="com.craffic.convey.server.model.CvUser">
+        update CV_USER
+        <set>
+            <if test="workId != null">
+                WORK_ID = #{workId,jdbcType=INTEGER},
+            </if>
+            <if test="acct != null">
+                ACCT = #{acct,jdbcType=VARCHAR},
+            </if>
+            <if test="nameZh != null">
+                NAME_ZH = #{nameZh,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                ICON_URL = #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="posId != null">
+                POS_ID = #{posId,jdbcType=INTEGER},
+            </if>
+            <if test="dptId != null">
+                DPT_ID = #{dptId,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate != null">
+                BEGIN_DATE = #{beginDate,jdbcType=DATE},
+            </if>
+            <if test="convertDate != null">
+                CONVERT_DATE = #{convertDate,jdbcType=DATE},
+            </if>
+            <if test="workStat != null">
+                WORK_STAT = #{workStat,jdbcType=INTEGER},
+            </if>
+            <if test="leaveDate != null">
+                LEAVE_DATE = #{leaveDate,jdbcType=DATE},
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE = #{updateDate,jdbcType=DATE},
+            </if>
+            <if test="updateBy != null">
+                UPDATE_BY = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                IDCARD_NO = #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                GENDER = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
     <delete id="deleteUserById" parameterType="java.lang.Long">
         delete from CV_USER where id = #{id,jdbcType=NUMERIC}
     </delete>

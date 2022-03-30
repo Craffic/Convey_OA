@@ -23,4 +23,6 @@ public interface CvUserMapper {
     int addUser(CvUser user);
 
     int deleteUserById(@Param("id") Long id);
+
+    Integer updateUser(CvUser user);
 }

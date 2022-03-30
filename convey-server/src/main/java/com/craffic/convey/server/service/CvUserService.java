@@ -95,4 +95,11 @@ public class CvUserService implements UserDetailsService {
     public Integer deleteUserById(Long id){
         return userMapper.deleteUserById(id);
     }
+
+    /**
+     * 更新用户
+     */
+    public Integer updateUser(CvUser user){
+        return userMapper.updateUser(user);
+    }
 }

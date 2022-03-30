@@ -90,10 +90,21 @@ public class CvUserController {
      * @return
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseBody<String> deleteEmpByEid(@PathVariable Long id) {
+    public ResponseBody<String> deleteUserById(@PathVariable Long id) {
         if (userService.deleteUserById(id) == 1) {
             return ResponseBody.success("删除成功!");
         }
         return ResponseBody.failure("400102", "删除用户失败!");
+    }
+
+    /**
+     * 更新用户
+     */
+    @PutMapping("/update")
+    public ResponseBody<String> updateUser(@RequestBody CvUser user) {
+        if (userService.updateUser(user) == 1) {
+            return ResponseBody.success("更新成功");
+        }
+        return ResponseBody.failure("400103", "更新用户失败！");
     }
 }
