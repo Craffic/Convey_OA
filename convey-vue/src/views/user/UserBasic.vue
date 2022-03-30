@@ -220,7 +220,7 @@
   import {deleteRequest, getRequest, postRequest, putRequest} from "../../utils/api";
 
   export default {
-    name: "EmpBasic",
+    name: "UserBasic",
     data() {
       return {
         /*定义一个高级搜索条件对象*/
