@@ -113,6 +113,7 @@
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
         <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
         <el-table-column prop="workStatDesc" label="在职状态" width="150"></el-table-column>
+        <el-table-column prop="remark" label="备注" width="300"></el-table-column>
         <el-table-column prop="idCard" label="操作" fixed="right" width="320">
           <template slot-scope="scope">
             <el-button size="mini" @click="showUserEditDialog(scope.row)">编辑</el-button>
