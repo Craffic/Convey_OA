@@ -7,7 +7,7 @@ import java.util.Date;
  * @Author: Liu Chengyan
  * 社会人员实体类
  */
-public class People implements Serializable {
+public class Person implements Serializable {
 
     /**
      * 身份证号
@@ -199,10 +199,10 @@ public class People implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public People() {
+    public Person() {
     }
 
-    public People(String idcardNo, String name, String gender, Long nativePlaceCode, Date birthDate,
+    public Person(String idcardNo, String name, String gender, Long nativePlaceCode, Date birthDate,
                   String homeAddress, String workAddress, Integer age, Long professionCode,
                   Long granduteSchoolCode, Date createdDate, String createdBy, Date updateDate, String updateBy) {
         this.idcardNo = idcardNo;

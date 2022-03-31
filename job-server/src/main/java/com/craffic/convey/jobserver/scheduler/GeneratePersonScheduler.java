@@ -1,7 +1,7 @@
 package com.craffic.convey.jobserver.scheduler;
 
-import com.craffic.convey.jobserver.model.People;
-import com.craffic.convey.jobserver.service.PeopleService;
+import com.craffic.convey.jobserver.model.Person;
+import com.craffic.convey.jobserver.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
  * 社会人员生成器
  */
 @Component
-public class GeneratePeopleScheduler {
+public class GeneratePersonScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private PeopleService peopleService;
+    private PersonService personService;
 
     @Scheduled(fixedRate=20000)
-    public void generatePeopleJob() {
-        People people = peopleService.genPeopleInfo();
-        peopleService.insertPeople(people);
+    public void generatePersonJob() {
+        Person person = personService.genPersonInfo();
+        personService.insertPerson(person);
         logger.info("生成一名社会人员.......");
     }
 }

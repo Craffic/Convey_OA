@@ -43,9 +43,9 @@ public class OaDictService {
     }
 
     /**
-     * 插入people
+     * 插入person
      */
-    public int insertPeople(OaDict dict){
+    public int insertPerson(OaDict dict){
         return oaDictMapper.insertSelective(dict);
     }
 

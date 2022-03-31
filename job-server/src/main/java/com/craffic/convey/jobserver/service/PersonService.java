@@ -1,8 +1,8 @@
 package com.craffic.convey.jobserver.service;
 
-import com.craffic.convey.jobserver.dao.PeopleMapper;
+import com.craffic.convey.jobserver.dao.PersonMapper;
 import com.craffic.convey.jobserver.model.OaDict;
-import com.craffic.convey.jobserver.model.People;
+import com.craffic.convey.jobserver.model.Person;
 import com.craffic.convey.jobserver.utils.DateUtil;
 import com.craffic.convey.jobserver.utils.JsonUtil;
 import com.craffic.convey.jobserver.utils.RandomGenerator;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PeopleService {
+public class PersonService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private PeopleMapper peopleMapper;
+    private PersonMapper personMapper;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -36,18 +36,18 @@ public class PeopleService {
      * 查询所有人员列表
      * @return
      */
-    public List<People> queryAllPeoples(){
-        return peopleMapper.getAllPeoples();
+    public List<Person> queryAllPersons(){
+        return personMapper.getAllPersons();
     }
 
     /**
-     * 插入people
+     * 插入person
      */
-    public int insertPeople(People people){
-        return peopleMapper.insertSelective(people);
+    public int insertPerson(Person person){
+        return personMapper.insertSelective(person);
     }
 
-    public People genPeopleInfo(){
+    public Person genPersonInfo(){
         Date birthDate = RandomGenerator.randomDate();
         String gender = RandomGenerator.genderGenerator();
         // 获取地区集合
@@ -70,7 +70,7 @@ public class PeopleService {
         String createdBy = SYSTEM;
         Date updateDate = new Date();
         String updateBy = SYSTEM;
-        return new People(idcardNo, name, gender, nativePlaceCode, birthDate, genAddress(), genAddress(), age,
+        return new Person(idcardNo, name, gender, nativePlaceCode, birthDate, genAddress(), genAddress(), age,
                           professionCode, granduteSchoolCode, createdDate, createdBy, updateDate, updateBy);
 
     }

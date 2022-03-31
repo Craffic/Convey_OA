@@ -44,7 +44,7 @@
     </select>
 
     <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.OaDict">
-        INSERT INTO PEOPLE (<include refid="BaseColumns" />) VALUES (
+        INSERT INTO PERSON (<include refid="BaseColumns" />) VALUES (
             #{id,jdbcType=VARCHAR},
             #{itemName,jdbcType=VARCHAR},
             #{pKey,jdbcType=NUMERIC},
