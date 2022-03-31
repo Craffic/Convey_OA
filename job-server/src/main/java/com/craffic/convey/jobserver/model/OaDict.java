@@ -1,8 +1,9 @@
 package com.craffic.convey.jobserver.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class OaDict {
+public class OaDict implements Serializable {
 
     private String id;
 

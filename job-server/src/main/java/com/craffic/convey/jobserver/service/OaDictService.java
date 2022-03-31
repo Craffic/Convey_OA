@@ -49,4 +49,11 @@ public class OaDictService {
         return oaDictMapper.insertSelective(dict);
     }
 
+    /**
+     * 查询OA_DICT表中的所有字典项列表
+     */
+    public List<String> queryAllDictItems(){
+        return oaDictMapper.queryAllDictItems();
+    }
+
 }

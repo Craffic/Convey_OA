@@ -16,4 +16,5 @@ public interface OaDictMapper {
 
     Integer insertSelective(OaDict dict);
 
+    List<String> queryAllDictItems();
 }
