@@ -22,5 +22,6 @@
     <modules>
         <module>job-server</module>
 	<module>convey-server</module>
+        <module>convey-common</module>
     </modules>
 </project>
