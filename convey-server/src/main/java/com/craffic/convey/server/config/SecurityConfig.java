@@ -1,6 +1,6 @@
 package com.craffic.convey.server.config;
 
-import com.craffic.convey.server.common.RespBean;
+import com.craffic.convey.common.response.RespBean;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.service.CvUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
