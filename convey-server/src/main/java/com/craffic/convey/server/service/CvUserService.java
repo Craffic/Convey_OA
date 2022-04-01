@@ -1,6 +1,6 @@
 package com.craffic.convey.server.service;
 
-import com.craffic.convey.server.common.ListVo;
+import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.dao.CvRoleMapper;
 import com.craffic.convey.server.dao.CvUserMapper;
 import com.craffic.convey.server.model.CvRole;

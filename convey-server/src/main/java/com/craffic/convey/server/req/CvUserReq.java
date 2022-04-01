@@ -1,6 +1,6 @@
 package com.craffic.convey.server.req;
 
-import com.craffic.convey.server.common.BaseQuery;
+import com.craffic.convey.common.request.BaseQuery;
 import lombok.Data;
 
 import java.util.Date;

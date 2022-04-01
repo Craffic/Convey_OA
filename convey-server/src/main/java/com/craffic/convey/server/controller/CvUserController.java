@@ -1,7 +1,7 @@
 package com.craffic.convey.server.controller;
 
-import com.craffic.convey.server.common.ListVo;
-import com.craffic.convey.server.common.ResponseBody;
+import com.craffic.convey.common.response.ResponseBody;
+import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.enums.GenderEnum;
 import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvUser;

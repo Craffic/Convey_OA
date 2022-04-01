@@ -23,3 +23,8 @@
 hs_err_pid*
 /.idea/
 /convey-common/convey-common.iml
+/convey-server/target/
+/convey-server/convey-server.iml
+/workspace.lnk
+/Convey_OA.iml
+/package-lock.json

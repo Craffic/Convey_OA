@@ -1,8 +1,7 @@
 package com.craffic.convey.server.vo;
 
-import com.craffic.convey.server.common.BaseVO;
+import com.craffic.convey.common.vo.BaseVO;
 import com.craffic.convey.server.model.CvRole;
-import com.craffic.convey.server.model.CvUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
