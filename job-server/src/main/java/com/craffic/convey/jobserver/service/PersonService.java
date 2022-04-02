@@ -1,8 +1,10 @@
 package com.craffic.convey.jobserver.service;
 
+import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.jobserver.dao.PersonMapper;
 import com.craffic.convey.jobserver.model.OaDict;
 import com.craffic.convey.jobserver.model.Person;
+import com.craffic.convey.jobserver.req.PersonReq;
 import com.craffic.convey.jobserver.utils.DateUtil;
 import com.craffic.convey.jobserver.utils.JsonUtil;
 import com.craffic.convey.jobserver.utils.RandomGenerator;
@@ -97,5 +99,19 @@ public class PersonService {
 
         StringBuffer address = new StringBuffer();
         return address.append(provinceDict.getValue()).append(cityDict.getValue()).append(areaDict.getValue()).toString();
+    }
+
+    /**
+     * 根据条件查询用户列表
+     */
+    public ListVo<Person> queryUsersByCondition(PersonReq personReq){
+        personReq.setStartRecord(personReq.pageStartIndex());
+        personReq.setEndRecord(personReq.getPage() * personReq.getSize());
+        Long total = personMapper.queryTotalNum(personReq);
+        if (total <= 0) {
+            return new ListVo<>(null, 0);
+        }
+        List<Person> userList = personMapper.queryPersonsByCondition(personReq);
+        return new ListVo<>(userList, total.intValue());
     }
 }

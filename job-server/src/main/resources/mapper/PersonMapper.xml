@@ -30,6 +30,82 @@
           FROM PERSON
     </select>
 
+    <select id="queryPersonsByCondition" parameterType="com.craffic.convey.jobserver.req.PersonReq" resultMap="BaseResultMap">
+        SELECT * FROM (
+        　　SELECT A.*, rownum r FROM (
+        　　　　SELECT *
+                FROM PERSON P
+               WHERE 1 = 1
+                <if test="person.idcardNo != null">
+                    AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
+                </if>
+                <if test="person.name != null">
+                    AND P.NAME = #{person.name,jdbcType=VARCHAR}
+                </if>
+                <if test="person.gender != null">
+                    AND P.GENDER = #{person.gender,jdbcType=VARCHAR}
+                </if>
+                <if test="person.birthDateStart != null and person.birthDateEnd != null">
+                    AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=DATE} AND #{person.birthDateEnd,jdbcType=DATE}
+                </if>
+                <if test="person.nativePlaceCode != null">
+                    AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
+                </if>
+                <if test="person.homeAddress != null">
+                    AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
+                </if>
+                <if test="person.workAddress != null">
+                    AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
+                </if>
+                <if test="person.ageStart != null and person.ageEnd != null">
+                    AND P.AGE BETWEEN #{person.ageStart,jdbcType=NUMERIC} AND #{person.ageEnd,jdbcType=NUMERIC}
+                </if>
+                <if test="person.professionCode != null">
+                    AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
+                </if>
+                <if test="person.granduteSchoolCode != null">
+                    AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+                </if>
+        　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
+        ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
+    </select>
+
+    <select id="queryTotalNum" resultType="java.lang.Long">
+        SELECT count(*) cnt
+          FROM PERSON P
+         WHERE 1 = 1
+         <if test="person.idcardNo != null">
+             AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
+         </if>
+         <if test="person.name != null">
+             AND P.NAME = #{person.name,jdbcType=VARCHAR}
+         </if>
+         <if test="person.gender != null">
+             AND P.GENDER = #{person.gender,jdbcType=VARCHAR}
+         </if>
+         <if test="person.birthDateStart != null and person.birthDateEnd != null">
+             AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=DATE} AND #{person.birthDateEnd,jdbcType=DATE}
+         </if>
+         <if test="person.nativePlaceCode != null">
+             AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
+         </if>
+         <if test="person.homeAddress != null">
+             AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
+         </if>
+         <if test="person.workAddress != null">
+             AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
+         </if>
+         <if test="person.ageStart != null and person.ageEnd != null">
+             AND P.AGE BETWEEN #{person.ageStart,jdbcType=NUMERIC} AND #{person.ageEnd,jdbcType=NUMERIC}
+         </if>
+         <if test="person.professionCode != null">
+             AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
+         </if>
+         <if test="person.granduteSchoolCode != null">
+             AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+         </if>
+    </select>
+
     <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.Person">
         INSERT INTO PERSON (<include refid="BaseColumns" />) VALUES (
             #{idcardNo,jdbcType=VARCHAR},

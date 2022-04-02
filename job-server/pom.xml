@@ -88,6 +88,16 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.craffic</groupId>
+            <artifactId>convey-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -122,7 +132,7 @@
                 <version>1.0.0</version>
                 <configuration>
                     <!--远程Docker的地址-->
-                    <dockerHost>http://192.168.111.143:2375</dockerHost>
+                    <dockerHost>http://192.168.87.129:2375</dockerHost>
                     <!--镜像名称，前缀/项目名-->
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
