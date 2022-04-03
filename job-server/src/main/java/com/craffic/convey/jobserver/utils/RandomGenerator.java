@@ -1,8 +1,6 @@
 package com.craffic.convey.jobserver.utils;
 
 import com.craffic.convey.jobserver.constant.OAConstant;
-import jdk.internal.dynalink.beans.StaticClass;
-import org.apache.ibatis.javassist.Loader;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -44,14 +42,14 @@ public class RandomGenerator {
         return random.nextInt(size);
     }
 
-    public static String idCardNoSufixGenerator(String gender){
-        StringBuffer idCardNoSuffex = new StringBuffer();
+    public static String idCardNoSuffixGenerator(String gender){
+        StringBuffer idCardNoSuffix = new StringBuffer();
         Random random = new Random();
         int temp = random.nextInt(100);
         if (temp < 10) {
-            idCardNoSuffex.append("0").append(temp);
+            idCardNoSuffix.append("0").append(temp);
         } else {
-            idCardNoSuffex.append(temp);
+            idCardNoSuffix.append(temp);
         }
         List<String> maleList = new ArrayList<>();
         maleList.add("1");
@@ -67,24 +65,24 @@ public class RandomGenerator {
         femaleList.add("8");
 
         if ("M".equals(gender)) {
-            idCardNoSuffex.append(maleList.get(randomNumFromList(maleList)));
+            idCardNoSuffix.append(maleList.get(randomNumFromList(maleList)));
         } else if ("F".equals(gender)){
-            idCardNoSuffex.append(femaleList.get(randomNumFromList(femaleList)));
+            idCardNoSuffix.append(femaleList.get(randomNumFromList(femaleList)));
         }
         int lastBit = random.nextInt(11);
         if (lastBit >= 10) {
-            idCardNoSuffex.append("X");
+            idCardNoSuffix.append("X");
         } else {
-            idCardNoSuffex.append(lastBit);
+            idCardNoSuffix.append(lastBit);
         }
-        return idCardNoSuffex.toString();
+        return idCardNoSuffix.toString();
     }
 
     public static String idCardNoGenerator(Date birthDay, Long areaCode, String gender){
         StringBuffer idCardNo = new StringBuffer();
         String strAreaCode = areaCode.toString();
         String strBirthDay = DateUtil.dateToString(birthDay, DateUtil.DATE_PATTERN_3);
-        return idCardNo.append(strAreaCode).append(strBirthDay).append(idCardNoSufixGenerator(gender)).toString();
+        return idCardNo.append(strAreaCode).append(strBirthDay).append(idCardNoSuffixGenerator(gender)).toString();
     }
 
     public static String genderGenerator(){
