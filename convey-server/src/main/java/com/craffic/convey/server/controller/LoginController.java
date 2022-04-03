@@ -1,6 +1,6 @@
 package com.craffic.convey.server.controller;
 
-import com.craffic.convey.server.common.RespBean;
+import com.craffic.convey.common.response.RespBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
