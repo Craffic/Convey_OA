@@ -1,0 +1,14 @@
+1. 新建job-api提供服务
+2. 用job-server模块里充当dubbo的服务提供者provider
+   2.1 添加api依赖、dubbo依赖、zk依赖（注意排除log4j的依赖，否则会注册不了服务）
+   2.2 添加dobbo+zk配置
+   2.3 实现api的接口，并用dubbo的@Service注解，把接口注册到dubbo服务上
+3. 在convey-server模块里充当与dubbo的消费者consumer
+   3.1 添加api依赖，dubbo依赖、zk依赖
+   3.2 添加dubbo+zk的配置
+   3.3 在controller层用@Refence注解引用rpc接口
+
+注意的细节：
+   1. 不能引用log4j的依赖，否则服务注册不上zk上。
+   2. 接口必须是以Interface的形式，再实现该接口才能注册到zk上。
+

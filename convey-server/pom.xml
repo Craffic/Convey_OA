@@ -12,6 +12,8 @@
     <properties>
         <java.version>1.8</java.version>
         <docker.image.prefix>convey-server</docker.image.prefix>
+        <zookeeper.version>3.4.13</zookeeper.version>
+        <dubbo.version>0.2.0</dubbo.version>
     </properties>
 
     <parent>
@@ -25,6 +27,11 @@
         <dependency>
             <groupId>com.craffic</groupId>
             <artifactId>convey-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.craffic</groupId>
+            <artifactId>job-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -85,6 +92,28 @@
             <version>1.2.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>${zookeeper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -113,7 +142,7 @@
                 <version>1.0.0</version>
                 <configuration>
                     <!--远程Docker的地址-->
-                    <dockerHost>http://192.168.111.143:2375</dockerHost>
+                    <dockerHost>http://192.168.111.144:2375</dockerHost>
                     <!--镜像名称，前缀/项目名-->
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
