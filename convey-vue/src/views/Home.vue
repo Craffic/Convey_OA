@@ -11,7 +11,7 @@
           <!--点用户姓名后展示下拉框-->
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="profile">个人中心</el-dropdown-item>
-            <el-dropdown-item command="setting">设置</el-dropdown-item>
+            <el-dropdown-item command="modify_pwd">修改密码</el-dropdown-item>
             <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -41,6 +41,32 @@
         </el-main>
       </el-container>
     </el-container>
+
+    <!--打开修改密码弹窗-->
+    <el-dialog :visible.sync="modifyPwdVisible" width="18%" style="padding-bottom: 15px">
+      <el-descriptions title="修改密码">
+        <el-descriptions-item label="姓名">{{user.nameZh}}</el-descriptions-item>
+        <el-descriptions-item label="账号">{{user.acct}}</el-descriptions-item>
+      </el-descriptions>
+      <div style="border: 1px solid;"></div>
+      <div style="padding-top: 10px">
+        <el-form v-model="passwdForm" ref="passwdForm">
+          <el-form-item label="请输入旧密码: " prop="oldPass">
+            <el-input type="password" style="width: 120px" size="mini" v-model="passwdForm.oldPass"></el-input>
+          </el-form-item>
+          <el-form-item label="请输入新密码: " prop="newPass">
+            <el-input type="password" style="width: 120px" size="mini" v-model="passwdForm.newPass"></el-input>
+          </el-form-item>
+          <el-form-item label="请确认新密码: " prop="verifyPass">
+            <el-input type="password" style="width: 120px" size="mini" v-model="passwdForm.verifyPass"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="modifyPwdVisible = false">取 消</el-button>
+            <el-button type="primary" @click="modifyPwdEvent('passwdForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -51,7 +77,15 @@ export default {
   name: "Home",
   data() {
     return {
-      user: JSON.parse(window.sessionStorage.getItem("user"))
+      user: JSON.parse(window.sessionStorage.getItem("user")),
+      /*修改密码弹窗开关*/
+      modifyPwdVisible: false,
+      /*修改密码表单*/
+      passwdForm: {
+        oldPass: '',
+        newPass: '',
+        verifyPass: ''
+      }
     }
   },
   methods: {
@@ -76,9 +110,19 @@ export default {
             message: '已取消操作'
           });
         });
-      }else if (cmd == 'userInfo') {
+      } else if (cmd == 'userInfo') {
         // this.$router.push('/hrinfo');
+      } else if (cmd == 'modify_pwd'){
+        // 修改密码
+       // this.$router.push('/modifyPwd');
+        this.showModifyPwdView();
       }
+    },
+    showModifyPwdView(){
+      this.modifyPwdVisible = true;
+    },
+    /*修改密码*/
+    modifyPwdEvent(formName){
     }
   },
   computed: {

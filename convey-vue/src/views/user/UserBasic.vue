@@ -133,7 +133,7 @@
       </div>
     </div>
     <!--添加用户对话框-->
-    <el-dialog :title="title" :visible.sync="userDialogVisible" width="50%">
+    <el-dialog :title="title" :visible.sync="userDialogVisible" width="60%">
       <div>
         <el-form :rules="rules" :model="user" ref="userForm">
           <el-row>
@@ -211,7 +211,7 @@
       <span slot="footer" class="dialog-footer">
             <el-button @click="userDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="addOrUpdateUser">确 定</el-button>
-        </span>
+      </span>
     </el-dialog>
   </div>
 </template>
