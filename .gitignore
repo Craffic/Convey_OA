@@ -30,3 +30,5 @@ hs_err_pid*
 /package-lock.json
 /job-api/target/classes/META-INF/
 /job-api/job-api.iml
+/convey-common/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/convey-common/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
