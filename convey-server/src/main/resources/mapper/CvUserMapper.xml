@@ -234,8 +234,9 @@
         　　　　SELECT <include refid="BaseColumns" />
                  FROM CV_USER U
                 WHERE 1=1
-                  AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
-        OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+                  <if test="user.acct != null and user.acct != ''">
+                      AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%') OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+                  </if>
         　　) A WHERE rownum &lt;= #{user.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{user.startRecord,jdbcType=NUMERIC}
     </select>
@@ -244,8 +245,9 @@
         SELECT count(*) cnt
           FROM CV_USER U
          WHERE 1=1
-           AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
-            OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+        <if test="user.acct != null and user.acct != ''">
+            AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%') OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+        </if>
     </select>
 </mapper>
 

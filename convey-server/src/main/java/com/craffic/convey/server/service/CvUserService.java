@@ -6,7 +6,7 @@ import com.craffic.convey.server.dao.CvUserMapper;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.req.CvUserReq;
-import com.craffic.convey.server.vo.CvUserVO;
+import com.craffic.convey.server.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CvUserService implements UserDetailsService {
@@ -101,5 +102,31 @@ public class CvUserService implements UserDetailsService {
      */
     public Integer updateUser(CvUser user){
         return userMapper.updateUser(user);
+    }
+
+    /**
+     * 修改密码
+     */
+    public String modifyPassword(Map<String, Object> pwdMap){
+        String idCardNo = (String)pwdMap.get("idCardNo");
+
+        // 校验用户是否存在
+        CvUserReq userReq = new CvUserReq();
+        userReq.setIdCardNo(idCardNo);
+        ListVo<CvUser> listVo = queryUsersByCondition(userReq);
+        if (listVo.getTotalNum() == 0) {
+            return "不存在该用户，请联系管理员";
+        }
+
+        // 更新密码
+        CvUser currUser = listVo.getList().get(0);
+        String newPass = (String)pwdMap.get("newPass");
+        currUser.setPassword(PasswordEncoder.encode(newPass));
+        Integer flag = updateUser(currUser);
+        if (flag == 1) {
+            return "";
+        } else {
+            return "更新密码失败！";
+        }
     }
 }

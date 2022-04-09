@@ -11,10 +11,12 @@ import com.craffic.convey.server.vo.CvUserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -106,5 +108,17 @@ public class CvUserController {
             return ResponseBody.success("更新成功");
         }
         return ResponseBody.failure("400103", "更新用户失败！");
+    }
+
+    /**
+     * 修改密码
+     */
+    @PutMapping("/modifyPwd")
+    public ResponseBody<String> modifyPassword(@RequestBody Map<String, Object> passwordMap){
+        String errResult = userService.modifyPassword(passwordMap);
+        if (StringUtils.hasText(errResult)){
+            return ResponseBody.failure("400104", errResult);
+        }
+        return ResponseBody.success("更新密码成功！");
     }
 }

@@ -50,7 +50,7 @@
       </el-descriptions>
       <div style="border: 1px solid;"></div>
       <div style="padding-top: 10px">
-        <el-form v-model="passwdForm" ref="passwdForm">
+        <el-form v-model="passwdForm" ref="passwdForm" :rules="formRules">
           <el-form-item label="请输入旧密码: " prop="oldPass">
             <el-input type="password" style="width: 120px" size="mini" v-model="passwdForm.oldPass"></el-input>
           </el-form-item>
@@ -64,14 +64,14 @@
       </div>
       <span slot="footer" class="dialog-footer">
             <el-button @click="modifyPwdVisible = false">取 消</el-button>
-            <el-button type="primary" @click="modifyPwdEvent('passwdForm')">确 定</el-button>
+            <el-button type="primary" @click="modifyPwdEvent()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {getRequest} from "../utils/api";
+import {getRequest, putRequest} from "../utils/api";
 
 export default {
   name: "Home",
@@ -84,7 +84,19 @@ export default {
       passwdForm: {
         oldPass: '',
         newPass: '',
-        verifyPass: ''
+        verifyPass: '',
+        idCardNo: ''
+      },
+      formRules: {
+        oldPass: [
+          {required: false, message: '旧密码不能为空', trigger: 'blur'}
+        ],
+        newPass: [
+          {required: false, message: '新密码不能为空', trigger: 'blur'}
+        ],
+        verifyPass: [
+          {required: false, message: '确认密码不能为空', trigger: 'blur'}
+        ]
       }
     }
   },
@@ -118,11 +130,35 @@ export default {
         this.showModifyPwdView();
       }
     },
+    /*打开修改密码窗口*/
     showModifyPwdView(){
       this.modifyPwdVisible = true;
     },
     /*修改密码*/
-    modifyPwdEvent(formName){
+    modifyPwdEvent(){
+      if (this.passwdForm.newPass === this.passwdForm.verifyPass) {
+        this.passwdForm.idCardNo = this.user.idCardNo;
+        putRequest("/user/modifyPwd", this.passwdForm).then(resp => {
+          if (resp && resp.code == 200000) {
+            this.$message({
+              message: resp.obj,
+              type: 'success'
+            });
+            // 修改成功，删除用户登录缓存，登出
+            getRequest('/logout', null);
+            window.sessionStorage.removeItem(null);
+            this.$store.commit('initRoutes', []);
+          } else {
+            // 更新失败
+            this.$message.error(resp.message);
+          }
+        });
+        this.$router.replace("/");
+      } else {
+        this.$message.error('输入的两次密码不匹配，请重新输入');
+        this.passwdForm.newPass = '';
+        this.passwdForm.verifyPass = '';
+      }
     }
   },
   computed: {
