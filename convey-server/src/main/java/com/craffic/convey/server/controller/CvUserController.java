@@ -7,7 +7,7 @@ import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.req.CvUserReq;
 import com.craffic.convey.server.service.CvUserService;
-import com.craffic.convey.server.vo.CvUserVO;
+import com.craffic.convey.server.vo.CvUserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -26,20 +26,20 @@ public class CvUserController {
     private CvUserService userService;
 
     @GetMapping("/query_all")
-    public ResponseBody<ListVo<CvUserVO>> queryAllUsers(){
+    public ResponseBody<ListVo<CvUserVo>> queryAllUsers(){
         List<CvUser> userList = userService.queryAllUsers();
-        ListVo<CvUserVO> listVO = new ListVo<>(null, 0);
+        ListVo<CvUserVo> listVO = new ListVo<>(null, 0);
         if (CollectionUtils.isEmpty(userList)) {
             return ResponseBody.success(listVO);
         }
 
-        List<CvUserVO> userVoList = new ArrayList<>();
+        List<CvUserVo> userVoList = new ArrayList<>();
         userList.stream().forEach(user -> {
-            CvUserVO userVo = new CvUserVO();
+            CvUserVo userVo = new CvUserVo();
             BeanUtils.copyProperties(user, userVo);
             userVoList.add(userVo);
         });
-        ListVo<CvUserVO> listVo = new ListVo<>(userVoList, userVoList.size());
+        ListVo<CvUserVo> listVo = new ListVo<>(userVoList, userVoList.size());
         return ResponseBody.success(listVo);
     }
 
@@ -48,12 +48,12 @@ public class CvUserController {
      * @return
      */
     @GetMapping("/query")
-    public ResponseBody<ListVo<CvUserVO>> queryUsersByCondition(CvUserReq user){
+    public ResponseBody<ListVo<CvUserVo>> queryUsersByCondition(CvUserReq user){
         ListVo<CvUser> cvUserListVo = userService.queryUsersByCondition(user);
         List<CvUser> list = cvUserListVo.getList();
-        List<CvUserVO> userVoList = new ArrayList<>();
+        List<CvUserVo> userVoList = new ArrayList<>();
         list.stream().forEach(cvUser -> {
-            CvUserVO userVo = new CvUserVO();
+            CvUserVo userVo = new CvUserVo();
             BeanUtils.copyProperties(cvUser, userVo);
             WorkStatEnum workStatEnum = WorkStatEnum.parseByValue(cvUser.getWorkStat());
             userVo.setWorkStatDesc(workStatEnum.desc());
@@ -61,7 +61,7 @@ public class CvUserController {
             userVo.setGenderDesc(genderEnum.desc());
             userVoList.add(userVo);
         });
-        ListVo<CvUserVO> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());
+        ListVo<CvUserVo> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());
         return ResponseBody.success(listVo);
     }
 
@@ -120,5 +120,14 @@ public class CvUserController {
             return ResponseBody.failure("400104", errResult);
         }
         return ResponseBody.success("更新密码成功！");
+    }
+
+    /**
+     * 个人中心
+     */
+    @GetMapping("/profile")
+    public ResponseBody<CvUserVo> profile(String idCardNo){
+        CvUserVo profile = userService.profile(idCardNo);
+        return ResponseBody.success(profile);
     }
 }

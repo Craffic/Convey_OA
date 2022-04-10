@@ -3,10 +3,14 @@ package com.craffic.convey.server.service;
 import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.dao.CvRoleMapper;
 import com.craffic.convey.server.dao.CvUserMapper;
+import com.craffic.convey.server.enums.GenderEnum;
+import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.req.CvUserReq;
 import com.craffic.convey.server.utils.PasswordEncoder;
+import com.craffic.convey.server.vo.CvUserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -128,5 +132,20 @@ public class CvUserService implements UserDetailsService {
         } else {
             return "更新密码失败！";
         }
+    }
+
+    /**
+     * 根据省份证号获取个人中心信息
+     * @param idCardNo
+     * @return
+     */
+    public CvUserVo profile(String idCardNo) {
+        CvUser profile = userMapper.profile(idCardNo);
+        CvUserVo cvUserVo = new CvUserVo();
+        BeanUtils.copyProperties(profile, cvUserVo);
+        // 转换枚举
+        cvUserVo.setGenderDesc(GenderEnum.parseByValue(profile.getGender()).desc());
+        cvUserVo.setWorkStatDesc(WorkStatEnum.parseByValue(profile.getWorkStat()).desc());
+        return cvUserVo;
     }
 }

@@ -67,6 +67,50 @@
             <el-button type="primary" @click="modifyPwdEvent()">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!--打开个人中心弹窗-->
+    <el-dialog :visible.sync="profileVisible" width="60%">
+      <el-card class="box-card" style="width: 300px">
+        <div slot="header" class="clearfix">
+          <span>{{user.nameZh}}</span>
+        </div>
+        <div>
+          <div style="display: flex;justify-content: center">
+            <el-upload :show-file-list="false" :on-success="onSuccess" :data="profile" action="/user/icon_url">
+              <img title="点击修改用户图像" src="https://inews.gtimg.com/newsapp_bt/0/14119841313/1000" style="width: 100px;height: 100px;border-radius: 50px" alt="">
+            </el-upload>
+          </div>
+          <div>性别：
+            <el-tag>{{profile.genderDesc}}</el-tag>
+          </div>
+          <div>手机号码：
+            <el-tag>{{profile.phone}}</el-tag>
+          </div>
+          <div>邮箱：
+            <el-tag>{{profile.email}}</el-tag>
+          </div>
+          <div>职位：
+<!--            <el-tag>{{profile.posDesc}}</el-tag>-->
+            <el-tag>JAVA开发工程师</el-tag>
+          </div>
+          <div>部门：
+            <el-tag>科技信息部</el-tag>
+          </div>
+          <div>状态：
+            <el-tag>{{profile.workStatDesc}}</el-tag>
+          </div>
+          <div>用户角色：
+            <el-tag type="success" style="margin-right: 5px" v-for="(role,index) in profile.roles" :key="index">
+              {{role.roleName}}
+            </el-tag>
+          </div>
+        </div>
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="profileVisible = false">取 消</el-button>
+            <el-button type="primary" @click="showProfileView()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,8 +122,37 @@ export default {
   data() {
     return {
       user: JSON.parse(window.sessionStorage.getItem("user")),
+      /*个人中心*/
+      profile: {
+        id: '',
+        workId: '',
+        idCardNo: '',
+        acct: '',
+        nameZh: '',
+        gender: '',
+        genderDesc: '',
+        posId: '',
+        posDesc: '',
+        dptId: '',
+        dptDesc: '',
+        phone: '',
+        email: '',
+        workStat: '',
+        workStatDesc: '',
+        beginDate: '',
+        convertDate: '',
+        roles:[
+          {
+            id: '',
+            role: '',
+            roleName: ''
+          }
+        ]
+      },
       /*修改密码弹窗开关*/
       modifyPwdVisible: false,
+      /*个人中心弹窗开关*/
+      profileVisible: false,
       /*修改密码表单*/
       passwdForm: {
         oldPass: '',
@@ -122,14 +195,16 @@ export default {
             message: '已取消操作'
           });
         });
-      } else if (cmd == 'userInfo') {
-        // this.$router.push('/hrinfo');
+      } else if (cmd == 'profile') {
+        this.showProfileView();
       } else if (cmd == 'modify_pwd'){
         // 修改密码
-       // this.$router.push('/modifyPwd');
         this.showModifyPwdView();
       }
     },
+
+    /*--------------------------------------修改密码-----------------------------------------------*/
+
     /*打开修改密码窗口*/
     showModifyPwdView(){
       this.modifyPwdVisible = true;
@@ -159,6 +234,26 @@ export default {
         this.passwdForm.newPass = '';
         this.passwdForm.verifyPass = '';
       }
+    },
+
+    //----------------------------------个人中心-------------------------------------------
+
+    /*打开个人中心窗口*/
+    showProfileView(){
+      this.initProfile();
+      this.profileVisible = true;
+    },
+    /*初始化profile对象*/
+    onSuccess() {
+      // this.initProfile();
+    },
+    /*初始化profile*/
+    initProfile(){
+      getRequest('/user/profile?idCardNo=' + this.user.idCardNo).then(resp => {
+        if (resp && resp.code == 200000) {
+          this.profile = resp.obj;
+        }
+      })
     }
   },
   computed: {
@@ -166,6 +261,9 @@ export default {
     routes(){
       return this.$store.state.routes;
     }
+  },
+  mounted() {
+    this.initProfile();
   }
 }
 </script>

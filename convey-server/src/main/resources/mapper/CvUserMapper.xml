@@ -25,6 +25,14 @@
         <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
         <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
     </resultMap>
+    
+    <resultMap id="profileMap" type="com.craffic.convey.server.model.CvUser" extends="BaseResultMap">
+        <collection property="roles" ofType="com.craffic.convey.server.model.CvRole">
+            <id property="id" column="RID" jdbcType="NUMERIC"></id>
+            <result property="role" column="ROLE" jdbcType="VARCHAR"></result>
+            <result property="roleName" column="ROLE_NAME" jdbcType="VARCHAR"></result>
+        </collection>
+    </resultMap>
 
     <sql id="BaseColumns">
         U.ID, U.WORK_ID, U.IDCARD_NO, U.ACCT, U.NAME_ZH, U.GENDER, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
@@ -210,6 +218,28 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="profile" parameterType="java.lang.String" resultMap="profileMap">
+        SELECT U.ID,
+               U.WORK_ID,
+               U.ACCT,
+               U.NAME_ZH,
+               U.PHONE,
+               U.EMAIL,
+               U.ICON_URL,
+               U.POS_ID,
+               U.DPT_ID,
+               U.REMARK,
+               U.BEGIN_DATE,
+               U.CONVERT_DATE,
+               U.WORK_STAT,
+               U.GENDER,
+               R.ID AS RID,
+               R.ROLE,
+               R.ROLE_NAME
+        FROM CV_USER U LEFT JOIN CV_USER_ROLE UR ON UR.USER_ID = U.ID LEFT JOIN CV_ROLE R ON R.ID = UR.ROLE_ID
+        WHERE U.IDCARD_NO = #{idCardNo,jdbcType=VARCHAR}
+    </select>
 
     <delete id="deleteUserById" parameterType="java.lang.Long">
         delete from CV_USER where id = #{id,jdbcType=NUMERIC}
