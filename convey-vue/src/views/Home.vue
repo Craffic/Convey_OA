@@ -69,7 +69,7 @@
     </el-dialog>
 
     <!--打开个人中心弹窗-->
-    <el-dialog :visible.sync="profileVisible" width="60%">
+    <el-dialog :visible.sync="profileVisible" width="18%">
       <el-card class="box-card" style="width: 300px">
         <div slot="header" class="clearfix">
           <span>{{user.nameZh}}</span>
@@ -107,8 +107,77 @@
         </div>
       </el-card>
       <span slot="footer" class="dialog-footer">
-            <el-button @click="profileVisible = false">取 消</el-button>
-            <el-button type="primary" @click="showProfileView()">确 定</el-button>
+            <el-button type="primary" @click="updateProfileVisible = true">修改资料</el-button>
+      </span>
+    </el-dialog>
+
+    <!--打开修改个人信息弹窗-->
+    <el-dialog title="修改用户信息" :visible.sync="updateProfileVisible" width="20%">
+      <div>
+        <table>
+          <tr>
+            <td>
+              <el-tag>用户姓名：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.nameZh" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>用户账号：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.acct" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>手机号码：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.phone" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>用户姓名：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.email" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>职位：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.posId" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>部门：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.dptId" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <el-tag>状态：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.workStat" size="mini"></el-input>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+        </table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="updateProfileVisible = false">取消</el-button>
+            <el-button type="primary" @click="updateProfileView()">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -153,6 +222,8 @@ export default {
       modifyPwdVisible: false,
       /*个人中心弹窗开关*/
       profileVisible: false,
+      /*修改个人信息*/
+      updateProfileVisible: false,
       /*修改密码表单*/
       passwdForm: {
         oldPass: '',
@@ -252,6 +323,15 @@ export default {
       getRequest('/user/profile?idCardNo=' + this.user.idCardNo).then(resp => {
         if (resp && resp.code == 200000) {
           this.profile = resp.obj;
+        }
+      })
+    },
+    //-------------------------------------------------------------------------------------
+    updateProfileView(){
+      putRequest('/user/update', this.profile).then(resp => {
+        if (resp && resp.code == 200000) {
+          this.updateProfileVisible = false;
+          this.initProfile();
         }
       })
     }
