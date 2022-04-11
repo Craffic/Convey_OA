@@ -80,6 +80,9 @@
               <img title="点击修改用户图像" src="https://inews.gtimg.com/newsapp_bt/0/14119841313/1000" style="width: 100px;height: 100px;border-radius: 50px" alt="">
             </el-upload>
           </div>
+          <div>身份证号：
+            <el-tag>{{profile.idCardNo}}</el-tag>
+          </div>
           <div>性别：
             <el-tag>{{profile.genderDesc}}</el-tag>
           </div>
@@ -115,6 +118,14 @@
     <el-dialog title="修改用户信息" :visible.sync="updateProfileVisible" width="20%">
       <div>
         <table>
+          <tr>
+            <td>
+              <el-tag>身份证号：</el-tag>
+            </td>
+            <td>
+              <el-input v-model="profile.idCardNo" size="mini"></el-input>
+            </td>
+          </tr>
           <tr>
             <td>
               <el-tag>用户姓名：</el-tag>

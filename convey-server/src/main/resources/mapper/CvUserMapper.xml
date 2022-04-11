@@ -222,6 +222,7 @@
     <select id="profile" parameterType="java.lang.String" resultMap="profileMap">
         SELECT U.ID,
                U.WORK_ID,
+               U.IDCARD_NO,
                U.ACCT,
                U.NAME_ZH,
                U.PHONE,
