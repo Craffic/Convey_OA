@@ -34,4 +34,7 @@ values (10, '/social/query/**', '/social/query', 'SocialQuery', '社会人员查
 insert into CV_MENU (ID, URL, PATH, COMPONENT, NAME, ICON_CLS, KEEP_ALIVE, REQUIRE_AUTH, PARENT_ID, ENABLED)
 values (11, '/social/static/**', '/social/static', 'SocialStatic', '社会人员统计', null, null, 1, 9, 1);
 
+insert into CV_MENU (ID, URL, PATH, COMPONENT, NAME, ICON_CLS, KEEP_ALIVE, REQUIRE_AUTH, PARENT_ID, ENABLED)
+values (12, '/sys/department/**', '/sys/department', 'Department', '部门管理', null, null, 1, 6, 1);
+
 prompt Done.
