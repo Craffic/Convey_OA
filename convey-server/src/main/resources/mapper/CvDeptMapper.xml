@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.server.dao.CvDeptMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.CvDept">
+        <id property="id" column="ID" jdbcType="INTEGER"></id>
+        <result property="name" column="NAME" jdbcType="VARCHAR"></result>
+        <result property="parentId" column="PARENT_ID" jdbcType="INTEGER"></result>
+        <result property="deptPath" column="DPT_PATH" jdbcType="VARCHAR"></result>
+        <result property="enabled" column="ENABLED" jdbcType="BIT"></result>
+        <result property="isParent" column="ENABLED" jdbcType="BIT"></result>
+    </resultMap>
+
+    <resultMap id="deptWithChildren" type="com.craffic.convey.server.model.CvDept" extends="BaseResultMap">
+        <collection property="children" ofType="com.craffic.convey.server.model.CvDept"
+                    select="com.craffic.convey.server.dao.CvDeptMapper.queryAllDeptByParentId" column="id">
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        D.ID, D.NAME, D.PARENT_ID, D.DPT_PATH, D.ENABLED, D.IS_PARENT
+    </sql>
+
+    <select id="queryAllDeptByParentId" resultMap="deptWithChildren">
+        SELECT <include refid="Base_Column_List"/>
+          FROM CV_DEPT D
+         WHERE D.PARENT_ID = #{parentId}
+    </select>
+
+</mapper>
