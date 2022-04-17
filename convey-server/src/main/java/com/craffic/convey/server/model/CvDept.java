@@ -11,7 +11,7 @@ public class CvDept {
 
     private String name;
 
-    private String parentId;
+    private Integer parentId;
 
     private String deptPath;
 

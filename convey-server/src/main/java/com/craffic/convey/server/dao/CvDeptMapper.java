@@ -10,6 +10,15 @@ import java.util.List;
 @Mapper
 public interface CvDeptMapper {
 
+    CvDept queryNodeById(@Param("id") Integer id);
+
     List<CvDept> queryAllDeptByParentId(@Param("parentId") Integer parentId);
 
+    Integer addDept(CvDept dept);
+
+    Integer updateDept(CvDept dept);
+
+    Integer selectMaxId();
+
+    Integer deleteByList(List<Integer> deptIdList);
 }

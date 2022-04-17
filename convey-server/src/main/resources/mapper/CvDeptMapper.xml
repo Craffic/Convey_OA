@@ -8,7 +8,7 @@
         <result property="parentId" column="PARENT_ID" jdbcType="INTEGER"></result>
         <result property="deptPath" column="DPT_PATH" jdbcType="VARCHAR"></result>
         <result property="enabled" column="ENABLED" jdbcType="BIT"></result>
-        <result property="isParent" column="ENABLED" jdbcType="BIT"></result>
+        <result property="isParent" column="IS_PARENT" jdbcType="BIT"></result>
     </resultMap>
 
     <resultMap id="deptWithChildren" type="com.craffic.convey.server.model.CvDept" extends="BaseResultMap">
@@ -21,10 +21,94 @@
         D.ID, D.NAME, D.PARENT_ID, D.DPT_PATH, D.ENABLED, D.IS_PARENT
     </sql>
 
+    <insert id="addDept" parameterType="com.craffic.convey.server.model.CvDept">
+        insert into CV_DEPT
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    ID,
+                </if>
+                <if test="name != null and name != ''">
+                    NAME,
+                </if>
+                <if test="parentId != null">
+                    PARENT_ID,
+                </if>
+                <if test="deptPath != null and deptPath != ''">
+                    DPT_PATH,
+                </if>
+                <if test="enabled != null">
+                    ENABLED,
+                </if>
+                <if test="isParent != null">
+                    IS_PARENT,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id,jdbcType=NUMERIC},
+                </if>
+                <if test="name != null and name != ''">
+                    #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="parentId != null">
+                    #{parentId,jdbcType=NUMERIC},
+                </if>
+                <if test="deptPath != null and deptPath != ''">
+                    #{deptPath,jdbcType=VARCHAR},
+                </if>
+                <if test="enabled != null">
+                    #{enabled,jdbcType=BIT},
+                </if>
+                <if test="isParent != null">
+                    #{isParent,jdbcType=BIT},
+                </if>
+            </trim>
+    </insert>
+
+    <update id="updateDept" parameterType="com.craffic.convey.server.model.CvDept">
+        UPDATE CV_DEPT D
+            <set>
+                <if test="name != null and name != ''">
+                    D.NAME = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="parentId != null">
+                    D.PARENT_ID = #{parentId,jdbcType=NUMERIC},
+                </if>
+                <if test="deptPath != null and deptPath != ''">
+                    D.DPT_PATH = #{deptPath,jdbcType=VARCHAR},
+                </if>
+                <if test="enabled != null">
+                    D.ENABLED = #{enabled,jdbcType=BIT},
+                </if>
+                <if test="isParent != null">
+                    D.IS_PARENT = #{isParent,jdbcType=BIT},
+                </if>
+            </set>
+            WHERE D.ID = #{id,jdbcType=NUMERIC}
+    </update>
+
+    <delete id="deleteByList" parameterType="java.lang.Integer">
+        DELETE FROM CV_DEPT D WHERE 1 = 1
+         <if test="deptIdList != null and deptIdList.size > 0">
+             AND D.ID IN
+             <foreach collection="deptIdList" item="deptId" open="(" close=")" separator=",">
+                 #{deptId}
+             </foreach>
+         </if>
+    </delete>
+
     <select id="queryAllDeptByParentId" resultMap="deptWithChildren">
         SELECT <include refid="Base_Column_List"/>
           FROM CV_DEPT D
          WHERE D.PARENT_ID = #{parentId}
+    </select>
+
+    <select id="queryNodeById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM CV_DEPT D WHERE D.ID = #{id}
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Integer">
+        SELECT MAX(ID) MAX_ID FROM CV_DEPT
     </select>
 
 </mapper>
