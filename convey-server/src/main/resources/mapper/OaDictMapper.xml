@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.server.dao.OaDictMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.server.model.OaDict">
+        <id property="id" column="ID" jdbcType="VARCHAR"></id>
+        <result property="itemName" column="ITEM_NAME" jdbcType="VARCHAR"></result>
+        <result property="pKey" column="P_KEY" jdbcType="NUMERIC"></result>
+        <result property="key" column="KEY" jdbcType="NUMERIC"></result>
+        <result property="value" column="VALUE" jdbcType="VARCHAR"></result>
+        <result property="comments" column="COMMENTS" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        D.ID, D.ITEM_NAME, D.P_KEY, D.KEY, D.VALUE, D.COMMENTS
+    </sql>
+
+    <select id="queryDictListByItemName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+          FROM OA_DICT D
+         WHERE D.ITEM_NAME = #{itemName}
+    </select>
+</mapper>

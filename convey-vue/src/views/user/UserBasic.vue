@@ -60,17 +60,17 @@
           </el-row>
           <el-row style="margin-top: 10px">
             <el-col :span="6">所属部门:
-              <el-popover
+<!--              <el-popover
                 placement="right"
                 title="请选择部门"
                 width="200"
-                trigger="manual"
+                trigger="hover"
                 v-model="advDeptPopVisable">
                 <el-tree :data="departmentTree" :props="defaultProps" @node-click="advHandleNodeClick" default-expand-all></el-tree>
                 <div slot="reference" style="width: 150px;height: 26px;display: inline-flex;font-size: 13px;border: 1px solid #dedede;border-radius: 5px;
                                             cursor: pointer;align-items: center;padding-left: 8px;box-sizing: border-box" @click="advshowDepTree">{{inputDepName}}
                 </div>
-              </el-popover>
+              </el-popover>-->
               <el-button type="text" style="color: red; margin-left: 5px" icon="el-icon-delete" @click="clearSelectDept"></el-button>
             </el-col>
             <el-col :span="9">入职日期:
@@ -108,7 +108,7 @@
         <el-table-column prop="genderDesc" label="性别" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
-        <el-table-column prop="dptId" label="所属部门" width="120"></el-table-column>
+        <el-table-column prop="dept.name" label="所属部门" width="120"></el-table-column>
         <el-table-column prop="posId" label="职位" width="150"></el-table-column>
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
         <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
@@ -176,11 +176,13 @@
               <el-form-item label="职位：" prop="posId">
                 <el-input placeholder="请输入职位" v-model="user.posId" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
               </el-form-item>
-
             </el-col>
             <el-col :span="6">
               <el-form-item label="所属部门：" prop="dptId">
-                <el-input placeholder="请输入所属部门" v-model="user.dptId" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+                <el-popover placement="right" title="请选择部门" width="200" trigger="hover" v-model="selectDeptView">
+                  <el-tree :data="departmentTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+                  <div slot="reference" class="selectDeptDialog" @click="showDepView()">{{inputDepName}}</div>
+                </el-popover>
               </el-form-item>
             </el-col>
           </el-row>
@@ -196,8 +198,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="在职状态：" prop="workStat">
-                <el-input placeholder="请选择在职状态" v-model="user.workStat" prefix-icon="el-icon-edit" style="width: 125px" size="mini"></el-input>
+              <el-form-item label="状态：" prop="workStat">
+                <el-input placeholder="请选择状态" v-model="user.workStat" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -235,7 +237,8 @@
         },
         /*是否展示高级搜索框*/
         advancedisabledView: false,
-
+        /*部门选择弹出框*/
+        selectDeptView: false,
         /*导入数据*/
         importDataBtnIcon: 'el-icon-upload2',
         importDataBtnText: '导入',
@@ -246,7 +249,7 @@
         /*部门树结构体*/
         departmentTree:[],
         /*选中后的部门名称*/
-        inputDepName: '所属部门',
+        inputDepName: '',
         loading: false,
         total: 0,
         page:1,
@@ -267,7 +270,7 @@
           posId: 3,
           email: "yaosen@qq.com",
           phone: "14785559936",
-          dptmentId: 92,
+          dptId: 92,
           beginDate: "2017-01-02",
           workStatDesc: "1",
           workId: 1,
@@ -365,7 +368,6 @@
       tableDbEdit(row, column, cell, event) {
         this.showUserEditDialog(row);
       },
-
       /*清空user*/
       /*因为先进入编辑后，user有数据，然后再进入添加user需要清除掉信息*/
       setUserEmpty(){
@@ -430,6 +432,16 @@
       },
       /*添加用户 - 加载下拉框数据*/
       initSelectionData(){
+        if (!window.sessionStorage.getItem("depts")) {
+          getRequest('/dept/root').then(resp => {
+            if (resp && resp.code == 200000) {
+              this.departmentTree = resp.obj;
+              window.sessionStorage.setItem("depts", JSON.stringify(resp.obj));
+            }
+          })
+        } else {
+          this.departmentTree = JSON.parse(window.sessionStorage.getItem("depts"));
+        }
         // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
         /*if (!window.sessionStorage.getItem("nations")) {
           getRequest('/employee/basic/nations').then(resp => {
@@ -459,15 +471,7 @@
         } else {
           this.joblevels = JSON.parse(window.sessionStorage.getItem("joblevels"));
         }
-        if (!window.sessionStorage.getItem("deps")) {
-          getRequest('/employee/basic/deps').then(resp => {
-            if (resp) {
-              this.departmentTree = resp;
-            }
-          })
-        } else {
-          this.departmentTree = JSON.parse(window.sessionStorage.getItem("deps"));
-        }*/
+        */
       },
       /*初始化职位下拉框数据，在弹出添加对话框时调用*/
       /*initPositions(){
@@ -518,11 +522,9 @@
           // 普通搜索
           url += '&acct=' + this.keyword;
         }
-        console.log(url);
         getRequest(url).then(resp => {
           this.loading = false;
           if (resp && resp.code == 200000) {
-            console.log();
             this.users = resp.obj.list;
             this.total = resp.obj.totalNum;
           }
@@ -542,30 +544,35 @@
       },
       /*弹出修改用户对话框*/
       showUserEditDialog(data) {
+        console.log("data------------");
+        console.log(data);
         this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;
         this.user = data;
-        // this.inputDepName = data.department.name;
+        if (data.dept) {
+          this.inputDepName = data.dept.name;
+        } else {
+          this.inputDepName = '';
+        }
       },
       /*生成工号*/
       generateWorkID(){
         getRequest('/user/maxWorkID').then(resp => {
           this.loading = false;
           if (resp && resp.code == 200000) {
-            console.log(resp.obj);
             this.user.workId = resp.obj;
           }
         })
       },
       /*弹出部门树弹框*/
       showDepView(){
-        this.departmentVisable = !this.departmentVisable
+        this.selectDeptView = !this.selectDeptView;
       },
       /*点击部门书*/
       handleNodeClick(data) {
         this.inputDepName = data.name;
-        this.user.departmentId = data.id;
+        this.user.dptId = data.id;
         this.departmentVisable = !this.departmentVisable;
       },
       /*删除用户*/
@@ -622,5 +629,18 @@
   {
     transform: translateX(10px);
     opacity: 0;
+  }
+  .selectDeptDialog {
+    width: 180px;
+    height: 26px;
+    display: inline-flex;
+    font-size: 13px;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    padding-left: 8px;
+    box-sizing: border-box;
+    align-items: center;
   }
 </style>

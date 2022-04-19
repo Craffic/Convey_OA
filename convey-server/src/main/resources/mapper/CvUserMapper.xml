@@ -25,6 +25,13 @@
         <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
         <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
     </resultMap>
+
+    <resultMap id="userInfoMap" type="com.craffic.convey.server.model.CvUser" extends="BaseResultMap">
+        <association property="dept" javaType="com.craffic.convey.server.model.CvDept">
+            <id column="DID" property="id" jdbcType="NUMERIC"/>
+            <result column="DNAME" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
     
     <resultMap id="profileMap" type="com.craffic.convey.server.model.CvUser" extends="BaseResultMap">
         <collection property="roles" ofType="com.craffic.convey.server.model.CvRole">
@@ -37,6 +44,11 @@
     <sql id="BaseColumns">
         U.ID, U.WORK_ID, U.IDCARD_NO, U.ACCT, U.NAME_ZH, U.GENDER, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
         U.BEGIN_DATE, U.CONVERT_DATE, U.WORK_STAT, U.LEAVE_DATE, U.CREATED_DATE, U.CREATED_BY, U.UPATE_DATE, U.UPDATE_BY
+    </sql>
+
+    <sql id="columnsWithDept">
+        U.ID, U.WORK_ID, U.IDCARD_NO, U.ACCT, U.NAME_ZH, U.GENDER, U.PASSWORD, U.PHONE, U.EMAIL, U.ICON_URL, U.POS_ID, U.DPT_ID, U.REMARK,
+        U.BEGIN_DATE, U.CONVERT_DATE, U.WORK_STAT, U.LEAVE_DATE, U.CREATED_DATE, U.CREATED_BY, U.UPATE_DATE, U.UPDATE_BY, D.ID DID, D.NAME DNAME
     </sql>
 
     <insert id="addUser" parameterType="com.craffic.convey.server.model.CvUser">
@@ -259,11 +271,11 @@
         SELECT <include refid="BaseColumns" /> FROM CV_USER U WHERE U.ACCT = #{acct}
     </select>
 
-    <select id="queryUsersByCondition" resultMap="BaseResultMap">
+    <select id="queryUsersByCondition" resultMap="userInfoMap">
         SELECT * FROM (
         　　SELECT A.*, rownum r FROM (
-        　　　　SELECT <include refid="BaseColumns" />
-                 FROM CV_USER U
+        　　　　SELECT <include refid="columnsWithDept" />
+        FROM CV_USER U LEFT JOIN CV_DEPT D ON D.ID = U.DPT_ID
                 WHERE 1=1
                   <if test="user.acct != null and user.acct != ''">
                       AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%') OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))

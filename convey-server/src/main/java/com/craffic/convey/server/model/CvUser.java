@@ -124,6 +124,11 @@ public class CvUser implements UserDetails {
     private List<CvRole> roles;
 
     /**
+     * 所属部门
+     */
+    private CvDept dept;
+
+    /**
      * 返回用户对应的权限
      * @return
      */

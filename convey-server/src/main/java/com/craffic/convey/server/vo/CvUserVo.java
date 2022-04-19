@@ -1,6 +1,7 @@
 package com.craffic.convey.server.vo;
 
 import com.craffic.convey.common.vo.BaseVO;
+import com.craffic.convey.server.model.CvDept;
 import com.craffic.convey.server.model.CvRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -137,5 +138,10 @@ public class CvUserVo extends BaseVO {
      * 拥有的角色
      */
     private List<CvRole> roles;
+
+    /**
+     * 所属部门
+     */
+    private CvDept dept;
 
 }
