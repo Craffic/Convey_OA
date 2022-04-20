@@ -20,4 +20,10 @@
           FROM OA_DICT D
          WHERE D.ITEM_NAME = #{itemName}
     </select>
+
+    <select id="queryDictByKey" resultType="com.craffic.convey.server.model.OaDict">
+        SELECT <include refid="Base_Column_List"/>
+        FROM OA_DICT D
+        WHERE D.KEY = #{key,jdbcType=NUMERIC} AND D.ITEM_NAME = #{itemName,jdbcType=VARCHAR}
+    </select>
 </mapper>

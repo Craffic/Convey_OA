@@ -75,6 +75,11 @@ public class CvUserVo extends BaseVO {
     private Long posId;
 
     /**
+     * 职位描述
+     */
+    private String posDesc;
+
+    /**
      * 所属部门id
      */
     private Long dptId;

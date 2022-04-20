@@ -11,4 +11,5 @@ public interface OaDictMapper {
 
     List<OaDict> queryDictListByItemName(@Param("itemName") String itemName);
 
+    OaDict queryDictByKey(@Param("key") Long key, @Param("itemName") String itemName);
 }

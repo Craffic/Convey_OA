@@ -109,7 +109,7 @@
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
         <el-table-column prop="dept.name" label="所属部门" width="120"></el-table-column>
-        <el-table-column prop="posId" label="职位" width="150"></el-table-column>
+        <el-table-column prop="posDesc" label="职位" width="150"></el-table-column>
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
         <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
         <el-table-column prop="workStatDesc" label="在职状态" width="150"></el-table-column>
@@ -174,7 +174,9 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="职位：" prop="posId">
-                <el-input placeholder="请输入职位" v-model="user.posId" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+                <el-select v-model="user.posId" placeholder="职位" style="width: 150px" size="mini" change="change">
+                  <el-option v-for="item in this.workStatEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -252,6 +254,8 @@
         departmentTree:[],
         /*在职状态*/
         workStatEnum: [],
+        /*职位*/
+        positionEnum: [],
         /*选中后的部门名称*/
         inputDepName: '',
         loading: false,
@@ -444,6 +448,17 @@
           })
         } else {
           this.workStatEnum = JSON.parse(window.sessionStorage.getItem("workStat"));
+        }
+        /*职位*/
+        if (!window.sessionStorage.getItem("position")) {
+          getRequest('/dict/item_name?item_name=POSITION').then(resp => {
+            if (resp && resp.code == 200000) {
+              this.positionEnum = resp.obj;
+              window.sessionStorage.setItem("position", JSON.stringify(resp.obj));
+            }
+          })
+        } else {
+          this.positionEnum = JSON.parse(window.sessionStorage.getItem("position"));
         }
         // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
         /*if (!window.sessionStorage.getItem("nations")) {

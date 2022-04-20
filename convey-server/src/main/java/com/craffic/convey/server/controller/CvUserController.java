@@ -5,8 +5,10 @@ import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.enums.GenderEnum;
 import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvUser;
+import com.craffic.convey.server.model.OaDict;
 import com.craffic.convey.server.req.CvUserReq;
 import com.craffic.convey.server.service.CvUserService;
+import com.craffic.convey.server.service.OaDictService;
 import com.craffic.convey.server.vo.CvUserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,12 @@ import java.util.Map;
 @RequestMapping("/user")
 public class CvUserController {
 
+    public static final String POSITION = "POSITION";
+
     @Autowired
     private CvUserService userService;
+    @Autowired
+    private OaDictService dictService;
 
     @GetMapping("/query_all")
     public ResponseBody<ListVo<CvUserVo>> queryAllUsers(){
@@ -59,6 +65,9 @@ public class CvUserController {
             userVo.setWorkStatDesc(workStatEnum.desc());
             GenderEnum genderEnum = GenderEnum.parseByValue(cvUser.getGender());
             userVo.setGenderDesc(genderEnum.desc());
+            // 转换职位
+            OaDict position = dictService.queryDictByKey(cvUser.getPosId(), POSITION);
+            userVo.setPosDesc(position.getValue());
             userVoList.add(userVo);
         });
         ListVo<CvUserVo> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());

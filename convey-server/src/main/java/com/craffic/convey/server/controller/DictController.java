@@ -27,4 +27,13 @@ public class DictController {
         }
         return ResponseBody.failure("400109", "查询字典表失败");
     }
+
+    @GetMapping("/query/item")
+    public ResponseBody<OaDict> queryItemByKey(@RequestParam("key") Long key, @RequestParam("item_name") String itemName){
+        if (StringUtils.hasText(itemName) && key != null) {
+            OaDict dict = dictService.queryDictByKey(key, itemName);
+            return ResponseBody.success(dict);
+        }
+        return ResponseBody.failure("400109", "查询字典表失败");
+    }
 }

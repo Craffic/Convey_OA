@@ -17,4 +17,11 @@ public class OaDictService {
         return dictMapper.queryDictListByItemName(itemName);
     }
 
+    /**
+     * 根据key和item_name查询具体的字典项
+     */
+    public OaDict queryDictByKey(Long key, String itemName){
+        return dictMapper.queryDictByKey(key, itemName);
+    }
+
 }
