@@ -39,7 +39,7 @@ export const formatRoutes = (routes) => {
                   require(['../views/user/' + component + '.vue'], resolve);
                 } else if (component.startsWith("Social")) {
                   require(['../views/social/' + component + '.vue'], resolve);
-                } else if (component.startsWith("Department")) {
+                } else if (component.startsWith("Sys")) {
                   require(['../views/sys/' + component + '.vue'], resolve);
                 }
             }
