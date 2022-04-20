@@ -199,7 +199,9 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="状态：" prop="workStat">
-                <el-input placeholder="请选择状态" v-model="user.workStat" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+                <el-select v-model="user.workStat" placeholder="状态" style="width: 150px" size="mini" change="change">
+                    <el-option v-for="item in this.workStatEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -248,6 +250,8 @@
         users: [],
         /*部门树结构体*/
         departmentTree:[],
+        /*在职状态*/
+        workStatEnum: [],
         /*选中后的部门名称*/
         inputDepName: '',
         loading: false,
@@ -262,20 +266,7 @@
         joblevels: [],
         positions: [],
         tiptopDegree: ['博士后', '博士', '研究生', '本科', '大专', '高中', '中专', '初中', '小学', '其他'],
-        user:{
-          acct: "yaoSen",
-          nameZh: "姚森",
-          genderDesc: "M",
-          idCardNo: "610122199102058952",
-          posId: 3,
-          email: "yaosen@qq.com",
-          phone: "14785559936",
-          dptId: 92,
-          beginDate: "2017-01-02",
-          workStatDesc: "1",
-          workId: 1,
-          convertDate: "2017-04-02"
-        },
+        user:{},
         /*添加页面 - 部门树弹框*/
         departmentVisable: false,
         /*高级搜索 - 部门树弹框开关*/
@@ -432,6 +423,7 @@
       },
       /*添加用户 - 加载下拉框数据*/
       initSelectionData(){
+        /*部门树*/
         if (!window.sessionStorage.getItem("depts")) {
           getRequest('/dept/root').then(resp => {
             if (resp && resp.code == 200000) {
@@ -441,6 +433,17 @@
           })
         } else {
           this.departmentTree = JSON.parse(window.sessionStorage.getItem("depts"));
+        }
+        /*在职状态*/
+        if (!window.sessionStorage.getItem("workStat")) {
+          getRequest('/dict/item_name?item_name=WORK_STAT').then(resp => {
+            if (resp && resp.code == 200000) {
+              this.workStatEnum = resp.obj;
+              window.sessionStorage.setItem("workStat", JSON.stringify(resp.obj));
+            }
+          })
+        } else {
+          this.workStatEnum = JSON.parse(window.sessionStorage.getItem("workStat"));
         }
         // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
         /*if (!window.sessionStorage.getItem("nations")) {
@@ -544,8 +547,6 @@
       },
       /*弹出修改用户对话框*/
       showUserEditDialog(data) {
-        console.log("data------------");
-        console.log(data);
         this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;

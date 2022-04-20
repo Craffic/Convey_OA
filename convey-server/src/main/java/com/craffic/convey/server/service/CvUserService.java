@@ -74,7 +74,7 @@ public class CvUserService implements UserDetailsService {
         userReq.setEndRecord(userReq.getPage() * userReq.getSize());
         Long total = userMapper.queryTotalNum(userReq);
         if (total <= 0) {
-            return new ListVo<>(null, 0);
+            return new ListVo<>(new ArrayList<>(), 0);
         }
         List<CvUser> userList = userMapper.queryUsersByCondition(userReq);
         return new ListVo<>(userList, total.intValue());

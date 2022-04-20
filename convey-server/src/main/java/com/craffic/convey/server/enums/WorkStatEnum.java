@@ -2,7 +2,9 @@ package com.craffic.convey.server.enums;
 
 public enum WorkStatEnum implements BaseEnum<Integer>{
     LEAVE_WORK(0, "离职"),
-    ON_WORK(1, "在职");
+    ON_WORK(1, "在职"),
+    LEAVING(2, "请假"),
+    BUSI_TRIP(3, "出差"),;
 
     Integer val;
     String desc;
