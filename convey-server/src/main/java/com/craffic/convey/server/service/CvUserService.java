@@ -91,6 +91,9 @@ public class CvUserService implements UserDetailsService {
      * 添加用户
      */
     public Integer addUser(CvUser user){
+        // 初始化密码
+        String encPassword = PasswordEncoder.encode("123456");
+        user.setPassword(encPassword);
         return userMapper.addUser(user);
     }
 

@@ -174,8 +174,8 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="职位：" prop="posId">
-                <el-select v-model="user.posId" placeholder="职位" style="width: 150px" size="mini" change="change">
-                  <el-option v-for="item in this.workStatEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
+                <el-select v-model="user.posId" placeholder="职位" style="width: 150px" size="mini">
+                  <el-option v-for="item in this.positionEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -201,7 +201,7 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="状态：" prop="workStat">
-                <el-select v-model="user.workStat" placeholder="状态" style="width: 150px" size="mini" change="change">
+                <el-select v-model="user.workStat" placeholder="状态" style="width: 150px" size="mini">
                     <el-option v-for="item in this.workStatEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
                 </el-select>
               </el-form-item>
@@ -460,36 +460,6 @@
         } else {
           this.positionEnum = JSON.parse(window.sessionStorage.getItem("position"));
         }
-        // 从sessionStorage里拿下拉框数据，如果从sessionStorage里拿不到数据，则重新调用接口获取数据
-        /*if (!window.sessionStorage.getItem("nations")) {
-          getRequest('/employee/basic/nations').then(resp => {
-            if (resp) {
-              this.nations = resp;
-            }
-          })
-        } else {
-          // 从sessionStorage里有数据的，就从从sessionStorage里赋值给表单变量
-          this.nations = JSON.parse(window.sessionStorage.getItem("nations"));
-        }
-        if (!window.sessionStorage.getItem("politicsstatus")) {
-          getRequest('/employee/basic/politicsstatus').then(resp => {
-            if (resp) {
-              this.politicsstatus = resp;
-            }
-          })
-        } else {
-          this.politicsstatus = JSON.parse(window.sessionStorage.getItem("politicsstatus"));
-        }
-        if (!window.sessionStorage.getItem("joblevels")) {
-          getRequest('/employee/basic/joblevels').then(resp => {
-            if (resp) {
-              this.joblevels = resp;
-            }
-          })
-        } else {
-          this.joblevels = JSON.parse(window.sessionStorage.getItem("joblevels"));
-        }
-        */
       },
       /*初始化职位下拉框数据，在弹出添加对话框时调用*/
       /*initPositions(){
@@ -562,6 +532,8 @@
       },
       /*弹出修改用户对话框*/
       showUserEditDialog(data) {
+        console.log(this.workStatEnum);
+        console.log(this.positionEnum);
         this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;
