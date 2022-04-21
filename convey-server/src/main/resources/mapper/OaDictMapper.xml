@@ -26,4 +26,8 @@
         FROM OA_DICT D
         WHERE D.KEY = #{key,jdbcType=NUMERIC} AND D.ITEM_NAME = #{itemName,jdbcType=VARCHAR}
     </select>
+
+    <select id="queryAllItemNameDist" resultType="java.lang.String">
+        SELECT DISTINCT(D.ITEM_NAME) ITEM_NAME FROM OA_DICT D
+    </select>
 </mapper>

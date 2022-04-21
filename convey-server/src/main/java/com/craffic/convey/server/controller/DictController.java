@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,19 @@ public class DictController {
 
     @Autowired
     OaDictService dictService;
+
+    @GetMapping("/item_name/list")
+    public ResponseBody<List<OaDict>> queryAllItemNameDist(){
+        List<String> itemNameList = dictService.queryAllItemNameDist();
+        List<OaDict> dictList = new ArrayList<>();
+        for (int i = 0; i < itemNameList.size(); i++) {
+            OaDict dict = new OaDict();
+            dict.setKey(Long.valueOf(i));
+            dict.setItemName(itemNameList.get(i));
+            dictList.add(dict);
+        }
+        return ResponseBody.success(dictList);
+    }
 
     @GetMapping("item_name")
     public ResponseBody<List<OaDict>> queryItemsByName(@RequestParam("item_name") String itemName){

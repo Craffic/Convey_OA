@@ -24,4 +24,11 @@ public class OaDictService {
         return dictMapper.queryDictByKey(key, itemName);
     }
 
+    /**
+     * 查询出所有字典项列表
+     * @return
+     */
+    public List<String> queryAllItemNameDist() {
+        return dictMapper.queryAllItemNameDist();
+    }
 }
