@@ -30,4 +30,55 @@
     <select id="queryAllItemNameDist" resultType="java.lang.String">
         SELECT DISTINCT(D.ITEM_NAME) ITEM_NAME FROM OA_DICT D
     </select>
+
+    <select id="queryDistPNodeByItemName" resultType="com.craffic.convey.server.model.OaDict">
+        SELECT DISTINCT(NVL(D.P_KEY, 0)) KEY, D1.VALUE FROM OA_DICT D LEFT JOIN OA_DICT D1 ON D.P_KEY = D1.KEY WHERE D.ITEM_NAME = #{itemName}
+    </select>
+
+    <select id="queryTotalNum" resultType="java.lang.Long">
+        SELECT count(*) cnt
+        FROM OA_DICT D LEFT JOIN OA_DICT D1 ON D.P_KEY = D1.KEY
+        WHERE 1=1
+        <if test="dict.itemName != null and dict.itemName != ''">
+            AND D.ITEM_NAME = #{dict.itemName}
+        </if>
+        <if test="dict.pKey != null">
+            AND D.P_KEY = #{dict.pKey}
+        </if>
+        <if test="dict.key != null">
+            AND D.KEY = #{dict.key}
+        </if>
+        <if test="dict.value != null and dict.value != ''">
+            AND D.VALUE = #{dict.value}
+        </if>
+        <if test="dict.comments != null and dict.comments != ''">
+            AND D.COMMENTS = #{dict.value}
+        </if>
+    </select>
+
+    <select id="queryByPage" resultType="com.craffic.convey.server.vo.OaDictVo">
+        SELECT * FROM (
+        　　SELECT A.*, rownum r FROM (
+        　　　　SELECT D.ID, D.ITEM_NAME, D1.KEY P_KEY, D1.VALUE P_VALUE, D.KEY, D.VALUE
+                FROM OA_DICT D LEFT JOIN OA_DICT D1 ON D.P_KEY = D1.KEY AND D.ITEM_NAME = D1.ITEM_NAME
+               WHERE 1=1
+               <if test="dict.itemName != null and dict.itemName != ''">
+                   AND D.ITEM_NAME = #{dict.itemName}
+               </if>
+               <if test="dict.pKey != null">
+                   AND D.P_KEY = #{dict.pKey}
+               </if>
+               <if test="dict.key != null">
+                   AND D.KEY = #{dict.key}
+               </if>
+               <if test="dict.value != null and dict.value != ''">
+                   AND D.VALUE = #{dict.value}
+               </if>
+               <if test="dict.comments != null and dict.comments != ''">
+                   AND D.COMMENTS = #{dict.comments}
+               </if>
+            ORDER BY D.KEY
+        　　) A WHERE rownum &lt;= #{dict.endRecord,jdbcType=NUMERIC}
+        ) B WHERE r > #{dict.startRecord,jdbcType=NUMERIC}
+    </select>
 </mapper>

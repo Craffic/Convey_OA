@@ -1,8 +1,11 @@
 package com.craffic.convey.server.controller;
 
 import com.craffic.convey.common.response.ResponseBody;
+import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.model.OaDict;
+import com.craffic.convey.server.req.OaDictReq;
 import com.craffic.convey.server.service.OaDictService;
+import com.craffic.convey.server.vo.OaDictVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,5 +52,24 @@ public class DictController {
             return ResponseBody.success(dict);
         }
         return ResponseBody.failure("400109", "查询字典表失败");
+    }
+
+    @GetMapping("/pNode")
+    public ResponseBody<List<OaDict>> queryDistPNodeByItemName(@RequestParam("item_name") String itemName){
+        List<OaDict> pNodeList = dictService.queryDistPNodeByItemName(itemName);
+        return ResponseBody.success(pNodeList);
+    }
+
+    /**
+     * 查询字典表功能
+     */
+    @GetMapping(value = "/query")
+    public ResponseBody<ListVo<OaDictVo>> queryDictByPage(OaDictReq req){
+        ListVo<OaDictVo> dictListVo = dictService.queryDictByPage(req);
+        Integer totalNum = dictListVo.getTotalNum();
+        if (totalNum <= 0){
+            return ResponseBody.success(new ListVo<>(null, 0));
+        }
+        return ResponseBody.success(dictListVo);
     }
 }
