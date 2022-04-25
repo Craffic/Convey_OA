@@ -15,6 +15,24 @@
         D.ID, D.ITEM_NAME, D.P_KEY, D.KEY, D.VALUE, D.COMMENTS
     </sql>
 
+    <insert id="addDict" parameterType="com.craffic.convey.server.req.OaDictReq">
+        INSERT INTO OA_DICT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemName != null and itemName != ''">
+                P_KEY,
+            </if>
+            <if test="pKey != null">
+                P_KEY,
+            </if>
+            <if test="key != null">
+                KEY,
+            </if>
+            <if test="pKey != null">
+                P_KEY,
+            </if>
+        </trim>
+    </insert>
+
     <select id="queryDictListByItemName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>
           FROM OA_DICT D
@@ -60,7 +78,7 @@
         SELECT * FROM (
         　　SELECT A.*, rownum r FROM (
         　　　　SELECT D.ID, D.ITEM_NAME, D1.KEY P_KEY, D1.VALUE P_VALUE, D.KEY, D.VALUE
-                FROM OA_DICT D LEFT JOIN OA_DICT D1 ON D.P_KEY = D1.KEY AND D.ITEM_NAME = D1.ITEM_NAME
+                FROM OA_DICT D LEFT JOIN OA_DICT D1 ON D.P_KEY = D1.KEY
                WHERE 1=1
                <if test="dict.itemName != null and dict.itemName != ''">
                    AND D.ITEM_NAME = #{dict.itemName}

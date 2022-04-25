@@ -22,4 +22,6 @@ public interface OaDictMapper {
     Long queryTotalNum(@Param("dict") OaDictReq req);
 
     List<OaDictVo> queryByPage(@Param("dict") OaDictReq req);
+
+    Integer addDict(OaDictReq req);
 }

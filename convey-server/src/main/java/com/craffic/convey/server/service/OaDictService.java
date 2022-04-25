@@ -56,4 +56,8 @@ public class OaDictService {
         List<OaDictVo> dictList = dictMapper.queryByPage(req);
         return new ListVo(dictList, num.intValue());
     }
+
+    public int addDict(OaDictReq req) {
+        return dictMapper.addDict(req);
+    }
 }

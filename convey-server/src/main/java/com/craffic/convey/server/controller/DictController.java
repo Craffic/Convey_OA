@@ -8,10 +8,7 @@ import com.craffic.convey.server.service.OaDictService;
 import com.craffic.convey.server.vo.OaDictVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,5 +68,16 @@ public class DictController {
             return ResponseBody.success(new ListVo<>(null, 0));
         }
         return ResponseBody.success(dictListVo);
+    }
+
+    /**
+     * 新增字典值
+     */
+    @PostMapping("/add")
+    public ResponseBody<String> addDict(OaDictReq req){
+        if (dictService.addDict(req) == 1){
+            return ResponseBody.success("新增成功");
+        }
+        return ResponseBody.failure("400109", "查询字典表失败");
     }
 }

@@ -8,6 +8,7 @@
         <el-option v-for="item in this.pNodes" :key="item.key" :label="item.value" :value="{key: item.key, value: item.value}"></el-option>
       </el-select>
       <el-button style="padding-left: 10px" size="mini" type="primary" icon="el-icon-search" @click="initDicts()">查询</el-button>
+      <el-button style="padding-left: 10px" size="mini" type="success" icon="el-icon-circle-plus-outline" @click="showAddDictView()">添加</el-button>
     </div>
     <div style="margin-top: 20px">
       <el-table border style="width: 70%" :data="dictList"
@@ -39,6 +40,56 @@
         </el-pagination>
       </div>
     </div>
+
+    <!--新增字典值对话框-->
+    <el-dialog :visible.sync="showAddDictFlag" title="新增字典值" width="60%">
+      <div>
+        <el-form ref="dictForm">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="字典项：" prop="addItemName">
+                <el-select filterable v-model="addItemName" placeholder="字典项" style="width: 180px; padding-right: 10px" size="mini">
+                  <el-option v-for="item in this.itemNameEnum" :key="item.value" :label="item.itemName" :value="item.itemName"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="pKey值：" prop="addPKey">
+                <el-input placeholder="pKey值" v-model="addPKey" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="上级字典值：" prop="addPValue">
+                <el-input placeholder="上级字典值" v-model="addPValue" prefix-icon="el-icon-edit" style="width: 130px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+                <el-form-item label="key值：" prop="addKey">
+                  <el-input placeholder="key值" v-model="addKey" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="5">
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="字典值：" prop="addValue">
+                <el-input placeholder="字典值" v-model="addValue" prefix-icon="el-icon-edit" style="width: 130px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="备注：" prop="addComments">
+                <el-input placeholder="备注" v-model="addComments" prefix-icon="el-icon-edit" style="width: 130px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="showAddDictFlag = false">取 消</el-button>
+            <el-button type="primary" @click="addOrUpdateDict()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -65,7 +116,16 @@ export default {
       /*分页参数*/
       total: 0,
       page:1,
-      size: 10
+      size: 10,
+      /*新增字典值*/
+      showAddDictFlag: false,
+      /*新增表单字典*/
+      addItemName: '',
+      addPKey: '',
+      addPValue: '',
+      addKey: '',
+      addValue: '',
+      addComments: ''
     }
   },
   methods: {
@@ -109,10 +169,27 @@ export default {
           this.total = resp.obj.totalNum;
         }
       })
+      this.page = 1;
+      this.size = 10;
     },
     /*父节点改变*/
     pNodeChange(pNode){
       this.p_key = pNode.key;
+    },
+    /*打开新增字典表对话框*/
+    showAddDictView(){
+      this.showAddDictFlag = true,
+      this.addItemName = this.item_name;
+      this.addPKey = this.p_key;
+      this.addPValue = this.p_name.value;
+    },
+    addOrUpdateDict(){
+      if (this.addKey && this.addValue) {
+        // 字典键值对不为空就是修改
+      } else {
+        // 为空则是新增
+
+      }
     }
   },
   /*加载页面*/
