@@ -31,64 +31,54 @@
       <transition name="slide-fade">
         <div class="advanceCondition" v-show="advancedisabledView">
           <el-row style="margin-top: 10px">
-            <el-col :span="5">政治面貌:
-              <el-select v-model="searchValue.politicId" placeholder="政治面貌" size="mini" style="width: 130px;">
-                <el-option v-for="item in politicsstatus" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              </el-select>
+            <el-col :span="4">身份证号:
+              <el-input v-model="advSearch.idCardNo" size="mini" style="width: 150px"></el-input>
             </el-col>
-            <el-col :span="4">民族:
-              <el-select v-model="searchValue.nationId" placeholder="民族" size="mini" style="width: 130px;">
-                <el-option v-for="item in nations" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="4">职位:
-              <el-select v-model="searchValue.posId" placeholder="职位" size="mini" style="width: 130px;">
-                <el-option v-for="item in positions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="4">职称:
-              <el-select v-model="searchValue.jobLevelId" placeholder="职称" size="mini" style="width: 130px;">
-                <el-option v-for="item in joblevels" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="7">聘用形式:
-              <el-radio-group v-model="searchValue.engageForm">
-                <el-radio label="劳动合同">劳动合同</el-radio>
-                <el-radio label="劳务合同">劳务合同</el-radio>
+            <el-col :span="3">性别:
+              <el-radio-group v-model="advSearch.gender">
+                  <el-radio label="M">男</el-radio>
+                  <el-radio label="F">女</el-radio>
               </el-radio-group>
+            </el-col>
+            <el-col :span="5">毕业院校:
+              <el-select v-model="advSearch.granduteSchool" placeholder="毕业院校" size="mini" style="width: 200px;">
+                <el-option v-for="item in this.granduteSchools" :key="item.key" :label="item.value" :value="item.key"></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6">出生日期:
+              <el-date-picker style="width: 300px" v-model="advSearch.beginDateScope" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
+                 range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              </el-date-picker>
             </el-col>
           </el-row>
           <el-row style="margin-top: 10px">
-            <el-col :span="6">所属部门:
-<!--              <el-popover
-                placement="right"
-                title="请选择部门"
-                width="200"
-                trigger="hover"
-                v-model="advDeptPopVisable">
-                <el-tree :data="departmentTree" :props="defaultProps" @node-click="advHandleNodeClick" default-expand-all></el-tree>
-                <div slot="reference" style="width: 150px;height: 26px;display: inline-flex;font-size: 13px;border: 1px solid #dedede;border-radius: 5px;
-                                            cursor: pointer;align-items: center;padding-left: 8px;box-sizing: border-box" @click="advshowDepTree">{{inputDepName}}
-                </div>
-              </el-popover>-->
+            <el-col :span="4">所属部门:
+              <el-popover placement="right" title="请选择部门" width="200" trigger="manual">
+                <el-tree :props="defaultProps" @node-click="advHandleNodeClick" default-expand-all></el-tree>
+                  <div slot="reference" style="width: 150px;height: 26px;display: inline-flex;font-size: 13px;border: 1px solid #dedede;border-radius: 5px;
+                                             cursor: pointer;align-items: center;padding-left: 8px;box-sizing: border-box" @click="advshowDepTree">{{inputDepName}}
+                  </div>
+              </el-popover>
               <el-button type="text" style="color: red; margin-left: 5px" icon="el-icon-delete" @click="clearSelectDept"></el-button>
             </el-col>
-            <el-col :span="9">入职日期:
-              <el-date-picker
-                v-model="searchValue.beginDateScope"
-                type="daterange"
-                size="mini"
-                unlink-panels
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-              </el-date-picker>
+            <el-col :span="3">年龄:
+                <el-input v-model="advSearch.ageStart" size="mini" style="width: 50px"></el-input>-
+                <el-input v-model="advSearch.ageEnd" size="mini" style="width: 50px"></el-input>
+              </el-col>
+            <el-col :span="5">职位:
+              <el-select v-model="advSearch.posId" placeholder="职位" size="mini" style="width: 230px">
+                  <!--<el-option v-for="item in positions" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
+              </el-select>
             </el-col>
-            <el-col :span="5" :offset="4">
-              <el-button size="mini" @click="resetCondition">重置条件</el-button>
+            <el-col :span="4">职称:
+              <el-select v-model="advSearch.jobLevelId" placeholder="职称" size="mini" style="width: 180px;">
+                <!--<el-option v-for="item in joblevels" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
+              </el-select>
+            </el-col>
+            <el-col :span="6">
               <el-button size="mini" icon="el-icon-search" type="primary" @click="initUsers('advanced')">搜索</el-button>
-            </el-col>
+              <el-button size="mini" @click="resetCondition">重置条件</el-button>
+          </el-col>
           </el-row>
         </div>
       </transition>
@@ -230,14 +220,13 @@
     data() {
       return {
         /*定义一个高级搜索条件对象*/
-        searchValue: {
-          politicId: null,
-          nationId: null,
-          jobLevelId: null,
-          posId: null,
-          engageForm: null,
-          departmentId: null,
-          beginDateScope: null
+        advSearch: {
+          idCardNo: '',
+          gender: '',
+          ageStart: '',
+          ageEnd: '',
+          posId: '',
+          granduteSchool: ''
         },
         /*是否展示高级搜索框*/
         advancedisabledView: false,
@@ -265,11 +254,8 @@
         keyword: '',
         userDialogVisible: false,
         /*下拉框集合*/
-        nations: [],
-        politicsstatus: [],
-        joblevels: [],
-        positions: [],
-        tiptopDegree: ['博士后', '博士', '研究生', '本科', '大专', '高中', '中专', '初中', '小学', '其他'],
+        /*毕业院校*/
+        granduteSchools: [],
         user:{},
         /*添加页面 - 部门树弹框*/
         departmentVisable: false,
@@ -307,14 +293,12 @@
     methods: {
       /*重置高级查询条件*/
       resetCondition(){
-        this.searchValue = {
-          politicId: null,
-          nationId: null,
-          jobLevelId: null,
-          posId: null,
-          engageForm: null,
-          departmentId: null,
-          beginDateScope: null
+        this.advSearch = {
+          idCardNo: null,
+          gender: null,
+          ageStart: null,
+          ageEnd: null,
+          posId: null
         };
         this.inputDepName = null;
       },
@@ -330,7 +314,7 @@
       advHandleNodeClick(data){
         // 给所属部门赋值
         this.inputDepName = data.name;
-        this.searchValue.departmentId = data.id;
+        this.advSearch.departmentId = data.id;
         this.advDeptPopVisable = !this.advDeptPopVisable;
       },
       /*上传文件前的钩子函数*/
@@ -427,6 +411,8 @@
       },
       /*添加用户 - 加载下拉框数据*/
       initSelectionData(){
+        /*初始化毕业院校*/
+        this.initGranduteSchool();
         /*部门树*/
         if (!window.sessionStorage.getItem("depts")) {
           getRequest('/dept/root').then(resp => {
@@ -461,14 +447,6 @@
           this.positionEnum = JSON.parse(window.sessionStorage.getItem("position"));
         }
       },
-      /*初始化职位下拉框数据，在弹出添加对话框时调用*/
-      /*initPositions(){
-        getRequest('/employee/basic/positions').then(resp => {
-          if (resp) {
-            this.positions = resp;
-          }
-        })
-      },*/
       /*当前页*/
       currentChange(currentPage) {
         this.page = currentPage;
@@ -485,26 +463,11 @@
         let url = '/user/query/?page=' + this.page + '&size=' + this.size;
         if (type && type == 'advanced') {
           // 高级搜索
-          if (this.searchValue.politicId) {
-            url += '&politicId=' + this.searchValue.politicId;
+          if (this.advSearch.gender) {
+            url += '&gender=' + this.advSearch.gender;
           }
-          if (this.searchValue.nationId) {
-            url += '&nationId=' + this.searchValue.nationId;
-          }
-          if (this.searchValue.jobLevelId) {
-            url += '&jobLevelId=' + this.searchValue.jobLevelId;
-          }
-          if (this.searchValue.posId) {
-            url += '&posId=' + this.searchValue.posId;
-          }
-          if (this.searchValue.engageForm) {
-            url += '&engageForm=' + this.searchValue.engageForm;
-          }
-          if (this.searchValue.departmentId) {
-            url += '&departmentId=' + this.searchValue.departmentId;
-          }
-          if (this.searchValue.beginDateScope) {
-            url += '&beginDateScope=' + this.searchValue.beginDateScope;
+          if (this.advSearch.granduteSchool) {
+            url += '&gender=' + this.advSearch.gender;
           }
         } else {
           // 普通搜索
@@ -532,8 +495,6 @@
       },
       /*弹出修改用户对话框*/
       showUserEditDialog(data) {
-        console.log(this.workStatEnum);
-        console.log(this.positionEnum);
         this.title = '修改用户信息';
         // this.initPositions();
         this.userDialogVisible = true;
@@ -579,6 +540,19 @@
             message: '已取消删除'
           });
         });
+      },
+      /********************初始化下拉框数据***************************************/
+      /*毕业院校下拉框数据*/
+      initGranduteSchool() {
+        if (!window.sessionStorage.getItem("granduteSchools")) {
+          getRequest('/dict/item_name?item_name=UNIVERSITY').then(resp => {
+            if (resp) {
+              this.granduteSchools = resp.obj;
+            }
+          })
+        } else {
+          this.granduteSchools = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
+        }
       }
     },
     mounted() {
@@ -587,8 +561,6 @@
       this.initSelectionData();
       /*打开弹框就显示工号*/
       this.generateWorkID();
-      /*初始化职位*/
-      // this.initPositions();
     }
   }
 </script>
