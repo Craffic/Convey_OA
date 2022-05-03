@@ -2,8 +2,10 @@ package com.craffic.convey.common.response;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class ResponseBody<T> {
+public class ResponseBody<T> implements Serializable {
 
     private static final long serialVersionUID = -4213992025937477653L;
 

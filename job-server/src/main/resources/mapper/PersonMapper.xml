@@ -30,19 +30,19 @@
           FROM PERSON
     </select>
 
-    <select id="queryPersonsByCondition" parameterType="com.craffic.convey.jobserver.req.PersonReq" resultMap="BaseResultMap">
+    <select id="queryPersonsByCondition" parameterType="com.craffic.convey.jobapi.req.PersonReq" resultMap="BaseResultMap">
         SELECT * FROM (
         　　SELECT A.*, rownum r FROM (
         　　　　SELECT *
                 FROM PERSON P
                WHERE 1 = 1
-                <if test="person.idcardNo != null">
+                <if test="person.idcardNo != null and person.idcardNo != ''">
                     AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
                 </if>
-                <if test="person.name != null">
+                <if test="person.name != null and person.name != ''">
                     AND P.NAME = #{person.name,jdbcType=VARCHAR}
                 </if>
-                <if test="person.gender != null">
+                <if test="person.gender != null and person.gender != ''">
                     AND P.GENDER = #{person.gender,jdbcType=VARCHAR}
                 </if>
                 <if test="person.birthDateStart != null and person.birthDateEnd != null">
@@ -51,10 +51,10 @@
                 <if test="person.nativePlaceCode != null">
                     AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
                 </if>
-                <if test="person.homeAddress != null">
+                <if test="person.homeAddress != null and person.homeAddress != ''">
                     AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
                 </if>
-                <if test="person.workAddress != null">
+                <if test="person.workAddress != null and person.workAddress != ''">
                     AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
                 </if>
                 <if test="person.ageStart != null and person.ageEnd != null">
@@ -74,13 +74,13 @@
         SELECT count(*) cnt
           FROM PERSON P
          WHERE 1 = 1
-         <if test="person.idcardNo != null">
+         <if test="person.idcardNo != null and person.idcardNo != ''">
              AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
          </if>
-         <if test="person.name != null">
+         <if test="person.name != null and person.name != ''">
              AND P.NAME = #{person.name,jdbcType=VARCHAR}
          </if>
-         <if test="person.gender != null">
+         <if test="person.gender != null and person.gender != ''">
              AND P.GENDER = #{person.gender,jdbcType=VARCHAR}
          </if>
          <if test="person.birthDateStart != null and person.birthDateEnd != null">
@@ -89,10 +89,10 @@
          <if test="person.nativePlaceCode != null">
              AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
          </if>
-         <if test="person.homeAddress != null">
+         <if test="person.homeAddress != null and person.homeAddress != ''">
              AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
          </if>
-         <if test="person.workAddress != null">
+         <if test="person.workAddress != null and person.workAddress != ''">
              AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
          </if>
          <if test="person.ageStart != null and person.ageEnd != null">
@@ -104,6 +104,10 @@
          <if test="person.granduteSchoolCode != null">
              AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
          </if>
+    </select>
+
+    <select id="queryPersonInfo" resultType="com.craffic.convey.jobapi.vo.PersonVo">
+        SELECT <include refid="BaseColumns" /> FROM PERSON P WHERE P.IDCARD_NO = #{idNo,jdbcType=VARCHAR}
     </select>
 
     <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.Person">

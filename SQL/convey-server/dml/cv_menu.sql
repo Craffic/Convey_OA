@@ -1,6 +1,3 @@
-???prompt Importing table CV_MENU...
-set feedback off
-set define off
 insert into CV_MENU (ID, URL, PATH, COMPONENT, NAME, ICON_CLS, KEEP_ALIVE, REQUIRE_AUTH, PARENT_ID, ENABLED)
 values (1, '/', null, null, '所有', null, null, null, null, 1);
 
@@ -36,5 +33,4 @@ values (11, '/social/static/**', '/social/static', 'SocialStatic', '社会人员
 
 insert into CV_MENU (ID, URL, PATH, COMPONENT, NAME, ICON_CLS, KEEP_ALIVE, REQUIRE_AUTH, PARENT_ID, ENABLED)
 values (12, '/sys/department/**', '/sys/department', 'Department', '部门管理', null, null, 1, 6, 1);
-
-prompt Done.
+commit;

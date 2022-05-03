@@ -67,7 +67,7 @@ public class CvUserController {
             userVo.setGenderDesc(genderEnum.desc());
             // 转换职位
             OaDict position = dictService.queryDictByKey(cvUser.getPosId(), POSITION);
-            userVo.setPosDesc(position.getValue());
+            userVo.setPosDesc(position == null ? null : position.getValue());
             userVoList.add(userVo);
         });
         ListVo<CvUserVo> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());

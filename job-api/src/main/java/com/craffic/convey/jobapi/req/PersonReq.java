@@ -1,12 +1,14 @@
-package com.craffic.convey.jobserver.vo;
+package com.craffic.convey.jobapi.req;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.craffic.convey.common.request.BaseQuery;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Data
-public class PersonVo {
+public class PersonReq extends BaseQuery {
+
     /**
      * 身份证号
      */
@@ -25,8 +27,20 @@ public class PersonVo {
     /**
      * 出生日期
      */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyyMMdd")
     private Date birthDate;
+
+    /**
+     * 查询出生日期范围
+     */
+    @DateTimeFormat(pattern="yyyyMMdd")
+    private Date birthDateStart;
+
+    /**
+     * 查询出生日期范围
+     */
+    @DateTimeFormat(pattern="yyyyMMdd")
+    private Date birthDateEnd;
 
     /**
      * 籍贯
@@ -46,7 +60,9 @@ public class PersonVo {
     /**
      * 年龄
      */
-    private Integer age;
+     private Integer ageStart;
+
+     private Integer ageEnd;
 
     /**
      * 职业编码
@@ -57,21 +73,4 @@ public class PersonVo {
      * 毕业学校编码
      */
     private Long granduteSchoolCode;
-
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
-    private Date createdDate;
-
-    /**
-     * 创建人
-     */
-    private String createdBy;
-
-    /**
-     * 更新时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
-    private Date updateDate;
 }

@@ -277,9 +277,13 @@
         　　　　SELECT <include refid="columnsWithDept" />
         FROM CV_USER U LEFT JOIN CV_DEPT D ON D.ID = U.DPT_ID
                 WHERE 1=1
-                  <if test="user.acct != null and user.acct != ''">
-                      AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%') OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
-                  </if>
+                <if test="user.acct != null and user.acct != ''">
+                    AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+                    OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+                </if>
+                <if test="user.gender != null and user.gender != ''">
+                    AND U.GENDER = #{user.gender}
+                </if>
         　　) A WHERE rownum &lt;= #{user.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{user.startRecord,jdbcType=NUMERIC}
     </select>
@@ -289,7 +293,11 @@
           FROM CV_USER U
          WHERE 1=1
         <if test="user.acct != null and user.acct != ''">
-            AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%') OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+           AND (U.ACCT LIKE CONCAT(CONCAT('%', #{user.acct}), '%')
+           OR U.NAME_ZH LIKE CONCAT(CONCAT('%', #{user.acct}), '%'))
+        </if>
+        <if test="user.gender != null and user.gender != ''">
+           AND U.GENDER = #{user.gender}
         </if>
     </select>
 </mapper>

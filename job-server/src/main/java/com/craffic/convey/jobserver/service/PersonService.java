@@ -1,19 +1,22 @@
 package com.craffic.convey.jobserver.service;
 
 import com.craffic.convey.common.vo.ListVo;
+import com.craffic.convey.jobapi.req.PersonReq;
+import com.craffic.convey.jobapi.vo.PersonVo;
 import com.craffic.convey.jobserver.dao.PersonMapper;
 import com.craffic.convey.jobserver.model.OaDict;
 import com.craffic.convey.jobserver.model.Person;
-import com.craffic.convey.jobserver.req.PersonReq;
 import com.craffic.convey.jobserver.utils.DateUtil;
 import com.craffic.convey.jobserver.utils.JsonUtil;
 import com.craffic.convey.jobserver.utils.RandomGenerator;
 import com.craffic.convey.jobserver.utils.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,7 +107,7 @@ public class PersonService {
     /**
      * 根据条件查询用户列表
      */
-    public ListVo<Person> queryUsersByCondition(PersonReq personReq){
+    public ListVo<PersonVo> queryUsersByCondition(PersonReq personReq){
         personReq.setStartRecord(personReq.pageStartIndex());
         personReq.setEndRecord(personReq.getPage() * personReq.getSize());
         Long total = personMapper.queryTotalNum(personReq);
@@ -112,6 +115,21 @@ public class PersonService {
             return new ListVo<>(null, 0);
         }
         List<Person> userList = personMapper.queryPersonsByCondition(personReq);
-        return new ListVo<>(userList, total.intValue());
+        List<PersonVo> personVos = new ArrayList<>();
+        userList.stream().forEach(user -> {
+                PersonVo personVo = new PersonVo();
+                BeanUtils.copyProperties(user, personVo);
+                personVos.add(personVo);
+            });
+        return new ListVo(personVos, total.intValue());
+    }
+
+    /**
+     * 根据身份证号查询个人信息
+     * @param idNo
+     * @return
+     */
+     public PersonVo queryPersonInfo(String idNo) {
+         return personMapper.queryPersonInfo(idNo);
     }
 }
