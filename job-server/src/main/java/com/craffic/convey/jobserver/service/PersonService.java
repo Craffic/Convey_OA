@@ -58,7 +58,7 @@ public class PersonService {
         int num = RandomGenerator.randomNumFromList(areaList);
         Long nativePlaceCode = areaList.get(num).getKey();
         // 生成身份证号
-        String idcardNo = RandomGenerator.idCardNoGenerator(birthDate, nativePlaceCode, gender);
+        String idCardNo = RandomGenerator.idCardNoGenerator(birthDate, nativePlaceCode, gender);
         String name = RandomGenerator.nameGenerator(gender);
         int age = DateUtil.calYearDiff(new Date(), birthDate);
         // 职业
@@ -83,7 +83,7 @@ public class PersonService {
         Long workCity = workAddressMap.get(CITY);
         Long workArea = workAddressMap.get(AREA);
 
-        return new Person(idcardNo, name, gender, nativePlaceCode, birthDate,
+        return new Person(idCardNo, name, gender, nativePlaceCode, birthDate,
                           homeProvince, homeCity, homeArea, workProvince, workCity, workArea, age,
                           professionCode, granduteSchoolCode, createdDate, createdBy, updateDate, updateBy);
 

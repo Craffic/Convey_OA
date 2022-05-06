@@ -11,7 +11,7 @@ public class PersonVo implements Serializable {
     /**
      * 身份证号
      */
-    private String idcardNo;
+    private String idCardNo;
 
     /**
      * 姓名

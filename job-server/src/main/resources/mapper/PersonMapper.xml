@@ -3,7 +3,7 @@
 <mapper namespace="com.craffic.convey.jobserver.dao.PersonMapper">
 
     <resultMap id="BaseResultMap" type="com.craffic.convey.jobserver.model.Person">
-        <id property="idcardNo" column="IDCARD_NO" jdbcType="VARCHAR"></id>
+        <id property="idCardNo" column="IDCARD_NO" jdbcType="VARCHAR"></id>
         <result property="name" column="NAME" jdbcType="VARCHAR"></result>
         <result property="gender" column="GENDER" jdbcType="VARCHAR"></result>
         <result property="birthDate" column="BIRTH_DATE" jdbcType="TIMESTAMP"></result>
@@ -34,8 +34,8 @@
         　　　　SELECT *
                 FROM PERSON P
                WHERE 1 = 1
-                <if test="person.idcardNo != null and person.idcardNo != ''">
-                    AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
+                <if test="person.idCardNo != null and person.idCardNo != ''">
+                    AND P.IDCARD_NO = #{person.idCardNo,jdbcType=VARCHAR}
                 </if>
                 <if test="person.name != null and person.name != ''">
                     AND P.NAME = #{person.name,jdbcType=VARCHAR}
@@ -72,8 +72,8 @@
         SELECT count(*) cnt
           FROM PERSON P
          WHERE 1 = 1
-         <if test="person.idcardNo != null and person.idcardNo != ''">
-             AND P.IDCARD_NO = #{person.idcardNo,jdbcType=VARCHAR}
+         <if test="person.idCardNo != null and person.idCardNo != ''">
+             AND P.IDCARD_NO = #{person.idCardNo,jdbcType=VARCHAR}
          </if>
          <if test="person.name != null and person.name != ''">
              AND P.NAME = #{person.name,jdbcType=VARCHAR}
@@ -104,7 +104,7 @@
 
     <insert id="insertSelective" parameterType="com.craffic.convey.jobserver.model.Person">
         INSERT INTO PERSON (<include refid="BaseColumns" />) VALUES (
-            #{idcardNo,jdbcType=VARCHAR},
+            #{idCardNo,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
             #{gender,jdbcType=VARCHAR},
             #{birthDate, jdbcType=TIMESTAMP},

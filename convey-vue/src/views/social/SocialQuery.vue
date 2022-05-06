@@ -37,7 +37,7 @@
                 element-loading-background="Transparent"
                 @cell-dblclick="tableDbEdit">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="idcardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
+        <el-table-column prop="idCardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="name" label="姓名" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="genderDesc" label="性别" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="birthDate" label="出生年月" width="120" fixed align="left"></el-table-column>
@@ -70,7 +70,7 @@ export default {
     return {
       personForm: {
         name: '',
-        idcardNo: '',
+        idCardNo: '',
         gender: '',
         birthDate: '',
         nativePlaceCode: '',

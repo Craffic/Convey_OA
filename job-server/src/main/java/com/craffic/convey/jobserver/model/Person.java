@@ -15,7 +15,7 @@ public class Person implements Serializable {
     /**
      * 身份证号
      */
-    private String idcardNo;
+    private String idCardNo;
 
     /**
      * 姓名
@@ -92,7 +92,7 @@ public class Person implements Serializable {
     public Person(String idCardNo, String name, String gender, Long nativePlaceCode, Date birthDate,
                   Long homeProvince, Long homeCity, Long homeArea, Long workProvince, Long workCity, Long workArea,
                   Integer age, Long professionCode, Long granduteSchoolCode, Date createdDate, String createdBy, Date updateDate, String updateBy) {
-        this.idcardNo = idCardNo;
+        this.idCardNo = idCardNo;
         this.name = name;
         this.gender = gender;
         this.birthDate = birthDate;

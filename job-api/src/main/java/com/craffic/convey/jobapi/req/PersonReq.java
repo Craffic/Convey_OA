@@ -12,7 +12,7 @@ public class PersonReq extends BaseQuery {
     /**
      * 身份证号
      */
-    private String idcardNo;
+    private String idCardNo;
 
     /**
      * 姓名
