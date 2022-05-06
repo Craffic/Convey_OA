@@ -1,10 +1,10 @@
 package com.craffic.convey.jobserver.utils;
 
+import com.craffic.convey.common.utils.DateUtil;
 import com.craffic.convey.jobserver.constant.OAConstant;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.util.*;
 
 @Component

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.craffic.convey.jobserver.dao.SysCityMapper">
+
+    <resultMap id="BaseResultMap" type="com.craffic.convey.jobserver.model.SysCity">
+        <id property="cityId" column="CITY_ID" jdbcType="NUMERIC"></id>
+        <result property="cityName" column="CITY_NAME" jdbcType="VARCHAR"></result>
+        <result property="provinceId" column="PROVINCE_ID" jdbcType="NUMERIC"></result>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        CITY_ID, CITY_NAME, PROVINCE_ID
+    </sql>
+
+    <select id="getCityByProvince" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns" />
+          FROM SYS_CITY WHERE PROVINCE_ID = #{provinceId}
+    </select>
+</mapper>
+

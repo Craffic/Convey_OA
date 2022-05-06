@@ -23,16 +23,20 @@ public class PersonVo implements Serializable {
      */
     private String gender;
 
+    private String genderDesc;
+
     /**
      * 出生日期
      */
-    @JsonFormat(pattern="yyyyMMdd",timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private java.util.Date birthDate;
 
     /**
      * 籍贯
      */
     private Long nativePlaceCode;
+
+    private String nativePlaceDesc;
 
     /**
      * 家庭地址
@@ -54,10 +58,14 @@ public class PersonVo implements Serializable {
      */
     private Long professionCode;
 
+    private String professionDesc;
+
     /**
      * 毕业学校编码
      */
     private Long granduteSchoolCode;
+
+    private String granduteSchoolDesc;
 
     /**
      * 创建时间

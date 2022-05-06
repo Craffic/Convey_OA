@@ -15,7 +15,7 @@ public class BaseQuery extends BaseVO {
     /**
      * 每页大小
      */
-    private Integer size  =10;
+    private Integer size = 10;
 
     public Integer pageStartIndex(){
         return size * (page - 1);

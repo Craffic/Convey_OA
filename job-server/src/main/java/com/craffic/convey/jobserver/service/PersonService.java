@@ -1,12 +1,12 @@
 package com.craffic.convey.jobserver.service;
 
+import com.craffic.convey.common.utils.DateUtil;
 import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.jobapi.req.PersonReq;
 import com.craffic.convey.jobapi.vo.PersonVo;
 import com.craffic.convey.jobserver.dao.PersonMapper;
 import com.craffic.convey.jobserver.model.OaDict;
 import com.craffic.convey.jobserver.model.Person;
-import com.craffic.convey.jobserver.utils.DateUtil;
 import com.craffic.convey.jobserver.utils.JsonUtil;
 import com.craffic.convey.jobserver.utils.RandomGenerator;
 import com.craffic.convey.jobserver.utils.RedisUtil;
