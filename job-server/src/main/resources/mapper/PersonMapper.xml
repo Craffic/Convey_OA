@@ -9,8 +9,6 @@
         <result property="birthDate" column="BIRTH_DATE" jdbcType="TIMESTAMP"></result>
         <result property="age" column="AGE" jdbcType="NUMERIC"></result>
         <result property="nativePlaceCode" column="NATIVE_PLACE_CODE" jdbcType="NUMERIC"></result>
-        <result property="homeAddress" column="HOME_ADDRESS" jdbcType="VARCHAR"></result>
-        <result property="workAddress" column="WORK_ADDRESS" jdbcType="VARCHAR"></result>
         <result property="professionCode" column="PROFESSION_CODE" jdbcType="NUMERIC"></result>
         <result property="granduteSchoolCode" column="GRANDUATE_SCHOOL_CODE" jdbcType="NUMERIC"></result>
         <result property="createdDate" column="CREATED_DATE" jdbcType="TIMESTAMP"></result>
@@ -20,8 +18,8 @@
     </resultMap>
 
     <sql id="BaseColumns">
-        IDCARD_NO, NAME, GENDER, BIRTH_DATE, AGE, NATIVE_PLACE_CODE, HOME_ADDRESS, WORK_ADDRESS, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
-        CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY
+        IDCARD_NO, NAME, GENDER, BIRTH_DATE, AGE, NATIVE_PLACE_CODE, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
+        CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY, HOME_PROVINCE, HOME_CITY, HOME_AREA, WORK_PROVINCE, WORK_CITY, WORK_AREA
     </sql>
 
     <select id="getAllPersons" resultMap="BaseResultMap">
@@ -89,12 +87,6 @@
          <if test="person.nativePlaceCode != null">
              AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
          </if>
-         <if test="person.homeAddress != null and person.homeAddress != ''">
-             AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
-         </if>
-         <if test="person.workAddress != null and person.workAddress != ''">
-             AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
-         </if>
          <if test="person.ageStart != null and person.ageEnd != null">
              AND P.AGE BETWEEN #{person.ageStart,jdbcType=NUMERIC} AND #{person.ageEnd,jdbcType=NUMERIC}
          </if>
@@ -118,14 +110,18 @@
             #{birthDate, jdbcType=TIMESTAMP},
             #{age,jdbcType=NUMERIC},
             #{nativePlaceCode,jdbcType=NUMERIC},
-            #{homeAddress,jdbcType=VARCHAR},
-            #{workAddress,jdbcType=VARCHAR},
             #{professionCode,jdbcType=NUMERIC},
             #{granduteSchoolCode,jdbcType=NUMERIC},
             #{createdDate,jdbcType=TIMESTAMP},
             #{createdBy,jdbcType=VARCHAR},
             #{updateDate,jdbcType=TIMESTAMP},
-            #{updateBy,jdbcType=VARCHAR}
+            #{updateBy,jdbcType=VARCHAR},
+            #{homeProvince,jdbcType=NUMERIC},
+            #{homeCity,jdbcType=NUMERIC},
+            #{homeArea,jdbcType=NUMERIC},
+            #{workProvince,jdbcType=NUMERIC},
+            #{workCity,jdbcType=NUMERIC},
+            #{workArea,jdbcType=NUMERIC}
         )
     </insert>
 </mapper>

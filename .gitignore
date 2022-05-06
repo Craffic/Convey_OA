@@ -36,3 +36,4 @@ hs_err_pid*
 /convey-common/target/maven-archiver/
 /job-api/target/maven-status/maven-compiler-plugin/compile/default-compile/
 /job-api/target/maven-archiver/
+/convey-OA.iml

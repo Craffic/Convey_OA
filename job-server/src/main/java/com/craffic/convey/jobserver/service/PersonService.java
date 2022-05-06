@@ -16,9 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,7 +73,18 @@ public class PersonService {
         String createdBy = SYSTEM;
         Date updateDate = new Date();
         String updateBy = SYSTEM;
-        return new Person(idcardNo, name, gender, nativePlaceCode, birthDate, genAddress(), genAddress(), age,
+        // 户籍省市区
+        Map<String, Long> homeAddressMap = genAddress();
+        Long homeProvince = homeAddressMap.get(PROVINCE);
+        Long homeCity = homeAddressMap.get(CITY);
+        Long homeArea = homeAddressMap.get(AREA);
+        Map<String, Long> workAddressMap = genAddress();
+        Long workProvince = workAddressMap.get(PROVINCE);
+        Long workCity = workAddressMap.get(CITY);
+        Long workArea = workAddressMap.get(AREA);
+
+        return new Person(idcardNo, name, gender, nativePlaceCode, birthDate,
+                          homeProvince, homeCity, homeArea, workProvince, workCity, workArea, age,
                           professionCode, granduteSchoolCode, createdDate, createdBy, updateDate, updateBy);
 
     }
@@ -84,7 +93,8 @@ public class PersonService {
      * 生成地址
      * @return
      */
-    public String genAddress(){
+    public Map<String, Long> genAddress(){
+        Map<String, Long> resultMap = new HashMap<>();
         List<OaDict> provinceList = JsonUtil.jsonToList(redisUtil.queryByKey(PROVINCE), OaDict.class);
         int provinceNum = RandomGenerator.randomNumFromList(provinceList);
         OaDict provinceDict = provinceList.get(provinceNum);
@@ -97,12 +107,15 @@ public class PersonService {
         List<OaDict> allAreaList = JsonUtil.jsonToList(redisUtil.queryByKey(AREA), OaDict.class);
         List<OaDict> areaList = allAreaList.stream().filter(area -> area.getpKey().equals(cityDict.getKey())).collect(Collectors.toList());
         int areaNum = RandomGenerator.randomNumFromList(areaList);
-        OaDict areaDict = null;
-        areaDict = areaList.get(areaNum);
+        OaDict areaDict = areaList.get(areaNum);
 
         StringBuffer address = new StringBuffer();
-        return address.append(provinceDict.getValue()).append(cityDict.getValue()).append(areaDict.getValue()).toString();
+        resultMap.put(PROVINCE, provinceDict.getKey());
+        resultMap.put(CITY, cityDict.getKey());
+        resultMap.put(AREA, areaDict.getKey());
+        return resultMap;
     }
+
 
     /**
      * 根据条件查询用户列表

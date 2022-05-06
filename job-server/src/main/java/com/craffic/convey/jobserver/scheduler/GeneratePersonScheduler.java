@@ -19,7 +19,7 @@ public class GeneratePersonScheduler {
     @Autowired
     private PersonService personService;
 
-    @Scheduled(fixedRate=2000000)
+    @Scheduled(fixedRate=2000)
     public void generatePersonJob() {
         Person person = personService.genPersonInfo();
         personService.insertPerson(person);
