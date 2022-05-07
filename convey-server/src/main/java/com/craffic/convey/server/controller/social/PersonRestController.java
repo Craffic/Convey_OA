@@ -29,7 +29,7 @@ public class PersonRestController {
      * @param personReq
      * @return
      */
-     @PostMapping(value = "/get/person")
+     @GetMapping(value = "/get/person")
      public ResponseBody<ListVo<PersonVo>> queryPersonList(PersonReq personReq){
          ResponseBody<ListVo<PersonVo>> responseBody = personInterface.queryPersonsByPage(personReq);
          if (!responseBody.getCode().equals("200000")) {

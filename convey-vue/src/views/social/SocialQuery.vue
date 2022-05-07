@@ -19,10 +19,10 @@
       </el-row>
       <el-row style="margin-top: 10px">
         <el-col class="block" :span="4">户籍地址:
-          <el-cascader v-model="regionCondition" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
+          <el-cascader v-model="personForm.homeAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
         </el-col>
         <el-col class="block" :span="4">工作地址:
-          <el-cascader v-model="regionCondition" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
+          <el-cascader v-model="personForm.workAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
         </el-col>
         <el-col :span="3">
           <el-button type="primary" size="mini" icon="el-icon-search" @click="initPersons">搜索</el-button>
@@ -80,7 +80,15 @@ export default {
         professionCode: '',
         professionDesc: '',
         granduteSchoolCode: '',
-        granduteSchoolDesc: ''
+        granduteSchoolDesc: '',
+        homeAddrCondi: '',
+        workAddrCondi: '',
+        homeProvince: '',
+        homeCity: '',
+        homeArea: '',
+        workProvince: '',
+        workCity: '',
+        workArea: ''
       },
       persons: [],
       regionData: [],
@@ -97,7 +105,28 @@ export default {
     initPersons() {
       this.loading = true;
       let url = '/get/person/?page=' + this.page + '&size=' + this.size;
-      postRequest(url, this.personForm).then(resp => {
+      if (this.personForm.homeAddrCondi[0]) {
+        url = url + '&homeProvince=' + this.personForm.homeAddrCondi[0];
+      }
+      if (this.personForm.homeAddrCondi[1]) {
+        url = url + '&homeCity=' + this.personForm.homeAddrCondi[1];
+      }
+      if (this.personForm.homeAddrCondi[2]) {
+        url = url + '&homeArea=' + this.personForm.homeAddrCondi[2];
+      }
+      if (this.personForm.workAddrCondi[0]) {
+        url = url + '&workProvince=' + this.personForm.workAddrCondi[0];
+      }
+      if (this.personForm.workAddrCondi[1]) {
+        url = url + '&workCity=' + this.personForm.workAddrCondi[1];
+      }
+      if (this.personForm.workAddrCondi[2]) {
+        url = url + '&workArea=' + this.personForm.workAddrCondi[2];
+      }
+      if (this.personForm.name) {
+        url = url + '&name=' + this.personForm.name;
+      }
+      getRequest(url).then(resp => {
         if (resp && resp.code == 200000) {
           this.loading = false;
           this.persons = resp.obj.list;

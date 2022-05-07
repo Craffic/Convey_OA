@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PersonReq extends BaseQuery {
@@ -50,12 +51,16 @@ public class PersonReq extends BaseQuery {
     /**
      * 家庭地址
      */
-    private String homeAddress;
+    private String homeProvince;
+    private String homeCity;
+    private String homeArea;
 
     /**
      * 工作地址
      */
-    private String workAddress;
+    private String workProvince;
+    private String workCity;
+    private String workArea;
 
     /**
      * 年龄

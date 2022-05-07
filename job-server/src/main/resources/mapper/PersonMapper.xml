@@ -49,12 +49,6 @@
                 <if test="person.nativePlaceCode != null">
                     AND P.NATIVE_PLACE_CODE = #{person.nativePlaceCode,jdbcType=NUMERIC}
                 </if>
-                <if test="person.homeAddress != null and person.homeAddress != ''">
-                    AND P.HOME_ADDRESS = #{person.homeAddress,jdbcType=VARCHAR}
-                </if>
-                <if test="person.workAddress != null and person.workAddress != ''">
-                    AND P.WORK_ADDRESS = #{person.workAddress,jdbcType=VARCHAR}
-                </if>
                 <if test="person.ageStart != null and person.ageEnd != null">
                     AND P.AGE BETWEEN #{person.ageStart,jdbcType=NUMERIC} AND #{person.ageEnd,jdbcType=NUMERIC}
                 </if>
@@ -63,6 +57,24 @@
                 </if>
                 <if test="person.granduteSchoolCode != null">
                     AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+                </if>
+                <if test="person.homeProvince != null and person.homeProvince != ''">
+                    AND P.HOME_PROVINCE = #{person.homeProvince,jdbcType=NUMERIC}
+                </if>
+                <if test="person.homeCity != null and person.homeCity != ''">
+                    AND P.HOME_CITY = #{person.homeCity,jdbcType=NUMERIC}
+                </if>
+                <if test="person.homeArea != null and person.homeArea != ''">
+                    AND P.HOME_AREA = #{person.homeArea,jdbcType=NUMERIC}
+                </if>
+                <if test="person.workProvince != null and person.workProvince != ''">
+                    AND P.WORK_PROVINCE = #{person.workProvince,jdbcType=NUMERIC}
+                </if>
+                <if test="person.workCity != null and person.workCity != ''">
+                    AND P.WORK_CITY = #{person.workCity,jdbcType=NUMERIC}
+                </if>
+                <if test="person.workArea != null and person.workArea != ''">
+                    AND P.WORK_AREA = #{person.workArea,jdbcType=NUMERIC}
                 </if>
         　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
@@ -95,6 +107,24 @@
          </if>
          <if test="person.granduteSchoolCode != null">
              AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+         </if>
+         <if test="person.homeProvince != null and person.homeProvince != ''">
+             AND P.HOME_PROVINCE = #{person.homeProvince,jdbcType=NUMERIC}
+         </if>
+         <if test="person.homeCity != null and person.homeCity != ''">
+             AND P.HOME_CITY = #{person.homeCity,jdbcType=NUMERIC}
+         </if>
+         <if test="person.homeArea != null and person.homeArea != ''">
+             AND P.HOME_AREA = #{person.homeArea,jdbcType=NUMERIC}
+         </if>
+         <if test="person.workProvince != null and person.workProvince != ''">
+             AND P.WORK_PROVINCE = #{person.workProvince,jdbcType=NUMERIC}
+         </if>
+         <if test="person.workCity != null and person.workCity != ''">
+             AND P.WORK_CITY = #{person.workCity,jdbcType=NUMERIC}
+         </if>
+         <if test="person.workArea != null and person.workArea != ''">
+             AND P.WORK_AREA = #{person.workArea,jdbcType=NUMERIC}
          </if>
     </select>
 
