@@ -82,6 +82,9 @@
                 <if test="person.granduteSchoolCode != null">
                     AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
                 </if>
+                <if test="person.professionCode != null">
+                    AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
+                </if>
         　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
     </select>
@@ -137,6 +140,9 @@
          </if>
          <if test="person.granduteSchoolCode != null">
              AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+         </if>
+         <if test="person.professionCode != null">
+             AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
          </if>
     </select>
 

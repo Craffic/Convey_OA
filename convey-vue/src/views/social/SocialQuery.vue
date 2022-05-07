@@ -29,6 +29,9 @@
             <el-option v-for="item in this.personForm.granduteSchoolsEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
           </el-select>
         </el-col>
+        <el-col class="block" :span="4">专业:
+          <el-cascader v-model="personForm.professionCondition" :options="professionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
+        </el-col>
         <el-col :span="3">
           <el-button type="primary" size="mini" icon="el-icon-search" @click="initPersons">搜索</el-button>
           <el-button type="success" size="mini" icon="el-icon-search" @click="clearCondition">重置</el-button>
@@ -100,11 +103,13 @@ export default {
         birthDateEnd: '',
         /*毕业院校*/
         granduteSchoolsEnum: [],
-        granduteSchool: ''
+        granduteSchool: '',
+        professionCondition: ''
       },
       persons: [],
       regionData: [],
       regionCondition:'',
+      professionData: [],
       /*分页参数*/
       total: 0,
       page:1,
@@ -147,6 +152,12 @@ export default {
       if (this.personForm.granduteSchool) {
         url = url + '&granduteSchoolCode=' + this.personForm.granduteSchool;
       }
+      // 专业
+      if (this.personForm.professionCondition[0] && this.personForm.professionCondition[1]) {
+        url = url + '&professionCode=' + this.personForm.professionCondition[1];
+      } else if (this.personForm.professionCondition[0] && !this.personForm.professionCondition[1]){
+        url = url + '&professionCode=' + this.personForm.professionCondition[0];
+      }
       getRequest(url).then(resp => {
         if (resp && resp.code == 200000) {
           this.loading = false;
@@ -178,6 +189,15 @@ export default {
         this.loading = false;
       })
     },
+    initProfessionData() {
+      getRequest('/query/profession').then(resp => {
+        this.loading = false;
+        if (resp && resp.code == 200000) {
+          this.professionData = resp.obj;
+        }
+        this.loading = false;
+      })
+    },
     /*重置查询条件*/
     clearCondition() {
       this.personForm = {}
@@ -199,6 +219,7 @@ export default {
     this.initPersons();
     this.initRegionData();
     this.initGranduteSchool();
+    this.initProfessionData();
   }
 }
 </script>

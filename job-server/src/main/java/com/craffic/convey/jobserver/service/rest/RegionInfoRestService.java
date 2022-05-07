@@ -113,7 +113,7 @@ public class RegionInfoRestService implements CascaderDataInterface {
                 String subValue = subNode.getValue();
                 NodeVo subNodeVo = new NodeVo();
                 subNodeVo.setValue(subKey.toString());
-                subNodeVo.setValue(subValue);
+                subNodeVo.setLabel(subValue);
                 tempSubList.add(subNodeVo);
             }
             nodeVo.setChildren(tempSubList);
