@@ -76,6 +76,9 @@
                 <if test="person.workArea != null and person.workArea != ''">
                     AND P.WORK_AREA = #{person.workArea,jdbcType=NUMERIC}
                 </if>
+                <if test="person.birthDateStart != null and person.birthDateEnd != null">
+                    AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=TIMESTAMP} and #{person.birthDateEnd,jdbcType=TIMESTAMP}
+                </if>
         　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
     </select>
@@ -125,6 +128,9 @@
          </if>
          <if test="person.workArea != null and person.workArea != ''">
              AND P.WORK_AREA = #{person.workArea,jdbcType=NUMERIC}
+         </if>
+         <if test="person.birthDateStart != null and person.birthDateEnd != null">
+             AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=TIMESTAMP} and #{person.birthDateEnd,jdbcType=TIMESTAMP}
          </if>
     </select>
 

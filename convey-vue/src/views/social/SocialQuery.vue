@@ -12,7 +12,7 @@
           </el-radio-group>
         </el-col>
         <el-col :span="6">出生日期:
-          <el-date-picker style="width: 300px" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
+          <el-date-picker v-model="personForm.birthDateRange" style="width: 300px" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
                           range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </el-col>
@@ -88,7 +88,10 @@ export default {
         homeArea: '',
         workProvince: '',
         workCity: '',
-        workArea: ''
+        workArea: '',
+        birthDateRange: [],
+        birthDateStart: '',
+        birthDateEnd: ''
       },
       persons: [],
       regionData: [],
@@ -125,6 +128,12 @@ export default {
       }
       if (this.personForm.name) {
         url = url + '&name=' + this.personForm.name;
+      }
+      if (this.personForm.birthDateRange[0]) {
+        url = url + '&birthDateStart=' + this.personForm.birthDateRange[0];
+      }
+      if (this.personForm.birthDateRange[1]) {
+        url = url + '&birthDateEnd=' + this.personForm.birthDateRange[1];
       }
       getRequest(url).then(resp => {
         if (resp && resp.code == 200000) {

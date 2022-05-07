@@ -26,21 +26,15 @@ public class PersonReq extends BaseQuery {
     private String gender;
 
     /**
-     * 出生日期
-     */
-    @DateTimeFormat(pattern="yyyyMMdd")
-    private Date birthDate;
-
-    /**
      * 查询出生日期范围
      */
-    @DateTimeFormat(pattern="yyyyMMdd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthDateStart;
 
     /**
      * 查询出生日期范围
      */
-    @DateTimeFormat(pattern="yyyyMMdd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthDateEnd;
 
     /**
