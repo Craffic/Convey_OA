@@ -130,11 +130,41 @@ public class PersonService {
         List<Person> userList = personMapper.queryPersonsByCondition(personReq);
         List<PersonVo> personVos = new ArrayList<>();
         userList.stream().forEach(user -> {
-                PersonVo personVo = new PersonVo();
-                BeanUtils.copyProperties(user, personVo);
-                personVos.add(personVo);
-            });
+            PersonVo personVo = new PersonVo();
+            BeanUtils.copyProperties(user, personVo);
+            // 省
+            String strWorkProvince = transferEnum(PROVINCE, personVo.getWorkProvince());
+            String strHomeProvince = transferEnum(PROVINCE, personVo.getHomeProvince());
+            // 市
+            String strHomeCity = transferEnum(CITY, personVo.getHomeCity());
+            String strWorkCity =transferEnum(CITY, personVo.getWorkCity());
+            // 区
+            String strHomeArea = transferEnum(AREA, personVo.getHomeArea());
+            String strWorkArea = transferEnum(AREA, personVo.getWorkArea());
+            StringBuffer homeAddress = new StringBuffer();
+            StringBuffer workAddress = new StringBuffer();
+            homeAddress.append(strHomeProvince).append(strHomeCity).append(strHomeArea);
+            workAddress.append(strWorkProvince).append(strWorkCity).append(strWorkArea);
+            personVo.setHomeAddress(homeAddress.toString());
+            personVo.setWorkAddress(workAddress.toString());
+            // 籍贯
+            personVo.setNativePlaceDesc(transferEnum(AREA, personVo.getNativePlaceCode()));
+            // 专业
+            personVo.setProfessionDesc(transferEnum(PROFESSIONAL, personVo.getProfessionCode()));
+            // 学校
+            personVo.setGranduteSchoolDesc(transferEnum(UNIVERSITY, personVo.getGranduteSchoolCode()));
+            personVos.add(personVo);
+        });
         return new ListVo(personVos, total.intValue());
+    }
+
+    /**
+     * 转换枚举
+     */
+    public String transferEnum(String type, Long key){
+        List<OaDict> dictList = JsonUtil.jsonToList(redisUtil.queryByKey(type), OaDict.class);
+        List<OaDict> resultList = dictList.stream().filter(item -> item.getKey().equals(key)).collect(Collectors.toList());
+        return resultList.get(0).getValue();
     }
 
     /**

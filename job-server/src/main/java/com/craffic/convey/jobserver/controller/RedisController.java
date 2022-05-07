@@ -29,12 +29,7 @@ public class RedisController {
         List<OaDict> universityList = dictService.queryDictByName(KEY_UNIVERSITY);
 
         String jsonStr = JSONObject.toJSONString(universityList);
-        System.out.println(jsonStr);
-
         ArrayList<OaDict> list = (ArrayList<OaDict>) JSONObject.parseObject(jsonStr, List.class);
-        System.out.println(list);
-
-
         return "university";
     }
 

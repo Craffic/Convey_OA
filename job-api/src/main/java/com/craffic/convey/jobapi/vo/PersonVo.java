@@ -42,11 +42,17 @@ public class PersonVo implements Serializable {
      * 家庭地址
      */
     private String homeAddress;
+    private Long homeProvince;
+    private Long homeCity;
+    private Long homeArea;
 
     /**
      * 工作地址
      */
     private String workAddress;
+    private Long workProvince;
+    private Long workCity;
+    private Long workArea;
 
     /**
      * 年龄

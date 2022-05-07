@@ -39,14 +39,14 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="idCardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="name" label="姓名" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="genderDesc" label="性别" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="birthDate" label="出生年月" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="genderDesc" label="性别" width="60" fixed align="left"></el-table-column>
+        <el-table-column prop="birthDate" label="出生年月" width="120" align="left"></el-table-column>
         <el-table-column prop="age" label="年龄" width="80" fixed align="left"></el-table-column>
-        <el-table-column prop="nativePlaceDesc" label="籍贯" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="homeAddress" label="家庭地址" width="300" fixed align="left"></el-table-column>
-        <el-table-column prop="workAddress" label="工作地址" width="300" fixed align="left"></el-table-column>
-        <el-table-column prop="professionDesc" label="专业" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="granduteSchoolDesc" label="毕业学校" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="nativePlaceDesc" label="籍贯" width="120" align="left"></el-table-column>
+        <el-table-column prop="homeAddress" label="家庭地址" width="330" align="left"></el-table-column>
+        <el-table-column prop="workAddress" label="工作地址" width="330" align="left"></el-table-column>
+        <el-table-column prop="professionDesc" label="专业" width="200" align="left"></el-table-column>
+        <el-table-column prop="granduteSchoolDesc" label="毕业学校" width="200" align="left"></el-table-column>
       </el-table>
       <div style="display: flex;justify-content: flex-end">
         <el-pagination

@@ -32,7 +32,6 @@ public class RedisUtil extends ApplicationObjectSupport {
             } else {
                 redisTemplate.opsForValue().set(key, value, minutes, TimeUnit.MINUTES);
             }
-            logger.info("插入redis数据，key={}，value={}，保存{}min", key, value, minutes);
             return true;
         } catch (Exception e) {
             logger.error("插入redis数据出错");
@@ -46,7 +45,6 @@ public class RedisUtil extends ApplicationObjectSupport {
     public String queryByKey(String key){
         try{
             String value = redisTemplate.opsForValue().get(key);
-            logger.info("redis查询key={}, value={}", key, value);
             return value;
         } catch (Exception e) {
             logger.error("查询redis出错，key={}", key);
