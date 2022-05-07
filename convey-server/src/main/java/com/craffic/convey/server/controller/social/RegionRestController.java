@@ -13,13 +13,17 @@ import java.util.List;
 public class RegionRestController {
 
     @Reference
-    private CascaderDataInterface regionInfoRestService;
+    private CascaderDataInterface cascaderDataInterface;
 
     @GetMapping(value = "query/region")
     public ResponseBody<List<NodeVo>> queryRegionData() {
-        List<NodeVo> nodeVos = regionInfoRestService.queryRegionCascaderData();
+        List<NodeVo> nodeVos = cascaderDataInterface.queryRegionCascaderData();
         return ResponseBody.success(nodeVos);
     }
 
-
+    @GetMapping(value = "query/profession")
+    public ResponseBody<List<NodeVo>> queryProfessionData() {
+        List<NodeVo> nodeVos = cascaderDataInterface.queryProfessionCascaderData();
+        return ResponseBody.success(nodeVos);
+    }
 }

@@ -5,9 +5,11 @@ import com.craffic.convey.jobapi.api.CascaderDataInterface;
 import com.craffic.convey.jobapi.vo.NodeVo;
 import com.craffic.convey.jobapi.vo.SysCityVo;
 import com.craffic.convey.jobapi.vo.SysProvinceVo;
+import com.craffic.convey.jobserver.dao.OaDictMapper;
 import com.craffic.convey.jobserver.dao.SysAreaMapper;
 import com.craffic.convey.jobserver.dao.SysCityMapper;
 import com.craffic.convey.jobserver.dao.SysProvinceMapper;
+import com.craffic.convey.jobserver.model.OaDict;
 import com.craffic.convey.jobserver.model.SysArea;
 import com.craffic.convey.jobserver.model.SysCity;
 import com.craffic.convey.jobserver.model.SysProvince;
@@ -16,9 +18,12 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RegionInfoRestService implements CascaderDataInterface {
+
+    public static final String PROFESSIONAL = "PROFESSIONAL";
 
     @Autowired
     private SysProvinceMapper provinceMapper;
@@ -26,6 +31,8 @@ public class RegionInfoRestService implements CascaderDataInterface {
     private SysCityMapper cityMapper;
     @Autowired
     private SysAreaMapper areaMapper;
+    @Autowired
+    private OaDictMapper dictMapper;
 
     @Override
     public List<NodeVo> queryRegionCascaderData() {
@@ -79,4 +86,41 @@ public class RegionInfoRestService implements CascaderDataInterface {
 
         return regionData;
     }
+
+    @Override
+    public List<NodeVo> queryProfessionCascaderData() {
+        // 查询省份列表
+        List<OaDict> allDictByName = dictMapper.getAllDictByName(PROFESSIONAL);
+        List<OaDict> parentProfession = allDictByName.stream().filter(item -> item.getpKey() == null).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(parentProfession)) {
+            return new ArrayList();
+        }
+        List<NodeVo> professionList = new ArrayList<>();
+        for (OaDict dict : parentProfession) {
+            Long key = dict.getKey();
+            String value = dict.getValue();
+            NodeVo nodeVo = new NodeVo();
+            nodeVo.setValue(key.toString());
+            nodeVo.setLabel(value);
+            // 子节点
+            List<OaDict> subNodeList = dictMapper.getDictsPkey(key);
+            if (CollectionUtils.isEmpty(subNodeList)) {
+                nodeVo.setChildren(new ArrayList());
+            }
+            List<NodeVo> tempSubList = new ArrayList();
+            for (OaDict subNode : subNodeList) {
+                Long subKey = subNode.getKey();
+                String subValue = subNode.getValue();
+                NodeVo subNodeVo = new NodeVo();
+                subNodeVo.setValue(subKey.toString());
+                subNodeVo.setValue(subValue);
+                tempSubList.add(subNodeVo);
+            }
+            nodeVo.setChildren(tempSubList);
+            professionList.add(nodeVo);
+        }
+        return professionList;
+    }
+
+
 }

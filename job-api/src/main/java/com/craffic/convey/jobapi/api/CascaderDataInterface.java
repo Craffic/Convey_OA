@@ -8,4 +8,5 @@ public interface CascaderDataInterface {
 
     List<NodeVo> queryRegionCascaderData();
 
+    List<NodeVo> queryProfessionCascaderData();
 }
