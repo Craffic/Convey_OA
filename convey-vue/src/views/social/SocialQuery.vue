@@ -11,8 +11,8 @@
             <el-radio label="F">女</el-radio>
           </el-radio-group>
         </el-col>
-        <el-col :span="6">出生日期:
-          <el-date-picker v-model="personForm.birthDateRange" style="width: 300px" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
+        <el-col :span="7">出生日期:
+          <el-date-picker v-model="personForm.birthDateRange" style="width: 342px" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
                           range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </el-col>
@@ -24,8 +24,14 @@
         <el-col class="block" :span="4">工作地址:
           <el-cascader v-model="personForm.workAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
         </el-col>
+        <el-col :span="3">院校：
+          <el-select v-model="personForm.granduteSchool" placeholder="院校" style="width: 150px" size="mini">
+            <el-option v-for="item in this.personForm.granduteSchoolsEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
+          </el-select>
+        </el-col>
         <el-col :span="3">
           <el-button type="primary" size="mini" icon="el-icon-search" @click="initPersons">搜索</el-button>
+          <el-button type="success" size="mini" icon="el-icon-search" @click="clearCondition">重置</el-button>
         </el-col>
       </el-row>
     </div>
@@ -91,7 +97,10 @@ export default {
         workArea: '',
         birthDateRange: [],
         birthDateStart: '',
-        birthDateEnd: ''
+        birthDateEnd: '',
+        /*毕业院校*/
+        granduteSchoolsEnum: [],
+        granduteSchool: ''
       },
       persons: [],
       regionData: [],
@@ -135,6 +144,9 @@ export default {
       if (this.personForm.birthDateRange[1]) {
         url = url + '&birthDateEnd=' + this.personForm.birthDateRange[1];
       }
+      if (this.personForm.granduteSchool) {
+        url = url + '&granduteSchoolCode=' + this.personForm.granduteSchool;
+      }
       getRequest(url).then(resp => {
         if (resp && resp.code == 200000) {
           this.loading = false;
@@ -166,10 +178,27 @@ export default {
         this.loading = false;
       })
     },
+    /*重置查询条件*/
+    clearCondition() {
+      this.personForm = {}
+    },
+    /*毕业院校下拉框数据*/
+    initGranduteSchool() {
+      if (!window.sessionStorage.getItem("granduteSchools")) {
+        getRequest('/dict/item_name?item_name=UNIVERSITY').then(resp => {
+          if (resp) {
+            this.personForm.granduteSchoolsEnum = resp.obj;
+          }
+        })
+      } else {
+        this.personForm.granduteSchoolsEnum = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
+      }
+    },
   },
   mounted() {
     this.initPersons();
     this.initRegionData();
+    this.initGranduteSchool();
   }
 }
 </script>

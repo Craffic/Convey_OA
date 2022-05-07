@@ -79,6 +79,9 @@
                 <if test="person.birthDateStart != null and person.birthDateEnd != null">
                     AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=TIMESTAMP} and #{person.birthDateEnd,jdbcType=TIMESTAMP}
                 </if>
+                <if test="person.granduteSchoolCode != null">
+                    AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
+                </if>
         　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
     </select>
@@ -131,6 +134,9 @@
          </if>
          <if test="person.birthDateStart != null and person.birthDateEnd != null">
              AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=TIMESTAMP} and #{person.birthDateEnd,jdbcType=TIMESTAMP}
+         </if>
+         <if test="person.granduteSchoolCode != null">
+             AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}
          </if>
     </select>
 
