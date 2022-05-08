@@ -83,3 +83,9 @@ ALTER TABLE PERSON
     MINEXTENTS 1
     MAXEXTENTS UNLIMITED
   );
+
+-- Add/modify columns
+alter table PERSON add favorite NUMBER(1);
+-- Add comments to the columns
+comment on column PERSON.favorite
+  is '收藏（1:收藏，0：取消收藏）';
