@@ -1,13 +1,13 @@
 package com.craffic.convey.server.controller.social;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.craffic.convey.common.enums.GenderEnum;
 import com.craffic.convey.common.response.ResponseBody;
 import com.craffic.convey.common.utils.DateUtil;
 import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.jobapi.api.PersonInterface;
 import com.craffic.convey.jobapi.req.PersonReq;
 import com.craffic.convey.jobapi.vo.PersonVo;
-import com.craffic.convey.server.enums.GenderEnum;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;

@@ -1,9 +1,9 @@
 package com.craffic.convey.server.service;
 
+import com.craffic.convey.common.enums.GenderEnum;
 import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.server.dao.CvRoleMapper;
 import com.craffic.convey.server.dao.CvUserMapper;
-import com.craffic.convey.server.enums.GenderEnum;
 import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvRole;
 import com.craffic.convey.server.model.CvUser;

@@ -1,5 +1,6 @@
 package com.craffic.convey.jobserver.scheduler;
 
+import com.craffic.convey.jobserver.factory.PersonFactory;
 import com.craffic.convey.jobserver.model.Person;
 import com.craffic.convey.jobserver.service.PersonService;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public class GeneratePersonScheduler {
     @Autowired
     private PersonService personService;
 
-//    @Scheduled(fixedRate=2000)
+    @Scheduled(fixedRate=20000)
     public void generatePersonJob() {
         Person person = personService.genPersonInfo();
         personService.insertPerson(person);

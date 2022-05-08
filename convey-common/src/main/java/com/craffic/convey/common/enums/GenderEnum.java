@@ -1,4 +1,7 @@
-package com.craffic.convey.server.enums;
+package com.craffic.convey.common.enums;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public enum GenderEnum implements BaseEnum<String>{
     MALE("M", "男"),
@@ -20,6 +23,13 @@ public enum GenderEnum implements BaseEnum<String>{
     @Override
     public String desc() {
         return desc;
+    }
+
+    public static List<GenderEnum> getAllGenderEnum(){
+        List<GenderEnum> genderEnumList = new ArrayList();
+        genderEnumList.add(GenderEnum.MALE);
+        genderEnumList.add(GenderEnum.FEMALE);
+        return genderEnumList;
     }
 
     /**

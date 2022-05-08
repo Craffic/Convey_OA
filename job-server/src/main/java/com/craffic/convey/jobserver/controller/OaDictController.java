@@ -24,7 +24,6 @@ public class OaDictController {
 
     @GetMapping("/query/{item_name}")
     public List<OaDict> queryByName(@PathVariable("item_name") String item_name){
-
         return dictService.queryDictByName(item_name);
     }
 
