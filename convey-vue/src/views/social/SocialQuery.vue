@@ -58,8 +58,8 @@
         <el-table-column prop="granduteSchoolDesc" label="毕业学校" width="200" align="left"></el-table-column>
         <el-table-column prop="favorite" label="收藏" width="120" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.favorite"><el-button size="medium" type="success" icon="el-icon-star-on"></el-button></span>
-            <span v-else-if="!scope.row.favorite"><el-button size="medium" icon="el-icon-star-on"></el-button></span>
+            <span v-if="scope.row.favorite"><el-button size="medium" type="success" icon="el-icon-star-on" @click="favorPerson(scope.row)"></el-button></span>
+            <span v-else-if="!scope.row.favorite"><el-button size="medium" icon="el-icon-star-on" @click="favorPerson(scope.row)"></el-button></span>
           </template>
         </el-table-column>
       </el-table>
@@ -186,6 +186,15 @@ export default {
     /*双击行记录，打开编辑弹框*/
     tableDbEdit(row, column, cell, event) {
       alert("double click")
+    },
+    /*收藏*/
+    favorPerson(data) {
+      console.log(data);
+      postRequest('/person/upadte', data).then(resp => {
+        if (resp && resp.code == 200000) {
+          this.initPersons();
+        }
+      })
     },
     initRegionData() {
       getRequest('/query/region').then(resp => {

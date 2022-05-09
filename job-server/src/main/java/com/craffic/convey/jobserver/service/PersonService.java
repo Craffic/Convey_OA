@@ -113,4 +113,11 @@ public class PersonService {
      public PersonVo queryPersonInfo(String idNo) {
          return personMapper.queryPersonInfo(idNo);
     }
+
+    /**
+     * 更新个人信息
+     */
+    public int updatePersonInfo(PersonReq personReq) {
+        return personMapper.updatePersonInfo(personReq);
+    }
 }

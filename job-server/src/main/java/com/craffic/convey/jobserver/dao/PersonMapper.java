@@ -20,4 +20,6 @@ public interface PersonMapper {
     Long queryTotalNum(@Param("person") PersonReq person);
 
     PersonVo queryPersonInfo(@Param("idNo") String idNo);
+
+    int updatePersonInfo(PersonReq personReq);
 }

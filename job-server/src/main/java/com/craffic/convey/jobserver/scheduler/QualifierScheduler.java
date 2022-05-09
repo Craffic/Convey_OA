@@ -24,7 +24,7 @@ public class QualifierScheduler {
     @Autowired
     private CandidateStrategyFactory candidateStrategyFactory;
 
-    @Scheduled(fixedRate=2000)
+//    @Scheduled(fixedRate=2000)
     public void Qualify(){
 
         // 选择所有未检查的人员名单

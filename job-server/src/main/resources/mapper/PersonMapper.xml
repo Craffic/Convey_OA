@@ -23,6 +23,49 @@
         CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY, HOME_PROVINCE, HOME_CITY, HOME_AREA, WORK_PROVINCE, WORK_CITY, WORK_AREA, FAVORITE
     </sql>
 
+    <update id="updatePersonInfo" parameterType="com.craffic.convey.jobapi.req.PersonReq">
+        UPDATE PERSON P
+        <set>
+            <if test="name != null and name != ''">
+                P.NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null and gender != ''">
+                P.GENDER = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="homeProvince != null and homeProvince != ''">
+                P.HOME_PROVINCE = #{homeProvince,jdbcType=NUMERIC},
+            </if>
+            <if test="homeCity != null and homeCity != ''">
+                P.HOME_CITY = #{homeCity,jdbcType=NUMERIC},
+            </if>
+            <if test="homeArea != null and homeArea != ''">
+                P.HOME_AREA = #{homeArea,jdbcType=NUMERIC},
+            </if>
+            <if test="workProvince != null and workProvince != ''">
+                P.WORK_PROVINCE = #{workProvince,jdbcType=NUMERIC},
+            </if>
+            <if test="workCity != null and workCity != ''">
+                P.WORK_CITY = #{workCity,jdbcType=NUMERIC},
+            </if>
+            <if test="workArea != null and workArea != ''">
+                P.WORK_AREA = #{workArea,jdbcType=NUMERIC},
+            </if>
+            <if test="granduteSchoolCode != null">
+                P.GRANDUATE_SCHOOL_CODE = #{granduteSchoolCode,jdbcType=NUMERIC},
+            </if>
+            <if test="professionCode != null">
+                P.PROFESSION_CODE = #{professionCode,jdbcType=NUMERIC},
+            </if>
+            <if test="!favorite">
+                P.FAVORITE = 1,
+            </if>
+            <if test="favorite">
+                P.FAVORITE = 0,
+            </if>
+        </set>
+        WHERE P.IDCARD_NO = #{idCardNo,jdbcType=VARCHAR}
+    </update>
+
     <select id="getAllPersons" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns" />
@@ -76,9 +119,6 @@
                 </if>
                 <if test="person.workArea != null and person.workArea != ''">
                     AND P.WORK_AREA = #{person.workArea,jdbcType=NUMERIC}
-                </if>
-                <if test="person.birthDateStart != null and person.birthDateEnd != null">
-                    AND P.BIRTH_DATE BETWEEN #{person.birthDateStart,jdbcType=TIMESTAMP} and #{person.birthDateEnd,jdbcType=TIMESTAMP}
                 </if>
                 <if test="person.granduteSchoolCode != null">
                     AND P.GRANDUATE_SCHOOL_CODE = #{person.granduteSchoolCode,jdbcType=NUMERIC}

@@ -8,6 +8,7 @@ import com.craffic.convey.common.vo.ListVo;
 import com.craffic.convey.jobapi.api.PersonInterface;
 import com.craffic.convey.jobapi.req.PersonReq;
 import com.craffic.convey.jobapi.vo.PersonVo;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -63,5 +64,10 @@ public class PersonRestController {
             return ResponseBody.failure("400502", String.format("查询社会人员信息失败，失败原因%s", responseBody.getMessage()));
         }
         return responseBody;
+    }
+
+    @PostMapping(value = "/person/upadte")
+    public ResponseBody<String> updatePersonInfo(@RequestBody PersonReq personReq){
+        return personInterface.updatePerson(personReq);
     }
 }

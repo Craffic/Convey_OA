@@ -11,4 +11,6 @@ public interface PersonInterface {
     ResponseBody<ListVo<PersonVo>> queryPersonsByPage(PersonReq personReq);
 
     ResponseBody<PersonVo> queryPersonInfo(String idCardNo);
+
+    ResponseBody<String> updatePerson(PersonReq personReq);
 }
