@@ -56,6 +56,12 @@
         <el-table-column prop="workAddress" label="工作地址" width="330" align="left"></el-table-column>
         <el-table-column prop="professionDesc" label="专业" width="200" align="left"></el-table-column>
         <el-table-column prop="granduteSchoolDesc" label="毕业学校" width="200" align="left"></el-table-column>
+        <el-table-column prop="favorite" label="收藏" width="120" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.favorite"><el-button size="medium" type="success" icon="el-icon-star-on"></el-button></span>
+            <span v-else-if="!scope.row.favorite"><el-button size="medium" icon="el-icon-star-on"></el-button></span>
+          </template>
+        </el-table-column>
       </el-table>
       <div style="display: flex;justify-content: flex-end">
         <el-pagination
@@ -104,7 +110,8 @@ export default {
         /*毕业院校*/
         granduteSchoolsEnum: [],
         granduteSchool: '',
-        professionCondition: ''
+        professionCondition: '',
+        favorite: ''
       },
       persons: [],
       regionData: [],
@@ -213,7 +220,7 @@ export default {
       } else {
         this.personForm.granduteSchoolsEnum = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
       }
-    },
+    }
   },
   mounted() {
     this.initPersons();

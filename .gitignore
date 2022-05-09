@@ -38,3 +38,4 @@ hs_err_pid*
 /job-api/target/maven-archiver/
 /convey-OA.iml
 /job-api/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/
+/convey-common/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/
