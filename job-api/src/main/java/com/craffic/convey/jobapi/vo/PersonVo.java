@@ -89,4 +89,9 @@ public class PersonVo implements Serializable {
      */
     @JsonFormat(pattern="yyyyMMdd",timezone="GMT+8")
     private Date updateDate;
+
+    /**
+     * 收藏标志
+     */
+    private Boolean favorite;
 }

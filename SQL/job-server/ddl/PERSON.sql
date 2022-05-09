@@ -85,7 +85,7 @@ ALTER TABLE PERSON
   );
 
 -- Add/modify columns
-alter table PERSON add favorite NUMBER(1);
+alter table PERSON add favorite NUMBER(1) default 0;
 -- Add comments to the columns
 comment on column PERSON.favorite
   is '收藏（1:收藏，0：取消收藏）';

@@ -72,4 +72,9 @@ public class PersonReq extends BaseQuery {
      * 毕业学校编码
      */
     private Long granduteSchoolCode;
+
+    /**
+     * 收藏标志
+     */
+    private Boolean favorite;
 }

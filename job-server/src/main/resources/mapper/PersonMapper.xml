@@ -15,11 +15,12 @@
         <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR"></result>
         <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP"></result>
         <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR"></result>
+        <result property="favorite" column="FAVORITE" jdbcType="BIT"></result>
     </resultMap>
 
     <sql id="BaseColumns">
         IDCARD_NO, NAME, GENDER, BIRTH_DATE, AGE, NATIVE_PLACE_CODE, PROFESSION_CODE, GRANDUATE_SCHOOL_CODE,
-        CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY, HOME_PROVINCE, HOME_CITY, HOME_AREA, WORK_PROVINCE, WORK_CITY, WORK_AREA
+        CREATED_DATE, CREATED_BY, UPATE_DATE, UPDATE_BY, HOME_PROVINCE, HOME_CITY, HOME_AREA, WORK_PROVINCE, WORK_CITY, WORK_AREA, FAVORITE
     </sql>
 
     <select id="getAllPersons" resultMap="BaseResultMap">
@@ -85,6 +86,9 @@
                 <if test="person.professionCode != null">
                     AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
                 </if>
+                <if test="person.favorite != null">
+                    AND P.FAVORITE = #{person.favorite,jdbcType=BIT}
+                </if>
         　　) A WHERE rownum &lt;= #{person.endRecord,jdbcType=NUMERIC}
         ) B WHERE r > #{person.startRecord,jdbcType=NUMERIC}
     </select>
@@ -144,6 +148,9 @@
          <if test="person.professionCode != null">
              AND P.PROFESSION_CODE = #{person.professionCode,jdbcType=NUMERIC}
          </if>
+         <if test="person.favorite != null">
+             AND P.FAVORITE = #{person.favorite,jdbcType=BIT}
+         </if>
     </select>
 
     <select id="queryPersonInfo" resultType="com.craffic.convey.jobapi.vo.PersonVo">
@@ -169,7 +176,8 @@
             #{homeArea,jdbcType=NUMERIC},
             #{workProvince,jdbcType=NUMERIC},
             #{workCity,jdbcType=NUMERIC},
-            #{workArea,jdbcType=NUMERIC}
+            #{workArea,jdbcType=NUMERIC},
+            #{favorite,jdbcType=BIT}
         )
     </insert>
 </mapper>

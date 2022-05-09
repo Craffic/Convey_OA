@@ -86,6 +86,11 @@ public class Person implements Serializable {
     private Long workCity;
     private Long workArea;
 
+    /**
+     * 收藏标志
+     */
+    private Boolean favorite;
+
     public Person() {
     }
 
