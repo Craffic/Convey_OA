@@ -33,7 +33,7 @@ public class PersonController {
         return ResponseBody.success(personListVo);
     }
 
-            @GetMapping(value = "/query")
+    @GetMapping(value = "/query")
     public ResponseBody<PersonVo> queryPersonByIdNo(@RequestParam("idNo") String idNo){
         PersonVo personVo = personService.queryPersonInfo(idNo);
         return ResponseBody.success(personVo);

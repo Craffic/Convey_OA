@@ -2,37 +2,39 @@
   <div>
     <div>
       <el-row style="margin-top: 10px">
-        <el-col :span="4">姓名:
-          <el-input v-model="personForm.name" size="mini" style="width: 225px"></el-input>
+        <el-col :lg="3" :xs="24" class="lightgreen-box">姓名：
+          <el-input v-model="personForm.name" size="mini" style="width: 200px"></el-input>
         </el-col>
-        <el-col :span="4">性别:
+        <el-col :lg="3" :xs="24" class="lightgreen-box">身份证号：
+          <el-input v-model="personForm.idCardNo" size="mini" style="width: 180px"></el-input>
+        </el-col>
+        <el-col :lg="5" :xs="24" class="lightgreen-box">户籍地址:
+          <el-cascader v-model="personForm.homeAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
+        </el-col>
+        <el-col :lg="5" :xs="24" class="lightgreen-box">工作地址:
+          <el-cascader v-model="personForm.workAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top: 10px">
+        <el-col :lg="3" :xs="24" class="lightgreen-box">性别：
           <el-radio-group v-model="personForm.gender">
             <el-radio label="M">男</el-radio>
             <el-radio label="F">女</el-radio>
           </el-radio-group>
         </el-col>
-        <el-col :span="7">出生日期:
-          <el-date-picker v-model="personForm.birthDateRange" style="width: 342px" type="daterange" size="mini" unlink-panels value-format="yyyy-MM-dd"
-                          range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-          </el-date-picker>
+        <el-col :lg="3" :xs="24" class="lightgreen-box">收藏：
+          <el-switch v-model="personForm.favorite" active-color="#13ce66" inactive-color="#909399"></el-switch>
+        </el-col>
+        <el-col :lg="5" :xs="24" class="lightgreen-box">毕业院校:
+          <el-select v-model="personForm.granduteSchool" placeholder="院校" style="width: 300px" size="mini">
+            <el-option v-for="item in this.granduteSchoolsEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
+          </el-select></el-col>
+        <el-col :lg="5" :xs="24" class="orange-box">专业：
+          <el-cascader v-model="personForm.professionCondition" :options="professionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 320px"></el-cascader>
         </el-col>
       </el-row>
       <el-row style="margin-top: 10px">
-        <el-col class="block" :span="4">户籍地址:
-          <el-cascader v-model="personForm.homeAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
-        </el-col>
-        <el-col class="block" :span="4">工作地址:
-          <el-cascader v-model="personForm.workAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
-        </el-col>
-        <el-col :span="3">院校：
-          <el-select v-model="personForm.granduteSchool" placeholder="院校" style="width: 150px" size="mini">
-            <el-option v-for="item in this.personForm.granduteSchoolsEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
-          </el-select>
-        </el-col>
-        <el-col class="block" :span="4">专业:
-          <el-cascader v-model="personForm.professionCondition" :options="professionData" :props="{ checkStrictly: true }" clearable size="mini"></el-cascader>
-        </el-col>
-        <el-col :span="3">
+        <el-col :lg="3" :xs="24" class="lightgreen-box">
           <el-button type="primary" size="mini" icon="el-icon-search" @click="initPersons">搜索</el-button>
           <el-button type="success" size="mini" icon="el-icon-search" @click="clearCondition">重置</el-button>
         </el-col>
@@ -108,14 +110,14 @@ export default {
         birthDateStart: '',
         birthDateEnd: '',
         /*毕业院校*/
-        granduteSchoolsEnum: [],
         granduteSchool: '',
         professionCondition: '',
-        favorite: ''
+        favorite: 0
       },
       persons: [],
       regionData: [],
       regionCondition:'',
+      granduteSchoolsEnum: [],
       professionData: [],
       /*分页参数*/
       total: 0,
@@ -165,6 +167,15 @@ export default {
       } else if (this.personForm.professionCondition[0] && !this.personForm.professionCondition[1]){
         url = url + '&professionCode=' + this.personForm.professionCondition[0];
       }
+      // 性别
+      if (this.personForm.gender) {
+        url = url + '&gender=' + this.personForm.gender;
+      }
+      // 身份证
+      if (this.personForm.idCardNo) {
+        url = url + '&idCardNo=' + this.personForm.idCardNo;
+      }
+      console.log(url);
       getRequest(url).then(resp => {
         if (resp && resp.code == 200000) {
           this.loading = false;
@@ -216,18 +227,46 @@ export default {
     },
     /*重置查询条件*/
     clearCondition() {
-      this.personForm = {}
+      this.personForm = {
+        name: '',
+        idCardNo: '',
+        gender: '',
+        birthDate: '',
+        nativePlaceCode: '',
+        nativePlaceDesc: '',
+        homeAddress: '',
+        workAddress: '',
+        professionCode: '',
+        professionDesc: '',
+        granduteSchoolCode: '',
+        granduteSchoolDesc: '',
+        homeAddrCondi: '',
+        workAddrCondi: '',
+        homeProvince: '',
+        homeCity: '',
+        homeArea: '',
+        workProvince: '',
+        workCity: '',
+        workArea: '',
+        birthDateRange: [],
+        birthDateStart: '',
+        birthDateEnd: '',
+        /*毕业院校*/
+        granduteSchool: '',
+        professionCondition: '',
+        favorite: ''
+      }
     },
     /*毕业院校下拉框数据*/
     initGranduteSchool() {
       if (!window.sessionStorage.getItem("granduteSchools")) {
         getRequest('/dict/item_name?item_name=UNIVERSITY').then(resp => {
           if (resp) {
-            this.personForm.granduteSchoolsEnum = resp.obj;
+            this.granduteSchoolsEnum = resp.obj;
           }
         })
       } else {
-        this.personForm.granduteSchoolsEnum = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
+        this.granduteSchoolsEnum = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
       }
     }
   },
