@@ -23,7 +23,10 @@
           </el-radio-group>
         </el-col>
         <el-col :lg="3" :xs="24" class="lightgreen-box">收藏：
-          <el-switch v-model="personForm.favorite" active-color="#13ce66" inactive-color="#909399"></el-switch>
+          <el-select v-model="personForm.favorite" style="width: 212px" size="mini" clearable>
+            <el-option key="1" label="收藏" value="1"></el-option>
+            <el-option key="0" label="未收藏" value="0"></el-option>
+          </el-select>
         </el-col>
         <el-col :lg="5" :xs="24" class="lightgreen-box">毕业院校:
           <el-select v-model="personForm.granduteSchool" placeholder="院校" style="width: 300px" size="mini">
@@ -112,7 +115,7 @@ export default {
         /*毕业院校*/
         granduteSchool: '',
         professionCondition: '',
-        favorite: 0
+        favorite: ''
       },
       persons: [],
       regionData: [],
@@ -174,6 +177,10 @@ export default {
       // 身份证
       if (this.personForm.idCardNo) {
         url = url + '&idCardNo=' + this.personForm.idCardNo;
+      }
+      // 收藏
+      if (this.personForm.favorite) {
+        url = url + '&favorite=' + this.personForm.favorite;
       }
       console.log(url);
       getRequest(url).then(resp => {
@@ -255,7 +262,9 @@ export default {
         granduteSchool: '',
         professionCondition: '',
         favorite: ''
-      }
+      },
+      this.page = 1;
+      this.size = 10;
     },
     /*毕业院校下拉框数据*/
     initGranduteSchool() {
