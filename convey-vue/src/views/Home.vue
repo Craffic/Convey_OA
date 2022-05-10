@@ -19,7 +19,11 @@
       <el-container>
         <!--左侧菜单栏-->
         <el-aside width="200px">
-          <el-menu class="el-menu-vertical-demo" router unique-opened>
+          <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+            <el-radio-button :label="false">展开</el-radio-button>
+            <el-radio-button :label="true">收起</el-radio-button>
+          </el-radio-group>
+          <el-menu class="el-menu-vertical-demo" router unique-opened @open="handleOpen" @close="handleClose" :collapse="isCollapse">
             <el-submenu :index="index+''" v-for="(item, index) in routes" :key="index">
               <template slot="title">
                 <i :class="item.iconCls" style="color: #4e9cef;margin-right: 5px"></i>
@@ -252,7 +256,9 @@ export default {
         verifyPass: [
           {required: false, message: '确认密码不能为空', trigger: 'blur'}
         ]
-      }
+      },
+      /*是否折叠菜单*/
+      isCollapse: false
     }
   },
   methods: {
@@ -345,6 +351,11 @@ export default {
           this.initProfile();
         }
       })
+    },
+    //-------------------------------------------------------------------------------------
+    handleOpen(key, keyPath) {
+    },
+    handleClose(key, keyPath) {
     }
   },
   computed: {
@@ -396,5 +407,9 @@ export default {
 /*面包屑和routerView有15px像素间隔*/
 .homeRouterView {
   margin-top: 15px;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>
