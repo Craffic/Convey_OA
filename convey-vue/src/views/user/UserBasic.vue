@@ -91,23 +91,22 @@
                 element-loading-background="Transparent"
                 @cell-dblclick="tableDbEdit">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="workId" label="工号" width="150" fixed align="left"></el-table-column>
+        <el-table-column prop="workId" label="工号" width="100" fixed align="left"></el-table-column>
         <el-table-column prop="idCardNo" label="身份证号" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="acct" label="账号" width="120" fixed align="left"></el-table-column>
         <el-table-column prop="nameZh" label="姓名" width="120" fixed align="left"></el-table-column>
-        <el-table-column prop="genderDesc" label="性别" width="120" fixed align="left"></el-table-column>
+        <el-table-column prop="genderDesc" label="性别" width="80" fixed align="left"></el-table-column>
         <el-table-column prop="email" label="电子邮箱" width="220"></el-table-column>
         <el-table-column prop="phone" label="电话号码" width="150"></el-table-column>
         <el-table-column prop="dept.name" label="所属部门" width="120"></el-table-column>
         <el-table-column prop="posDesc" label="职位" width="150"></el-table-column>
         <el-table-column prop="beginDate" label="入职日期" width="150"></el-table-column>
         <el-table-column prop="convertDate" label="转正日期" width="150"></el-table-column>
-        <el-table-column prop="workStatDesc" label="在职状态" width="150"></el-table-column>
+        <el-table-column prop="workStatDesc" label="在职状态" width="120"></el-table-column>
         <el-table-column prop="remark" label="备注" width="300"></el-table-column>
-        <el-table-column prop="idCard" label="操作" fixed="right" width="320">
+        <el-table-column prop="idCard" label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="showUserEditDialog(scope.row)">编辑</el-button>
-            <el-button size="mini" type="primary">查看高级资料</el-button>
             <el-button size="mini" type="danger" @click="deleteUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
