@@ -126,8 +126,9 @@
     <el-dialog :title="title" :visible.sync="userDialogVisible" width="60%">
       <div>
         <el-form :rules="rules" :model="user" ref="userForm">
+          <el-divider content-position="left"><h3 style="color: red">基本资料</h3></el-divider>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="工号：" prop="workId">
                 <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 180px" size="mini" disabled></el-input>
               </el-form-item>
@@ -142,14 +143,14 @@
                 <el-input placeholder="请输入用户账号" v-model="user.acct" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="身份证号：" prop="idCardNo">
                 <el-input placeholder="请输入身份证号" v-model="user.idCardNo" prefix-icon="el-icon-edit" style="width:180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="性别：" prop="gender">
                 <el-radio-group v-model="user.gender">
                   <el-radio label="M">男</el-radio>
@@ -169,7 +170,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="所属部门：" prop="dptId">
                 <el-popover placement="right" title="请选择部门" width="200" trigger="hover" v-model="selectDeptView">
                   <el-tree :data="departmentTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
@@ -179,7 +180,7 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="入职日期：" prop="beginDate">
                 <el-date-picker v-model="user.beginDate" type="date" placeholder="出生日期" size="mini" value-format="yyyy-MM-dd" style="width: 150px"></el-date-picker>
               </el-form-item>
@@ -196,11 +197,45 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="电子邮箱：" prop="nameZh">
                 <el-input placeholder="请输入电子邮箱" v-model="user.email" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-divider content-position="left"><h3 style="color: red">地址资料</h3></el-divider>
+          <el-row>
+            <el-col>
+              <el-form-item label="户籍地址：" prop="workStat">
+                <el-cascader v-model="user.homeAddress" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
+              </el-form-item>
+            </el-col>
+            <el-col>
+              <el-form-item label="工作地址：" prop="workStat">
+                <el-cascader v-model="user.workAddress" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-divider content-position="left"><h3 style="color: red">教育学历</h3></el-divider>
+          <el-row>
+            <el-col :span="5">
+              <el-form-item label="毕业学校：" prop="workStat">
+                <el-select v-model="user.granduteSchoolCode" placeholder="毕业学校" style="width: 150px; margin-right: 5px" size="mini">
+                  <el-option v-for="item in this.granduteSchools" :key="item.value" :label="item.value" :value="item.key"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item label="专业：" prop="workStat">
+                <el-cascader v-model="user.professionCode" :options="professionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 320px"></el-cascader>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-divider content-position="left"><h3 style="color: red">其他：</h3></el-divider>
+          <el-row>
+            <el-form-item label="备注：">
+              <el-input type="textarea" v-model="user.remark"></el-input>
+            </el-form-item>
           </el-row>
         </el-form>
       </div>
@@ -243,8 +278,12 @@
         departmentTree:[],
         /*在职状态*/
         workStatEnum: [],
+        /*省市区下拉框数据*/
+        regionData: [],
         /*职位*/
         positionEnum: [],
+        /*专业*/
+        professionData: [],
         /*选中后的部门名称*/
         inputDepName: '',
         loading: false,
@@ -447,6 +486,15 @@
           this.positionEnum = JSON.parse(window.sessionStorage.getItem("position"));
         }
       },
+      initRegionData() {
+        getRequest('/query/region').then(resp => {
+          this.loading = false;
+          if (resp && resp.code == 200000) {
+            this.regionData = resp.obj;
+          }
+          this.loading = false;
+        })
+      },
       /*当前页*/
       currentChange(currentPage) {
         this.page = currentPage;
@@ -487,7 +535,6 @@
         this.setUserEmpty();
         /*打开弹框就显示工号*/
         this.generateWorkID();
-        // this.initPositions();
         this.title = '添加用户';
         this.userDialogVisible = true;
         // this.initPositions();
@@ -553,6 +600,16 @@
         } else {
           this.granduteSchools = JSON.parse(window.sessionStorage.getItem("granduteSchools"));
         }
+      },
+      /*专业*/
+      initProfessionData() {
+        getRequest('/query/profession').then(resp => {
+          this.loading = false;
+          if (resp && resp.code == 200000) {
+            this.professionData = resp.obj;
+          }
+          this.loading = false;
+        })
       }
     },
     mounted() {
@@ -561,6 +618,10 @@
       this.initSelectionData();
       /*打开弹框就显示工号*/
       this.generateWorkID();
+      /*加载省市区下拉框*/
+      this.initRegionData();
+      /*专业*/
+      this.initProfessionData();
     }
   }
 </script>

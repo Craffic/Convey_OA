@@ -149,4 +149,8 @@ public class CvUserVo extends BaseVO {
      */
     private CvDept dept;
 
+    private List<String> homeAddress;
+
+    private List<String> workAddress;
+
 }

@@ -1,8 +1,11 @@
 package com.craffic.convey.server.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.craffic.convey.common.enums.GenderEnum;
 import com.craffic.convey.common.response.ResponseBody;
 import com.craffic.convey.common.vo.ListVo;
+import com.craffic.convey.jobapi.api.PersonInterface;
+import com.craffic.convey.jobapi.vo.PersonVo;
 import com.craffic.convey.server.enums.WorkStatEnum;
 import com.craffic.convey.server.model.CvUser;
 import com.craffic.convey.server.model.OaDict;
@@ -26,6 +29,8 @@ public class CvUserController {
 
     public static final String POSITION = "POSITION";
 
+    @Reference
+    PersonInterface personInterface;
     @Autowired
     private CvUserService userService;
     @Autowired
@@ -68,6 +73,20 @@ public class CvUserController {
             // 转换职位
             OaDict position = dictService.queryDictByKey(cvUser.getPosId(), POSITION);
             userVo.setPosDesc(position == null ? null : position.getValue());
+            List<String> homeAddress = new ArrayList();
+            List<String> workAddress = new ArrayList();
+            ResponseBody<PersonVo> personResponse = personInterface.queryPersonInfo(userVo.getIdCardNo());
+            PersonVo obj = personResponse.getObj();
+            if (obj != null) {
+                homeAddress.add(obj.getHomeProvince().toString());
+                homeAddress.add(obj.getHomeCity().toString());
+                homeAddress.add(obj.getHomeArea().toString());
+                workAddress.add(obj.getWorkProvince().toString());
+                workAddress.add(obj.getWorkCity().toString());
+                workAddress.add(obj.getWorkArea().toString());
+                userVo.setHomeAddress(homeAddress);
+                userVo.setWorkAddress(workAddress);
+            }
             userVoList.add(userVo);
         });
         ListVo<CvUserVo> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());

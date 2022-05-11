@@ -8,10 +8,10 @@
         <el-col :lg="3" :xs="24" class="lightgreen-box">身份证号：
           <el-input v-model="personForm.idCardNo" size="mini" style="width: 180px"></el-input>
         </el-col>
-        <el-col :lg="5" :xs="24" class="lightgreen-box">户籍地址:
+        <el-col :lg="4" :xs="24" class="lightgreen-box">户籍地址:
           <el-cascader v-model="personForm.homeAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
         </el-col>
-        <el-col :lg="5" :xs="24" class="lightgreen-box">工作地址:
+        <el-col :lg="4" :xs="24" class="lightgreen-box">工作地址:
           <el-cascader v-model="personForm.workAddrCondi" :options="regionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 300px"></el-cascader>
         </el-col>
       </el-row>
@@ -28,11 +28,11 @@
             <el-option key="0" label="未收藏" value="0"></el-option>
           </el-select>
         </el-col>
-        <el-col :lg="5" :xs="24" class="lightgreen-box">毕业院校:
+        <el-col :lg="4" :xs="24" class="lightgreen-box">毕业院校:
           <el-select v-model="personForm.granduteSchool" placeholder="院校" style="width: 300px" size="mini">
             <el-option v-for="item in this.granduteSchoolsEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
           </el-select></el-col>
-        <el-col :lg="5" :xs="24" class="orange-box">专业：
+        <el-col :lg="4" :xs="24" class="orange-box">专业：
           <el-cascader v-model="personForm.professionCondition" :options="professionData" :props="{ checkStrictly: true }" clearable size="mini" style="width: 320px"></el-cascader>
         </el-col>
       </el-row>
