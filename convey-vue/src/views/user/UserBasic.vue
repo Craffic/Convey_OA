@@ -128,27 +128,20 @@
           <el-divider content-position="left"><h3 style="color: red">基本资料</h3></el-divider>
           <el-row>
             <el-col :span="5">
-              <el-form-item label="工号：" prop="workId">
-                <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 180px" size="mini" disabled></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="姓名：" prop="nameZh">
-                <el-input placeholder="请输入用户姓名" v-model="user.nameZh" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="账号：" prop="acct">
-                <el-input placeholder="请输入用户账号" v-model="user.acct" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
               <el-form-item label="身份证号：" prop="idCardNo">
                 <el-input placeholder="请输入身份证号" v-model="user.idCardNo" prefix-icon="el-icon-edit" style="width:180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
+            <el-col :span="5">
+              <el-form-item label="姓名：" prop="nameZh">
+                <el-input placeholder="请输入用户姓名" v-model="user.nameZh" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="年龄：" prop="age">
+                <el-input v-model="user.age" prefix-icon="el-icon-edit" style="width: 150px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
             <el-col :span="5">
               <el-form-item label="性别：" prop="gender">
                 <el-radio-group v-model="user.gender">
@@ -157,9 +150,29 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row>
             <el-col :span="5">
-              <el-form-item label="电话号码：" prop="phone">
-                <el-input placeholder="请输入电话号码" v-model="user.phone" prefix-icon="el-icon-edit" style="width: 120px" size="mini"></el-input>
+              <el-form-item label="手机号码：" prop="phone">
+                <el-input v-model="user.phone" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="邮箱：" prop="email">
+                <el-input v-model="user.email" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-divider content-position="left"><h3 style="color: red">岗位资料</h3></el-divider>
+          <el-row>
+            <el-col :span="5">
+              <el-form-item label="工号：" prop="workId">
+                <el-input v-model="user.workId" prefix-icon="el-icon-edit" style="width: 200px" size="mini" disabled></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="账号：" prop="acct">
+                <el-input placeholder="请输入用户账号" v-model="user.acct" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -171,7 +184,7 @@
             </el-col>
             <el-col :span="5">
               <el-form-item label="所属部门：" prop="dptId">
-                <el-popover placement="right" title="请选择部门" width="200" trigger="hover" v-model="selectDeptView">
+                <el-popover placement="right" title="请选择部门" width="180" trigger="hover" v-model="selectDeptView">
                   <el-tree :data="departmentTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
                   <div slot="reference" class="selectDeptDialog" @click="showDepView()">{{inputDepName}}</div>
                 </el-popover>
@@ -181,12 +194,12 @@
           <el-row>
             <el-col :span="5">
               <el-form-item label="入职日期：" prop="beginDate">
-                <el-date-picker v-model="user.beginDate" type="date" placeholder="出生日期" size="mini" value-format="yyyy-MM-dd" style="width: 150px"></el-date-picker>
+                <el-date-picker v-model="user.beginDate" type="date" placeholder="出生日期" size="mini" value-format="yyyy-MM-dd" style="width: 180px"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="5">
               <el-form-item label="转正日期：" prop="convertDate">
-                <el-date-picker v-model="user.convertDate" type="date" placeholder="转正日期" size="mini" value-format="yyyy-MM-dd" style="width: 120px"></el-date-picker>
+                <el-date-picker v-model="user.convertDate" type="date" placeholder="转正日期" size="mini" value-format="yyyy-MM-dd" style="width: 150px"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -194,11 +207,6 @@
                 <el-select v-model="user.workStat" placeholder="状态" style="width: 150px" size="mini">
                     <el-option v-for="item in this.workStatEnum" :key="item.value" :label="item.value" :value="item.key"></el-option>
                 </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="电子邮箱：" prop="nameZh">
-                <el-input placeholder="请输入电子邮箱" v-model="user.email" prefix-icon="el-icon-edit" style="width: 180px" size="mini"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -305,6 +313,9 @@
         },
         /*校验规则*/
         rules: {
+          idCardNo: [{required: true, message: '请输入身份号', trigger: 'blur'}],
+          age: [{required: true, message: '年龄', trigger: 'blur'}],
+          email: [{required: true, message: '请输入电子邮箱', trigger: 'blur'}],
           nameZh: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           acct: [{required: true, message: '请输入账号', trigger: 'blur'}],
           gender: [{required: true, message: '请输入性别', trigger: 'blur'}],
