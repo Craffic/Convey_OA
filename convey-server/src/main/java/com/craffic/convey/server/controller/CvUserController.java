@@ -27,14 +27,11 @@ import java.util.Map;
 @RequestMapping("/user")
 public class CvUserController {
 
-    public static final String POSITION = "POSITION";
-
     @Reference
     PersonInterface personInterface;
     @Autowired
     private CvUserService userService;
-    @Autowired
-    private OaDictService dictService;
+
 
     @GetMapping("/query_all")
     public ResponseBody<ListVo<CvUserVo>> queryAllUsers(){
@@ -60,37 +57,8 @@ public class CvUserController {
      */
     @GetMapping("/query")
     public ResponseBody<ListVo<CvUserVo>> queryUsersByCondition(CvUserReq user){
-        ListVo<CvUser> cvUserListVo = userService.queryUsersByCondition(user);
-        List<CvUser> list = cvUserListVo.getList();
-        List<CvUserVo> userVoList = new ArrayList<>();
-        list.stream().forEach(cvUser -> {
-            CvUserVo userVo = new CvUserVo();
-            BeanUtils.copyProperties(cvUser, userVo);
-            WorkStatEnum workStatEnum = WorkStatEnum.parseByValue(cvUser.getWorkStat());
-            userVo.setWorkStatDesc(workStatEnum.desc());
-            GenderEnum genderEnum = GenderEnum.parseByValue(cvUser.getGender());
-            userVo.setGenderDesc(genderEnum.desc());
-            // 转换职位
-            OaDict position = dictService.queryDictByKey(cvUser.getPosId(), POSITION);
-            userVo.setPosDesc(position == null ? null : position.getValue());
-            List<String> homeAddress = new ArrayList();
-            List<String> workAddress = new ArrayList();
-            ResponseBody<PersonVo> personResponse = personInterface.queryPersonInfo(userVo.getIdCardNo());
-            PersonVo obj = personResponse.getObj();
-            if (obj != null) {
-                homeAddress.add(obj.getHomeProvince().toString());
-                homeAddress.add(obj.getHomeCity().toString());
-                homeAddress.add(obj.getHomeArea().toString());
-                workAddress.add(obj.getWorkProvince().toString());
-                workAddress.add(obj.getWorkCity().toString());
-                workAddress.add(obj.getWorkArea().toString());
-                userVo.setHomeAddress(homeAddress);
-                userVo.setWorkAddress(workAddress);
-            }
-            userVoList.add(userVo);
-        });
-        ListVo<CvUserVo> listVo = new ListVo<>(userVoList, cvUserListVo.getTotalNum());
-        return ResponseBody.success(listVo);
+        ListVo<CvUserVo> userListVo = userService.queryUsersByCondition(user);
+        return ResponseBody.success(userListVo);
     }
 
     @PostMapping("/add")
@@ -131,8 +99,8 @@ public class CvUserController {
      * 更新用户
      */
     @PutMapping("/update")
-    public ResponseBody<String> updateUser(@RequestBody CvUser user) {
-        if (userService.updateUser(user) == 1) {
+    public ResponseBody<String> updateUser(@RequestBody CvUserReq userReq) {
+        if (userService.updateUser(userReq) == 1) {
             return ResponseBody.success("更新成功");
         }
         return ResponseBody.failure("400103", "更新用户失败！");

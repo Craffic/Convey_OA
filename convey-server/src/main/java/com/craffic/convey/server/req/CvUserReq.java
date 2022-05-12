@@ -4,6 +4,7 @@ import com.craffic.convey.common.request.BaseQuery;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CvUserReq extends BaseQuery {
@@ -114,5 +115,35 @@ public class CvUserReq extends BaseQuery {
      */
     private String updateBy;
 
+    /**
+     * 户籍地址
+     */
+    private List<String> homeAddress;
+    private String homeProvince;
+    private String homeCity;
+    private String homeArea;
+
+    /**
+     * 工作地址
+     */
+    private List<String> workAddress;
+    private String workProvince;
+    private String workCity;
+    private String workArea;
+
+    /**
+     * 毕业学校
+     */
+    private Long granduteSchoolCode;
+
+    /**
+     * 专业
+     */
+    private Long professionCode;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
 
 }

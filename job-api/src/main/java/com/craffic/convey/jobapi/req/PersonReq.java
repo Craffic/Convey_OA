@@ -59,9 +59,9 @@ public class PersonReq extends BaseQuery {
     /**
      * 年龄
      */
-     private Integer ageStart;
-
-     private Integer ageEnd;
+    private Integer age;
+    private Integer ageStart;
+    private Integer ageEnd;
 
     /**
      * 职业编码

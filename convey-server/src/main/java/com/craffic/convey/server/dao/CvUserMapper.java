@@ -24,7 +24,7 @@ public interface CvUserMapper {
 
     int deleteUserById(@Param("id") Long id);
 
-    Integer updateUser(CvUser user);
+    Integer updateUser(CvUserReq userReq);
 
     CvUser profile(@Param("idCardNo") String idCardNo);
 }

@@ -49,6 +49,11 @@ public class CvUserVo extends BaseVO {
     private String genderDesc;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 密码
      */
     @JsonIgnore
