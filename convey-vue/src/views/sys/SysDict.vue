@@ -11,7 +11,7 @@
       <el-button style="padding-left: 10px" size="mini" type="success" icon="el-icon-circle-plus-outline" @click="showAddDictView()">添加</el-button>
     </div>
     <div style="margin-top: 20px">
-      <el-table border style="width: 70%" :data="dictList"
+      <el-table border style="width: 51%" :data="dictList"
                 v-loading="loading"
                 element-loading-text="正在加载..."
                 element-loading-spinner="el-icon-loading"
@@ -23,14 +23,14 @@
         <el-table-column prop="key" label="key值" width="100" fixed align="left"></el-table-column>
         <el-table-column prop="value" label="字典值" width="200" fixed align="left"></el-table-column>
         <el-table-column prop="comments" label="备注" width="220" fixed align="left"></el-table-column>
-        <el-table-column prop="idCard" label="操作" fixed width="150">
+        <el-table-column prop="idCard" label="操作" fixed>
           <template slot-scope="scope">
             <el-button size="mini">编辑</el-button>
             <el-button size="mini" type="danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div style="display: flex;justify-content: flex-end; width: 70%">
+      <div style="display: flex;justify-content: flex-end; width: 50%">
         <el-pagination
           background
           @current-change="currentChange"

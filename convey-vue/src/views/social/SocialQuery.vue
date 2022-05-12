@@ -44,7 +44,7 @@
       </el-row>
     </div>
     <div style="margin-top: 20px">
-      <el-table :data="persons" border style="width: 100%"
+      <el-table :data="persons" border style="width: 85%"
                 v-loading="loading"
                 element-loading-text="正在加载..."
                 element-loading-spinner="el-icon-loading"
@@ -61,14 +61,14 @@
         <el-table-column prop="workAddress" label="工作地址" width="330" align="left"></el-table-column>
         <el-table-column prop="professionDesc" label="专业" width="200" align="left"></el-table-column>
         <el-table-column prop="granduteSchoolDesc" label="毕业学校" width="200" align="left"></el-table-column>
-        <el-table-column prop="favorite" label="收藏" width="120" align="center">
+        <el-table-column prop="favorite" label="收藏" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.favorite"><el-button size="medium" type="success" icon="el-icon-star-on" @click="favorPerson(scope.row)"></el-button></span>
             <span v-else-if="!scope.row.favorite"><el-button size="medium" icon="el-icon-star-on" @click="favorPerson(scope.row)"></el-button></span>
           </template>
         </el-table-column>
       </el-table>
-      <div style="display: flex;justify-content: flex-end">
+      <div style="display: flex;justify-content: flex-end;width: 85%">
         <el-pagination
           background
           @current-change="currentChange"
